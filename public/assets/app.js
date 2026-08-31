@@ -45,9 +45,9 @@ function renderTop5(){
 }
 
 function renderTrends(){
-  const panel=byId('trendPanel');const trends=D.trends||[];
-  if(!trends.length){panel.style.display='none';return}
-  panel.style.display='';
+  const panel=byId('trendPanel');const trends=D.trends||[];const grid=panel.parentElement;
+  if(!trends.length){panel.style.display='none';grid.style.gridTemplateColumns='1fr';return}
+  panel.style.display='';grid.style.gridTemplateColumns='';
   byId('trends').innerHTML=trends.slice(0,20).map(t=>`<div class="trend"><span class="rank">${esc(t.rank)}</span><div><b>${esc(t.term)}</b><small>${esc(t.context||'')}</small></div><em>${esc(t.volume||'')}</em></div>`).join('');
 }
 
