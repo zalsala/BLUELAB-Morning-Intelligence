@@ -15,10 +15,19 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          files=['public/index.html','public/assets/styles.css','public/assets/app.js','public/data/today.json']
-          assert all(Path(p).exists() for p in files)
+          required=['public/index.html','public/assets/styles.css','public/assets/app.js','public/data/today.json']
+          assert all(Path(p).exists() for p in required), 'required file missing'
           d=json.loads(Path('public/data/today.json').read_text(encoding='utf-8'))
-          assert len(d.get('trends',[]))==20
-          assert d.get('top_issue') and d.get('stories')
-          print('PASS')
+          assert len(d.get('trends',[])) == 20, 'trend count must be 20'
+          assert d.get('top_issue_title'), 'top issue title missing'
+          story_files=d.get('story_files',[])
+          assert story_files, 'story bundle list missing'
+          stories=[]
+          for name in story_files:
+              p=Path('public/data')/name
+              assert p.exists(), f'missing story bundle: {name}'
+              stories.extend(json.loads(p.read_text(encoding='utf-8')))
+          assert len(stories) >= 20, 'insufficient stories'
+          assert any(s.get('title') == d['top_issue_title'] for s in stories), 'top issue not found in story bundles'
+          print(f'PASS: {len(stories)} stories, {len(d["trends"])} trends')
           PY
