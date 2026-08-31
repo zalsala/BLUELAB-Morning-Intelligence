@@ -1,5 +1,7 @@
 name = "bluelab-morning-intelligence"
 compatibility_date = "2026-08-31"
+workers_dev = true
+preview_urls = true
 
 [assets]
 directory = "./public"
