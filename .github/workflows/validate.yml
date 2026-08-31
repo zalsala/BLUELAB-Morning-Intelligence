@@ -1,0 +1,24 @@
+name: Validate Morning Intelligence
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Validate data
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          files=['public/index.html','public/assets/styles.css','public/assets/app.js','public/data/today.json']
+          assert all(Path(p).exists() for p in files)
+          d=json.loads(Path('public/data/today.json').read_text(encoding='utf-8'))
+          assert len(d.get('trends',[]))==20
+          assert d.get('top_issue') and d.get('stories')
+          print('PASS')
+          PY
