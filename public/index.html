@@ -8,99 +8,17 @@
 <link rel="stylesheet" href="./assets/news-list.css">
 </head>
 <body>
-<header class="top">
-  <div class="wrap bar">
-    <div class="brand"><b>B</b><span>BLUELAB MORNING INTELLIGENCE<small id="date"></small></span></div>
-    <nav><a href="#top5">TOP 5</a><a href="#briefing">브리핑</a><a href="#market">경제·시장</a><a href="#watch">오늘 주목</a></nav>
-  </div>
-</header>
+<header class="top"><div class="wrap bar"><div class="brand"><b>B</b><span>BLUELAB MORNING INTELLIGENCE<small id="date"></small></span></div><nav><a href="#top5">TOP 5</a><a href="#signals">실시간</a><a href="#briefing">브리핑</a><a href="#culture">트렌드</a><a href="#watch">오늘 주목</a></nav></div></header>
 <main class="wrap">
-  <section class="mast">
-    <div class="eyebrow">PERSONAL MORNING REPORT · ASIA/SEOUL</div>
-    <h1>많이 읽지 않아도<br>오늘의 흐름이 보이게.</h1>
-    <p>지난 브리핑 이후의 새 변화와 실제 영향력이 큰 뉴스만 다시 선별합니다.</p>
-    <div class="status">
-      <div><span>기준 시각</span><b id="generated"></b></div>
-      <div><span>검색 범위</span><b id="window"></b></div>
-      <div><span>시장 기준</span><b id="marketWindow"></b></div>
-      <div><span>편집 원칙</span><b>중복 제거 · 1차 자료 우선</b></div>
-    </div>
-  </section>
-
-  <section class="top5Section" id="top5">
-    <div class="sectionTitle"><div><small>CURATED BRIEFING</small><h2>오늘 꼭 알아야 할 뉴스 TOP 5</h2></div><span>중요도 순</span></div>
-    <div class="top5Grid">
-      <article class="topHero" id="top5Hero" tabindex="0" role="button"></article>
-      <div class="top5Side" id="top5Side"></div>
-    </div>
-  </section>
-
-  <section class="signalGrid">
-    <div class="panel" id="trendPanel">
-      <div class="panelHead"><b>실시간 급상승</b><small>신뢰 가능한 현재 데이터가 있을 때만 표시</small></div>
-      <div id="trends" class="trendgrid"></div>
-    </div>
-    <div class="panel" id="market">
-      <div class="panelHead"><b>경제·시장</b><small>현재 수치보다 ‘무엇이 변했는지’ 중심</small></div>
-      <div id="metrics" class="metrics"></div>
-    </div>
-  </section>
-
-  <section id="briefing">
-    <div class="sectionTitle"><div><small>TWO-COLUMN REPORT</small><h2>분야별 중요 뉴스</h2></div><span>대표기사 + 압축 리스트</span></div>
-    <div class="briefingLayout">
-      <div id="news" class="newsColumns"></div>
-      <aside class="sideRail">
-        <section class="panel" id="stockPanel">
-          <div class="panelHead"><b>주식 · 이슈 기업</b><small>투자 권유 아님</small></div>
-          <div id="stockGrid" class="stockGrid"></div>
-        </section>
-        <section class="panel" id="videoPanel">
-          <div class="panelHead"><b>유튜브 · 숏츠</b><small>의미 있는 새 이슈가 있을 때만 표시</small></div>
-          <div id="videoGrid" class="videoGrid"></div>
-        </section>
-      </aside>
-    </div>
-  </section>
-
-  <section class="watchSection" id="watch">
-    <div class="sectionTitle"><div><small>NEXT 24 HOURS</small><h2>오늘 주목할 것</h2></div></div>
-    <div id="todayWatch" class="watchGrid"></div>
-  </section>
-
-  <section class="threeLines">
-    <div class="sectionTitle"><div><small>EXECUTIVE SUMMARY</small><h2>오늘 가장 중요한 변화 3줄 요약</h2></div></div>
-    <ol id="finalSummary"></ol>
-  </section>
+<section class="mast"><div class="eyebrow">PERSONAL MORNING REPORT · ASIA/SEOUL</div><h1>많이 읽지 않아도<br>오늘의 흐름이 보이게.</h1><p>지난 브리핑 이후의 새 변화와 실제 영향력이 큰 뉴스만 다시 선별합니다.</p><div class="status"><div><span>기준 시각</span><b id="generated"></b></div><div><span>검색 범위</span><b id="window"></b></div><div><span>시장 기준</span><b id="marketWindow"></b></div><div><span>편집 원칙</span><b>중복 제거 · 1차 자료 우선</b></div></div></section>
+<section class="top5Section" id="top5"><div class="sectionTitle"><div><small>CURATED BRIEFING</small><h2>오늘 꼭 알아야 할 뉴스 TOP 5</h2></div><span>중요도 순</span></div><div class="top5Grid"><article class="topHero" id="top5Hero" tabindex="0" role="button"></article><div class="top5Side" id="top5Side"></div></div></section>
+<section class="signalGrid" id="signals"><div class="panel" id="trendPanel"><div class="panelHead"><b>실시간 급상승 TOP 20</b><small>Google Trends KR · 클릭 시 검색 결과</small></div><div id="trends" class="trendgrid"></div></div><div class="signalSide"><div class="panel weatherPanel" id="weatherPanel"><div class="panelHead"><b>인천 검단신도시 날씨</b><small>생활 의사결정용</small></div><div id="weather"></div></div><div class="panel" id="market"><div class="panelHead"><b>경제·시장</b><small>수치 + 원인 해설</small></div><div id="metrics" class="metrics"></div></div></div></section>
+<section id="briefing"><div class="sectionTitle"><div><small>TWO-COLUMN REPORT</small><h2>분야별 중요 뉴스</h2></div><span>대표기사 + 압축 리스트</span></div><div class="briefingLayout"><div id="news" class="newsColumns"></div><aside class="sideRail"><section class="panel" id="stockPanel"><div class="panelHead"><b>주식 · 이슈 기업</b><small>촉매·원인·리스크</small></div><div id="stockGrid" class="stockGrid"></div></section><section class="panel" id="videoPanel"><div class="panelHead"><b>유튜브 · 숏츠</b><small>실제 영상 썸네일</small></div><div id="videoGrid" class="videoGrid"></div></section></aside></div></section>
+<section id="culture" class="cultureSection"><div class="sectionTitle"><div><small>CULTURE · SEARCH · SOCIAL</small><h2>핫이슈 · 바이럴 · 밈 · 온라인 트렌드</h2></div><span>왜 뜨는지까지 설명</span></div><div id="cultureGrid" class="cultureGrid"></div></section>
+<section class="watchSection" id="watch"><div class="sectionTitle"><div><small>NEXT SIGNALS · PRE-EVENT INTELLIGENCE</small><h2>오늘 주목할 것</h2></div><span>결과별 영향과 공식 링크</span></div><div id="todayWatch" class="watchGrid"></div></section>
+<section class="threeLines"><div class="sectionTitle"><div><small>EXECUTIVE SUMMARY</small><h2>오늘 가장 중요한 변화 3줄 요약</h2></div></div><ol id="finalSummary"></ol></section>
 </main>
-
 <footer><div class="wrap">BLUELAB Morning Intelligence · 기사 전문을 복제하지 않고 핵심 사실·맥락·팩트체크를 한국어로 재구성합니다.</div></footer>
-
-<div id="modal" class="modal">
-  <article class="modalBox">
-    <button id="close" aria-label="닫기">×</button>
-    <div class="modalCategory" id="mCategory"></div>
-    <h2 id="mTitle"></h2>
-    <p class="modalLead" id="mLead"></p>
-    <div class="modalGrid">
-      <div>
-        <h4>배경</h4><p id="mBackground"></p>
-        <h4>현재 상황 · 상세</h4><p id="mDetail"></p>
-        <h4>핵심 포인트</h4><ul id="mPoints"></ul>
-        <h4>왜 중요한가</h4><p id="mWhy"></p>
-        <h4>향후 영향</h4><p id="mImpact"></p>
-        <h4>다음 확인 포인트</h4><p id="mWatch"></p>
-      </div>
-      <div>
-        <h4>시간순 경과</h4><ol id="mChronology"></ol>
-        <h4>미확정 사항</h4><ul id="mUncertainties"></ul>
-        <h4>FACT CHECK</h4><div id="mFacts"></div>
-        <h4>출처</h4><p id="mSource"></p>
-        <a id="mLink" target="_blank" rel="noopener">기사 / 공식자료 확인 →</a>
-      </div>
-    </div>
-  </article>
-</div>
+<div id="modal" class="modal"><article class="modalBox"><button id="close" aria-label="닫기">×</button><figure class="modalImage"><img id="mImage" alt=""><figcaption id="mImageCredit"></figcaption></figure><div class="modalCategory" id="mCategory"></div><h2 id="mTitle"></h2><p class="modalLead" id="mLead"></p><div class="modalGrid"><div><h4>배경 / 원인</h4><p id="mBackground"></p><h4>현재 상황 · 상세</h4><p id="mDetail"></p><h4>핵심 포인트</h4><ul id="mPoints"></ul><h4>왜 중요한가</h4><p id="mWhy"></p><h4>해설 / 원인 분석</h4><p id="mAnalysis"></p><h4>향후 영향</h4><p id="mImpact"></p><h4>다음 확인 포인트</h4><p id="mWatch"></p></div><div><h4>시간순 경과</h4><ol id="mChronology"></ol><h4>미확정 사항</h4><ul id="mUncertainties"></ul><h4>FACT CHECK</h4><div id="mFacts"></div><h4>출처</h4><p id="mSource"></p><a id="mLink" target="_blank" rel="noopener">기사 / 공식자료 확인 →</a></div></div></article></div>
 <script src="./assets/app.js"></script>
-</body>
-</html>
+</body></html>
