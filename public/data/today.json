@@ -1,1 +1,45 @@
-{"meta":{"date":"2026-08-31","generated_at":"2026-08-31 16:10 KST","news_window":"오늘 + 최근 1~14일","market_window":"8/31 장중 + 8/28 미국 종가"},"top_issue_title":"미·이란 교전 재격화 — 호르무즈 긴장과 유가가 다시 핵심 변수로","trends":[{"rank":1,"term":"특별 경보","context":"기상·재난 경보","volume":"10K+"},{"rank":2,"term":"남편","context":"방송·사회 관련 검색","volume":"10K+"},{"rank":3,"term":"그것이 알고 싶다","context":"방송 이슈","volume":"10K+"},{"rank":4,"term":"맨유 대 입스위치","context":"축구","volume":"20K+"},{"rank":5,"term":"최현욱","context":"연예","volume":"10K+"},{"rank":6,"term":"우박","context":"기상","volume":"5K+"},{"rank":7,"term":"이재명 지지율","context":"정치·여론","volume":"10K+"},{"rank":8,"term":"박문성","context":"축구·방송","volume":"10K+"},{"rank":9,"term":"강신철 국방부 장관","context":"개각·국방","volume":"10K+"},{"rank":10,"term":"빠니보틀","context":"크리에이터·연예","volume":"2K+"},{"rank":11,"term":"여객기","context":"항공·사건","volume":"10K+"},{"rank":12,"term":"황운하","context":"정치·수사기관","volume":"5K+"},{"rank":13,"term":"6세대 전투기","context":"국방·테크","volume":"10K+"},{"rank":14,"term":"김나희","context":"연예","volume":"5K+"},{"rank":15,"term":"양준혁","context":"스포츠·방송","volume":"10K+"},{"rank":16,"term":"용혜인","context":"정치·개각","volume":"10K+"},{"rank":17,"term":"이범호","context":"야구","volume":"2K+"},{"rank":18,"term":"태국 여자 배구 국가대표팀","context":"아시아 여자배구","volume":"5K+"},{"rank":19,"term":"고두심","context":"연예·방송","volume":"2K+"},{"rank":20,"term":"보험","context":"생활·금융","volume":"5K+"}],"metrics":[{"name":"S&P 500","value":"7,711.76","change":"-0.25%","note":"8/28 종가"},{"name":"DOW","value":"53,559.99","change":"-0.02%","note":"8/28 종가"},{"name":"NASDAQ","value":"26,402.42","change":"-0.52%","note":"8/28 종가"},{"name":"한국 증시","value":"—","change":"-2.2%","note":"8/31 Reuters 장중"},{"name":"Brent","value":"$90.60","change":"+2.8%","note":"8/31"},{"name":"WTI","value":"$85.50","change":"+2.5%","note":"8/31"},{"name":"US 2Y","value":"4.34%","change":"↑","note":"8/31"},{"name":"USD/JPY","value":"159.78","change":"≈160","note":"8/31"}],"stocks":[{"ticker":"NVDA","name":"NVIDIA","theme":"AI 인프라","catalyst":"차기 회계연도 매출 약 70% 성장 전망, Vera Rubin·대형 데이터센터 수요","risk":"메모리 공급·마진·고밸류에이션","signal":"강한 촉매"},{"ticker":"MRVL","name":"Marvell","theme":"커스텀 AI 칩","catalyst":"ASIC 수요와 장기 계약 기대","risk":"매출 기여 시점·기대치 과열","signal":"혼조"},{"ticker":"AAPL","name":"Apple","theme":"9월 이벤트","catalyst":"신형 iPhone·폴더블 가능성·AI 기능","risk":"가격·실제 공개 여부","signal":"이벤트 촉매"},{"ticker":"AVGO","name":"Broadcom","theme":"AI 네트워크/ASIC","catalyst":"AI 커스텀칩·네트워크 실적 확인","risk":"높은 기대치·금리 민감도","signal":"관찰"},{"ticker":"005930 / 000660","name":"Samsung / SK hynix","theme":"AI 메모리","catalyst":"HBM·서버 메모리·한국 수출 강세","risk":"유가·금리·반도체 사이클","signal":"중기 관찰"}],"videos":[{"category":"MUSIC ISSUE","title":"JENNIE ‘HEAVEN’ — 한국 유튜브 화제권 진입","summary":"공식 오디오·가사·리액션형 콘텐츠가 동시에 늘며 일반 알고리즘 확산 단계로 이동하는 흐름.","url":"https://www.youtube.com/watch?v=dkMPft1y21Y","thumbnail":"https://i.ytimg.com/vi/dkMPft1y21Y/hqdefault.jpg"},{"category":"ESPORTS HOT","title":"2026 LCK 울챔스 하이라이트","summary":"플레이오프 구간 하이라이트와 요약 편집본, 팬 반응 쇼츠가 함께 소비되는 패턴.","url":"https://www.youtube.com/watch?v=11fjfr_3h7w","thumbnail":"https://i.ytimg.com/vi/11fjfr_3h7w/hqdefault.jpg"},{"category":"VARIETY / GAMING","title":"게임 예능형 영상·쇼츠 강세","summary":"상황극·챌린지·과장 편집을 결합한 예능형 콘텐츠가 쇼츠로 재확산되는 흐름.","url":"https://www.youtube.com/watch?v=MdVRY70kvBM","thumbnail":"https://i.ytimg.com/vi/MdVRY70kvBM/hqdefault.jpg"}],"story_files":["stories-1.json","stories-2.json","stories-3.json","stories-4.json","stories-5.json","stories-6.json"]}
+{
+  "meta": {
+    "date": "2026-08-31",
+    "generated_at": "2026-08-31 16:45 KST",
+    "news_window": "2026-08-31 16:10 KST 이후 새 변화 우선 + 오늘 핵심 재편집",
+    "market_window": "2026-08-31 한국장 종가 + 최신 Reuters 글로벌 스냅샷",
+    "edition": "canonical-refresh"
+  },
+  "top_issue_title": "카르그섬 ‘대규모 공격’ 주장은 확인되지 않음…미·이란 교전은 다시 확대",
+  "top5_titles": [
+    "카르그섬 ‘대규모 공격’ 주장은 확인되지 않음…미·이란 교전은 다시 확대",
+    "KOSPI, -2.58% 출발 뒤 +0.46% 마감…원화도 1,368.6원으로 강세 전환",
+    "OpenAI, SB Energy 워런트 약 55억달러 보유 보도…AI 경쟁이 전력 인프라로 확장",
+    "Anthropic, Model Hardware Standard 공개 프리뷰…AI Agent가 실험실·공장 장비 직접 제어",
+    "한국 7월 산업생산 보합·소매판매 -2.4%·설비투자 +7.5%…내수와 투자 흐름 엇갈림"
+  ],
+  "trends": [],
+  "metrics": [
+    {"name":"KOSPI","value":"6,820.02","change":"+0.46%","note":"8/31 종가 · 장중 -2.58%에서 반전"},
+    {"name":"USD/KRW","value":"1,368.6","change":"-3.9원","note":"원화 강세 · 8/31 종가"},
+    {"name":"Brent","value":"$90.51","change":"+2.7%","note":"Reuters 8/31"},
+    {"name":"WTI","value":"$85.23","change":"+2.2%","note":"Reuters 8/31"},
+    {"name":"US 2Y","value":"4.34%","change":"상승","note":"9월 인상 확률 약 57%"},
+    {"name":"US 30Y","value":"5.21%","change":"상승","note":"8/31"},
+    {"name":"Gold","value":"$4,439.31","change":"-0.3%","note":"약 2주 저점"},
+    {"name":"USD/JPY","value":"≈160","change":"엔 약세","note":"개입 경계선 부근"}
+  ],
+  "stocks": [
+    {"ticker":"000660","name":"SK hynix","theme":"AI 메모리 / 국내 반등","catalyst":"8/31 장중 급락 뒤 1,674,000원으로 반등 마감","risk":"미 금리·외국인 매도·AI 밸류에이션","signal":"당일 회복력"},
+    {"ticker":"AVGO","name":"Broadcom","theme":"AI 네트워크 / 실적","catalyst":"이번 주 실적 예정, AI ASIC·네트워크 수요 확인","risk":"높은 기대치·금리 민감도","signal":"실적 대기"},
+    {"ticker":"DELL","name":"Dell Technologies","theme":"AI 서버","catalyst":"9월 1일 실적 예정, AI 서버 주문·마진 확인","risk":"부품 원가·AI 서버 마진","signal":"실적 대기"}
+  ],
+  "videos": [],
+  "today_to_watch": [
+    {"time":"8/31~9/1","title":"G20 재무장관·중앙은행 총재회의","why":"이란 2차 제재, 글로벌 불균형, 미국 국채시장·고유가가 핵심 의제","source":"U.S. Treasury"},
+    {"time":"9/1","title":"한국 8월 수출입 동향","why":"AI 반도체 수출 호조가 실제 공식 수치로 확인되는지 주목","source":"산업통상부 / Reuters poll"},
+    {"time":"9/1 23:00 KST","title":"미국 ISM 제조업·JOLTS","why":"Fed의 9월 금리 인상 가능성 판단에 필요한 경기·노동 수요 데이터","source":"New York Fed economic calendar"}
+  ],
+  "final_three_line_summary": [
+    "카르그섬 대규모 공격 주장은 여전히 확인되지 않았고 이란 측은 운영 정상이라고 반박했지만, 미·이란 직접 교전과 걸프 확전 위험은 커졌다.",
+    "한국 증시는 장중 -2.58%에서 +0.46% 종가로 급반전했고 원화도 1,368.6원으로 강해져 오전의 위험회피 흐름이 종가에서 뒤집혔다.",
+    "AI 경쟁은 모델 성능을 넘어 전력 인프라(OpenAI-SB Energy)와 물리 장비 제어 표준(Anthropic MHS)으로 빠르게 확장되고 있다."
+  ],
+  "story_files": ["stories-1.json","stories-2.json","stories-3.json","stories-4.json","stories-5.json"]
+}
