@@ -1,0 +1,34 @@
+{
+  "version": "2026-09-02-vision-research-watch-v1",
+  "target_items": 10,
+  "max_search_window_days": 30,
+  "minimum_unique_source_domains": 5,
+  "max_single_topic_share": 0.4,
+  "allowed_kinds": ["RCT","META-ANALYSIS","SYSTEMATIC REVIEW","REVIEW","OBSERVATIONAL","GUIDELINE","REGULATORY","CONFERENCE","PREPRINT","RESEARCH / ISSUE"],
+  "topic_targets": [
+    "근시관리",
+    "양안시 · 사시 · 조절/폭주",
+    "콘택트렌즈 · 각막",
+    "안과질환",
+    "시과학 · 광학",
+    "검안 · 안과 임상"
+  ],
+  "source_groups": {
+    "binocular_vision_strabismus": ["jaapos.org","tandfonline.com","journals.lww.com","onlinelibrary.wiley.com","sciencedirect.com","iovs.arvojournals.org","tvst.arvojournals.org","journalofoptometry.org"],
+    "optometry_visual_science": ["journals.lww.com","onlinelibrary.wiley.com","journalofoptometry.org","iovs.arvojournals.org","tvst.arvojournals.org","arvo.org"],
+    "myopia": ["jamanetwork.com","link.springer.com","pubmed.ncbi.nlm.nih.gov","myopiainstitute.org","bhvi.org","onlinelibrary.wiley.com","contactlensjournal.com"],
+    "contact_lens_cornea": ["contactlensjournal.com","journals.lww.com","pubmed.ncbi.nlm.nih.gov","bjo.bmj.com","nature.com"],
+    "ophthalmology": ["aaojournal.org","jamanetwork.com","bjo.bmj.com","nature.com","iovs.arvojournals.org","tvst.arvojournals.org","pubmed.ncbi.nlm.nih.gov"],
+    "guidelines_regulatory": ["aao.org","aoa.org","fda.gov","ema.europa.eu","mfds.go.kr","who.int"]
+  },
+  "editorial_requirements": [
+    "study_design_or_evidence_level",
+    "population_or_sample_when_available",
+    "main_result",
+    "clinical_relevance",
+    "limitations",
+    "conflict_of_interest_or_company_sponsorship_when_material",
+    "exact_source_link"
+  ],
+  "selection_rule": "Do not fill the watch with myopia alone when reliable recent evidence exists in binocular vision, strabismus, accommodation/vergence, contact lens/cornea, ophthalmology or visual science. Expand the search window up to 30 days before declaring a source limitation."
+}
