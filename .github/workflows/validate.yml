@@ -37,11 +37,14 @@ jobs:
               stories.extend(chunk)
 
           assert len(stories) >= 5, 'at least five meaningful stories required'
-          titles={s.get('title') for s in stories}
-          assert d.get('top_issue_title') in titles, 'top issue not found'
+          titles=[s.get('title') for s in stories]
+          assert len(titles)==len(set(titles)), 'duplicate story titles found'
+          title_set=set(titles)
+          assert d.get('top_issue_title') in title_set, 'top issue not found'
           top5=d.get('top5_titles',[])
-          assert 1 <= len(top5) <= 5, 'top5_titles must contain 1-5 items'
-          assert all(t in titles for t in top5), 'top5 title missing from bundles'
+          assert len(top5) == 5, 'top5_titles must contain exactly five items'
+          assert len(set(top5)) == 5, 'top5_titles must be unique'
+          assert all(t in title_set for t in top5), 'top5 title missing from bundles'
 
           trends=d.get('trends',[])
           assert len(trends) in (0,20), 'trends must be omitted/empty or exactly 20'
@@ -49,5 +52,7 @@ jobs:
           summary=d.get('final_three_line_summary',[])
           assert len(summary)==3, 'final_three_line_summary must contain exactly three lines'
 
-          print(f'PASS: {len(stories)} meaningful stories, {len(trends)} trends')
+          print(f'PASS: {len(stories)} stories, {len(trends)} trends')
           PY
+      - name: Audit source diversity
+        run: python scripts/validate_sources.py

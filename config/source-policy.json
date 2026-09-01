@@ -1,0 +1,80 @@
+{
+  "version": "2026-09-02-source-diversity-v1",
+  "principles": {
+    "discovery_then_verify": true,
+    "primary_sources_preferred": true,
+    "exact_article_url_required_for_final_selection": true,
+    "homepage_or_section_url_not_counted_as_verified_article": true,
+    "social_and_aggregators_are_discovery_only_unless_they_are_the_primary_subject": true
+  },
+  "diversity_rules": {
+    "general_chapter_min_unique_domains": 5,
+    "specialist_chapter_min_unique_domains": 4,
+    "max_single_domain_share": 0.4,
+    "max_wire_share_reuters_ap_afp_combined": 0.5,
+    "target_primary_source_share_min": 0.3,
+    "target_specialist_source_share_min": 0.2
+  },
+  "discovery_only_domains": [
+    "news.google.com",
+    "trends.google.com",
+    "reddit.com",
+    "x.com",
+    "tiktok.com",
+    "instagram.com",
+    "originbrief.app",
+    "eurekalert.org"
+  ],
+  "generic_url_paths_rejected_for_verified_articles": [
+    "/",
+    "/technology/",
+    "/business/",
+    "/world/",
+    "/news",
+    "/research-highlights"
+  ],
+  "chapters": {
+    "국제 · 외교 · 안보": {
+      "preferred_domains": ["reuters.com","apnews.com","afp.com","bbc.com","ft.com","wsj.com","aljazeera.com","dw.com","france24.com","nikkei.com","scmp.com","defensenews.com","janes.com","nato.int","un.org","state.gov"]
+    },
+    "국내 정치 · 정부정책 · 규제 · 한국 산업": {
+      "preferred_domains": ["yna.co.kr","kbs.co.kr","imbc.com","sbs.co.kr","hankookilbo.com","hani.co.kr","chosun.com","joongang.co.kr","donga.com","mk.co.kr","hankyung.com","sedaily.com","etnews.com","president.go.kr","korea.kr","moef.go.kr","motie.go.kr","msit.go.kr","fsc.go.kr","kostat.go.kr","bok.or.kr"]
+    },
+    "AI · LLM": {
+      "preferred_domains": ["openai.com","anthropic.com","deepmind.google","ai.meta.com","microsoft.com","nvidia.com","mistral.ai","cohere.com","huggingface.co","github.blog","arxiv.org","techcrunch.com","theverge.com","arstechnica.com","technologyreview.com","reuters.com"]
+    },
+    "IT · 신기술 · 소프트웨어 개발 · AI Agent · 자동화 · 클라우드 · 보안": {
+      "preferred_domains": ["github.blog","aws.amazon.com","azure.microsoft.com","cloud.google.com","blog.cloudflare.com","vercel.com","docker.com","kubernetes.io","cncf.io","linuxfoundation.org","mozilla.org","cisa.gov","nist.gov","bleepingcomputer.com","krebsonsecurity.com","darkreading.com","thehackernews.com"]
+    },
+    "반도체 · GPU/NPU · HBM · 파운드리 · 데이터센터 · 네트워크 · 전력/냉각": {
+      "preferred_domains": ["nvidia.com","amd.com","intel.com","tsmc.com","samsung.com","news.skhynix.com","micron.com","broadcom.com","arm.com","asml.com","trendforce.com","semianalysis.com","eetimes.com","tomshardware.com","servethehome.com","datacenterdynamics.com","lightreading.com"]
+    },
+    "과학": {
+      "preferred_domains": ["nature.com","science.org","cell.com","pnas.org","nasa.gov","esa.int","noaa.gov","usgs.gov","cern.ch","arxiv.org","biorxiv.org"]
+    },
+    "경제 · 시장": {
+      "preferred_domains": ["reuters.com","bloomberg.com","ft.com","wsj.com","cnbc.com","marketwatch.com","barrons.com","fred.stlouisfed.org","cmegroup.com","ice.com","eia.gov","opec.org","bok.or.kr","krx.co.kr"]
+    },
+    "국내·해외 주식 · 이슈기업": {
+      "preferred_domains": ["sec.gov","dart.fss.or.kr","krx.co.kr","reuters.com","bloomberg.com","ft.com","wsj.com","cnbc.com","barrons.com","marketwatch.com"]
+    },
+    "사건 · 사고 · 재난 · 공공안전": {
+      "preferred_domains": ["nfa.go.kr","police.go.kr","mois.go.kr","weather.go.kr","usgs.gov","nhc.noaa.gov","gdacs.org","reuters.com","apnews.com","afp.com"]
+    },
+    "사회": {
+      "preferred_domains": ["kostat.go.kr","mohw.go.kr","moe.go.kr","moel.go.kr","police.go.kr","scourt.go.kr","yna.co.kr","kbs.co.kr","sbs.co.kr","hani.co.kr","hankookilbo.com"]
+    },
+    "유튜브 · 숏츠": {
+      "preferred_domains": ["youtube.com","youtu.be"]
+    },
+    "핫이슈 · 바이럴 · 밈 · 온라인/소셜 트렌드": {
+      "preferred_domains": ["trends.google.com","youtube.com","reddit.com","x.com","tiktok.com","instagram.com","knowyourmeme.com"]
+    },
+    "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리": {
+      "preferred_domains": ["aao.org","aoa.org","arvo.org","iovs.arvojournals.org","aaojournal.org","jamanetwork.com","bjo.bmj.com","nature.com","journals.lww.com","contactlensjournal.com","myopiainstitute.org","bhvi.org","fda.gov","ema.europa.eu","mfds.go.kr","coopervision.com","essilorluxottica.com","hoya.com","zeiss.com","jnj.com"]
+    },
+    "의료 · 헬스케어": {
+      "preferred_domains": ["who.int","cdc.gov","fda.gov","ema.europa.eu","mfds.go.kr","nih.gov","nejm.org","jamanetwork.com","thelancet.com","bmj.com","nature.com","cochranelibrary.com"]
+    }
+  }
+}
