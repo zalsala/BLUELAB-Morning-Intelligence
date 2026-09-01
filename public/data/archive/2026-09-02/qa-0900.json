@@ -1,0 +1,47 @@
+{
+  "date": "2026-09-02",
+  "run_label": "09:00 KST production audit",
+  "verdict": "INCOMPLETE",
+  "baseline_commit": "8a1e8ad15469cd800de04fc6e095b6b05e4e4c5c",
+  "data_integrity": {
+    "story_count": 145,
+    "active_story_bundles": 5,
+    "top5_count": 5,
+    "google_trends_count": 20,
+    "chapter_render_counts": "PASS: all 14 required chapters render 10 items after TOP5 exclusion"
+  },
+  "fresh_checks": [
+    "2026-09-02 01:51 KST Yonhap: South Korea dispatched a 44-person disaster relief team to Nepal.",
+    "2026-09-02 morning: Korea National Assembly schedule includes budget/settlement subcommittees and AI network seminar.",
+    "2026-09-01 Reuters: Anthropic signed a reported $35B cloud deal with Nvidia-backed Lambda.",
+    "2026-09-01 Reuters: South Korea-Japan economic-security dialogue covered AI, semiconductors, energy and critical-mineral supply chains.",
+    "KMA observation cross-check supports a very humid morning in the wider Incheon region; Geomdan-specific independent station data remains unavailable."
+  ],
+  "blocking_gates": {
+    "source_diversity": [
+      "International: 2 unique domains; Reuters/AP/AFP share 100%.",
+      "Science: 2 unique domains; Nature share 90%.",
+      "Economy/Markets: 2 unique domains; Reuters share 90%.",
+      "Stocks: 1 unique domain; Barron's share 100%.",
+      "Society: 3 unique domains; largest domain share 60%.",
+      "Vision/Optometry/Ophthalmology: URL-domain audit reports 3 domains; journal-level source diversity needs normalized auditing.",
+      "Healthcare: 3 unique domains; largest domain share 60%."
+    ],
+    "exact_article_urls": [
+      "Generic Anthropic /news URLs remain in final stories.",
+      "OriginBrief discovery-only URLs remain in IT/semiconductor stories.",
+      "Generic Reuters /technology, Reuters homepage/world, Nature /news and /research-highlights, and MOTIE homepage URLs remain.",
+      "These must be replaced with exact primary/article URLs before strict QA can pass."
+    ],
+    "youtube": "The YouTube/Shorts chapter currently resolves to pikk.co.kr rather than verified original YouTube video URLs/thumbnails.",
+    "culture_social": "The 10-item culture/social chapter is still effectively Google-search based and does not yet satisfy the intended multi-source context requirement.",
+    "live_verification": "Cloudflare Workers live endpoint could not be independently fetched from the current execution environment; top/middle/bottom interactive live QA remains unverified."
+  },
+  "repair_policy": "Do not publish COMPLETE_AND_LIVE until blocking gates are repaired and source audit is run in strict mode, followed by live render verification.",
+  "sources_checked": [
+    "Reuters 2026-09-01",
+    "Yonhap 2026-09-01/02",
+    "Korea Meteorological Administration 2026-09-02 observations",
+    "PubMed/IOVS recent binocular-vision literature"
+  ]
+}
