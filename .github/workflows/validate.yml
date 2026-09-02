@@ -56,5 +56,7 @@ jobs:
           PY
       - name: Validate source registry
         run: python scripts/validate_source_registry.py
+      - name: Test vision research collectors offline
+        run: python scripts/collect_vision_research.py --self-test
       - name: Audit source diversity
         run: python scripts/validate_sources.py

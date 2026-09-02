@@ -1,0 +1,36 @@
+{
+  "version": "2026-09-02-vision-research-queries-v1",
+  "default_window_days": 30,
+  "families": [
+    {
+      "id": "myopia",
+      "label": "근시관리",
+      "query": "myopia OR myopia control OR axial elongation OR orthokeratology OR DIMS OR highly aspherical lenslet OR atropine"
+    },
+    {
+      "id": "binocular",
+      "label": "양안시 · 사시 · 조절/폭주",
+      "query": "binocular vision OR vergence OR convergence insufficiency OR heterophoria OR stereopsis OR strabismus OR accommodation"
+    },
+    {
+      "id": "contact_cornea",
+      "label": "콘택트렌즈 · 각막",
+      "query": "contact lens OR orthokeratology OR corneal topography OR keratoconus"
+    },
+    {
+      "id": "ophthalmology",
+      "label": "안과질환",
+      "query": "ophthalmology OR glaucoma OR retina OR macular degeneration OR cataract OR amblyopia"
+    },
+    {
+      "id": "vision_science",
+      "label": "시과학 · 광학",
+      "query": "vision science OR contrast sensitivity OR visual perception OR ocular dominance OR eye movement"
+    },
+    {
+      "id": "optometry",
+      "label": "검안 · 안과 임상",
+      "query": "optometry OR refraction OR visual acuity OR clinical eye examination"
+    }
+  ]
+}

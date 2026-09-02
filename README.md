@@ -11,6 +11,11 @@
 - `public/data/stories-1.json` ~ `stories-5.json` — 정확히 5개 활성 story bundle
 - `public/data/archive/YYYY-MM-DD/` — 과거판 보관
 - `config/source-policy.json` — 분야별 수집원·출처 다양성·정확한 기사 URL 정책
+- `config/source-registry.json` — 출처 Tier·API/RSS/Web 접근방식·역할·분야 태그 정본
+- `config/vision-research-policy.json` — VISION RESEARCH WATCH 편집·근거 정책
+- `config/vision-research-queries.json` — 근시·양안시·콘택트/각막·안과·시과학·검안 연구 검색군
+- `scripts/collect_vision_research.py` — PubMed/Europe PMC/Crossref/ClinicalTrials.gov 후보 수집·정규화·중복제거
+- `scripts/validate_source_registry.py` — 출처 레지스트리 구조 검증
 - `scripts/validate_sources.py` — 출처 편중·발견용 출처 오용·홈/섹션 URL 감사
 
 ## 수집 전략
@@ -32,11 +37,25 @@ Morning Intelligence는 한두 통신사에서 10개를 채우지 않는다. 각
 - 1차자료 목표: 30% 이상
 - 전문매체 목표: 20% 이상
 
-정확한 허용·권장 도메인은 `config/source-policy.json`을 정본으로 사용한다.
+정확한 허용·권장 도메인은 `config/source-policy.json`을, 출처 속성과 접근방식은 `config/source-registry.json`을 정본으로 사용한다.
+
+## VISION RESEARCH WATCH 수집기
+
+라이브 수집은 Python 표준 라이브러리만 사용하며 PubMed, Europe PMC, Crossref, ClinicalTrials.gov를 동일한 후보 스키마로 정규화한다. DOI → PMID → NCT ID → 정규화 제목 순으로 중복을 제거한다.
+
+```bash
+python scripts/collect_vision_research.py --days 30 --limit-per-source 12
+```
+
+기본 결과는 `artifacts/vision-research-candidates.json`에 기록한다. 공급자 일부 장애는 `errors` 배열에 남기고 다른 공급자의 후보 수집은 계속한다. CI에서는 외부 네트워크를 호출하지 않고 아래 self-test만 실행한다.
+
+```bash
+python scripts/collect_vision_research.py --self-test
+```
 
 ## 검증
 
-GitHub Actions는 기본 구조 외에도 `scripts/validate_sources.py`를 실행해 현재판의 실제 렌더 대상 기사 기준으로 출처 분포를 계산한다. 현행판은 기존 기사들을 새 정책으로 이관하는 동안 report mode로 감사를 수행하며, 다음 데이터 정비 단계에서 `--strict`를 활성화해 정책 위반을 CI 실패로 승격한다.
+GitHub Actions는 기본 데이터 구조, source registry, VISION RESEARCH collector self-test, source diversity audit를 차례로 실행한다. 현행판은 기존 기사들을 새 정책으로 이관하는 동안 source diversity를 report mode로 감사하며, 데이터 정비 후 `--strict`를 활성화해 정책 위반을 CI 실패로 승격한다.
 
 ## Cloudflare 배포
 
