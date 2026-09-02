@@ -22,7 +22,7 @@ ECONOMY_LOW_IMPACT_PRIMARY=['enforcement action','former employee','civil money 
 STOPWORDS={'a','an','and','are','as','at','after','ahead','amid','be','been','by','for','from','has','have','in','into','is','it','its','new','of','on','or','over','says','say','the','their','this','to','with','will','us','u','s','about','against','know','what','report','reports','reported','moment','video','watch','powerful','historic','rare','first','next','generation','beginning','future','state','media'}
 EVENT_ACTION_TOKENS={'launch','strike','attack','drone','wedding','groundbreak','telescope','sanction','trade','war','deport','border','bond','inflation','downturn','production','fab','ipo','acquisition','funding','valuation','supercomputer','lawsuit','sued','regulator','antitrust','investigation','fine'}
 CONFLICT_ENTITY_TOKENS={'iran','russia','ukraine','israel','gaza','china','taiwan','venezuela'}
-TOKEN_ALIASES={'launches':'launch','launched':'launch','launching':'launch','strikes':'strike','struck':'strike','attacks':'attack','attacked':'attack','drones':'drone','sanctions':'sanction','deportees':'deport','deported':'deport','iranian':'iran','russian':'russia','german':'germany','groundbreaking':'groundbreak','groundbreakings':'groundbreak','telescopes':'telescope','markets':'market','bonds':'bond','tariffs':'tariff','lawsuits':'lawsuit','regulators':'regulator','fines':'fine'}
+TOKEN_ALIASES={'launches':'launch','launched':'launch','launching':'launch','strike':'attack','strikes':'attack','struck':'attack','attacks':'attack','attacked':'attack','bomb':'attack','bombs':'attack','bombed':'attack','bombing':'attack','bombings':'attack','hit':'attack','hits':'attack','hitting':'attack','drones':'drone','sanctions':'sanction','deportees':'deport','deported':'deport','iranian':'iran','russian':'russia','german':'germany','groundbreaking':'groundbreak','groundbreakings':'groundbreak','telescopes':'telescope','markets':'market','bonds':'bond','tariffs':'tariff','lawsuits':'lawsuit','regulators':'regulator','fines':'fine'}
 
 def parse_dt(v):
     if not v:return None
@@ -127,7 +127,7 @@ def select(data,target=TARGET,asof=None):
         reports[chapter]={'eligible_count':len(ranked),'selected_count':len(chosen),'unique_domains':domains,'domain_counts':dict(domain_counts),'event_duplicates_skipped':event_dupes,'status':status,'reject_counts':{reason:n for (ch,reason),n in rejected.items() if ch==chapter}}
         selected_all.extend(chosen)
     overall='PASS' if all(r['status']=='PASS' for r in reports.values()) else 'FAIL'
-    return {'schema_version':'priority-news-selection-v7','generated_at':datetime.now(timezone.utc).isoformat(),'as_of':asof.isoformat(),'candidate_count':len(candidates),'selected_count':len(selected_all),'target_per_chapter':target,'minimum_unique_domains':MIN_DOMAINS,'max_per_domain':MAX_PER_DOMAIN,'coverage_status':overall,'chapter_report':reports,'selected':selected_all}
+    return {'schema_version':'priority-news-selection-v8','generated_at':datetime.now(timezone.utc).isoformat(),'as_of':asof.isoformat(),'candidate_count':len(candidates),'selected_count':len(selected_all),'target_per_chapter':target,'minimum_unique_domains':MIN_DOMAINS,'max_per_domain':MAX_PER_DOMAIN,'coverage_status':overall,'chapter_report':reports,'selected':selected_all}
 
 def self_test():
     now=datetime(2026,9,2,tzinfo=timezone.utc);cs=[];seed_terms={'국제 · 외교 · 안보':'iran','과학':'research','경제 · 시장':'inflation','국내·해외 주식 · 이슈기업':'earnings'}
@@ -161,6 +161,7 @@ def self_test():
     assert same_event('Germany blames Russia for airport drone incident, hits back with sanctions','Germany says Russia behind attempted drone attack at Leipzig airport')
     assert same_event('Germany blames Russia for airport drone incident, hits back with sanctions','What to know about Germany’s drone attack accusations against Russia')
     assert same_event('Iran retaliates after US strikes kill four at wedding party','Moment US strikes on Iranian port city hit wedding party')
+    assert same_event('Iran: US accused of hitting wedding party in latest strikes','What do we know about the fatal US bombing of a wedding in Iran’s Sirik?')
     assert same_event('NASA’s Nancy Grace Roman Space Telescope Launches','Nasa launches powerful new space telescope')
     assert same_event('AI could cause global economic downturn, Andrew Bailey warns G20','AI could cause global economic downturn, Bank of England governor tells G20')
     assert same_event('SK hynix Indiana fab breaks ground as new hub for US AI innovation','SK hynix Holds Groundbreaking Ceremony for HBM Production Base in Indiana')
