@@ -21,6 +21,8 @@ jobs:
         run: python scripts/select_vision_research.py --self-test
       - name: Test priority-news collector offline
         run: python scripts/collect_priority_news.py --self-test
+      - name: Test factual priority prefilter offline
+        run: python scripts/filter_priority_candidates.py --self-test
       - name: Test priority-news selector offline
         run: python scripts/select_priority_news.py --self-test
       - name: Test cross-chapter arbitration offline
@@ -55,12 +57,15 @@ jobs:
           mkdir -p artifacts
           python scripts/collect_vision_research.py --days 7 --limit-per-source 2 --output artifacts/vision-research-live-candidates.json
           python scripts/select_vision_research.py --input artifacts/vision-research-live-candidates.json --output artifacts/vision-research-live-selected.json --target 10
-      - name: Live priority-news acquisition and editorial gate
+      - name: Live priority-news acquisition and factual prefilter
         id: priority
         continue-on-error: true
         run: |
           mkdir -p artifacts
-          python scripts/collect_priority_news.py --limit-per-source 10 --output artifacts/priority-news-live-candidates.json
+          python scripts/collect_priority_news.py --limit-per-source 10 --output artifacts/priority-news-live-candidates-raw.json
+          python scripts/filter_priority_candidates.py \
+            --input artifacts/priority-news-live-candidates-raw.json \
+            --output artifacts/priority-news-live-candidates.json
           python scripts/select_priority_news.py --input artifacts/priority-news-live-candidates.json --output artifacts/priority-news-live-selected.json --target 10
       - name: Global cross-chapter priority arbitration
         id: arbitration
@@ -85,15 +90,14 @@ jobs:
           python scripts/build_editorial_staging.py \
             --input artifacts/priority-replacement-proposal.json \
             --output artifacts/priority-editorial-staging-base.json
-      - name: Apply and validate international editorial pack
+      - name: Apply and validate international editorial library
         id: editorial_intl
         continue-on-error: true
         run: |
           python scripts/apply_editorial_packs.py \
             --input artifacts/priority-editorial-staging-base.json \
             --pack editorial/2026-09-02/international.json \
-            --output artifacts/priority-editorial-staging.json \
-            --require-all-pack-records
+            --output artifacts/priority-editorial-staging.json
           python scripts/validate_editorial_staging.py \
             --input artifacts/priority-editorial-staging.json \
             --chapter '국제 · 외교 · 안보' \
