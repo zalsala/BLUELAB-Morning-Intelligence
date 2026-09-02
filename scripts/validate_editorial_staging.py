@@ -24,18 +24,27 @@ def has_hangul(value: str) -> bool:
     return bool(re.search(r'[가-힣]', value or ''))
 
 
-def validate(data: dict, require_ready: bool) -> tuple[list[str], list[str]]:
+def validate(data: dict, require_ready: bool, chapter: str | None = None) -> tuple[list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
-    records = data.get('records', [])
+    all_records = data.get('records', [])
     if data.get('schema_version') != 'priority-editorial-staging-v1':
         errors.append('unexpected staging schema')
-    if len(records) != 40:
-        errors.append(f'expected 40 staging records; found {len(records)}')
-    chapters = Counter(r.get('chapter', '') for r in records)
+    if len(all_records) != 40:
+        errors.append(f'expected 40 staging records; found {len(all_records)}')
+    chapters = Counter(r.get('chapter', '') for r in all_records)
     for ch in TARGET_CHAPTERS:
         if chapters.get(ch, 0) != 10:
             errors.append(f'{ch}: expected 10 staging records; found {chapters.get(ch, 0)}')
+
+    if chapter:
+        if chapter not in TARGET_CHAPTERS:
+            errors.append(f'unsupported chapter scope: {chapter}')
+        records = [r for r in all_records if r.get('chapter') == chapter]
+        if len(records) != 10:
+            errors.append(f'{chapter}: expected 10 scoped records; found {len(records)}')
+    else:
+        records = all_records
 
     seen_urls = set()
     verified = 0
@@ -77,7 +86,10 @@ def validate(data: dict, require_ready: bool) -> tuple[list[str], list[str]]:
 
     if data.get('production_ready') is not False:
         errors.append('staging builder must never mark production_ready=true')
-    print(f"EDITORIAL_STAGING_AUDIT records={len(records)} verified={verified} images_found={image_found} editorial_ready={editorial_ready}")
+    scope = chapter or 'ALL'
+    print(f"EDITORIAL_STAGING_AUDIT scope={scope} records={len(records)} verified={verified} images_found={image_found} editorial_ready={editorial_ready}")
+    if require_ready and records and editorial_ready != len(records):
+        errors.append(f'{scope}: ready count {editorial_ready} != scoped record count {len(records)}')
     if warnings:
         print('WARNINGS:')
         for w in warnings[:20]: print('  -', w)
@@ -90,6 +102,8 @@ def self_test() -> None:
     errors, _ = validate(fake, False)
     assert any('expected 40' in e for e in errors)
     assert has_hangul('한국어 제목') and not has_hangul('English title')
+    errors, _ = validate(fake, False, '국제 · 외교 · 안보')
+    assert any('expected 10 scoped records' in e for e in errors)
     print('PASS: editorial staging validator self-test')
 
 
@@ -97,6 +111,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument('--input')
     ap.add_argument('--require-ready', action='store_true')
+    ap.add_argument('--chapter', choices=sorted(TARGET_CHAPTERS))
     ap.add_argument('--self-test', action='store_true')
     args = ap.parse_args()
     if args.self_test:
@@ -104,7 +119,7 @@ def main() -> int:
     if not args.input:
         ap.error('--input required')
     data = json.loads(Path(args.input).read_text(encoding='utf-8'))
-    errors, _ = validate(data, args.require_ready)
+    errors, _ = validate(data, args.require_ready, args.chapter)
     if errors:
         print('ERRORS:')
         for e in errors[:50]: print('  -', e)
