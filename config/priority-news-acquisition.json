@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-priority-news-acquisition-v11",
+  "version": "2026-09-02-priority-news-acquisition-v12",
   "candidate_target_per_chapter": 30,
   "minimum_unique_domains_for_candidate_pool": 5,
   "chapters": {
@@ -27,6 +27,8 @@
       {"id":"bok","mode":"html","url":"https://www.bok.or.kr/eng/bbs/E0000634/list.do?menuNo=400069","source":"Bank of Korea","tier":0,"include":["/eng/bbs/"],"enrich_article_metadata":true},
       {"id":"eurostat-economy-releases","mode":"feed","url":"https://ec.europa.eu/eurostat/en/search?_estatsearchportlet_WAR_estatsearchportlet_collection=CAT_PREREL&_estatsearchportlet_WAR_estatsearchportlet_theme=PER_ECOFIN&p_p_id=estatsearchportlet_WAR_estatsearchportlet&p_p_lifecycle=2&p_p_mode=view&p_p_resource_id=atom&p_p_state=maximized","source":"Eurostat","tier":0},
       {"id":"boe-news","mode":"feed","url":"https://www.bankofengland.co.uk/rss/news","source":"Bank of England","tier":0},
+      {"id":"boe-statistics","mode":"feed","url":"https://www.bankofengland.co.uk/rss/statistics","source":"Bank of England Statistics","tier":0},
+      {"id":"ons-release-calendar","mode":"feed","url":"https://www.ons.gov.uk/releasecalendar?highlight=true&limit=10&page=1&release-type=type-published&rss=&sort=date-newest","source":"UK Office for National Statistics","tier":0},
       {"id":"bbc-business","mode":"feed","url":"https://feeds.bbci.co.uk/news/business/rss.xml","source":"BBC Business","tier":2},
       {"id":"guardian-business","mode":"feed","url":"https://www.theguardian.com/business/rss","source":"The Guardian Business","tier":2},
       {"id":"france24-business","mode":"feed","url":"https://www.france24.com/en/rss","source":"France 24","tier":2},
