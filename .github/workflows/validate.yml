@@ -29,6 +29,8 @@ jobs:
         run: python scripts/build_replacement_proposal.py --self-test
       - name: Test editorial staging builder offline
         run: python scripts/build_editorial_staging.py --self-test
+      - name: Test editorial pack overlay offline
+        run: python scripts/apply_editorial_packs.py --self-test
       - name: Test editorial staging validator offline
         run: python scripts/validate_editorial_staging.py --self-test
       - name: Test YouTube signal collector offline
@@ -76,13 +78,30 @@ jobs:
           python scripts/build_replacement_proposal.py \
             --input artifacts/priority-news-live-arbitrated.json \
             --output artifacts/priority-replacement-proposal.json
-      - name: Build and validate editorial staging
-        id: staging
+      - name: Build editorial staging base
+        id: staging_build
         continue-on-error: true
         run: |
           python scripts/build_editorial_staging.py \
             --input artifacts/priority-replacement-proposal.json \
-            --output artifacts/priority-editorial-staging.json
+            --output artifacts/priority-editorial-staging-base.json
+      - name: Apply and validate international editorial pack
+        id: editorial_intl
+        continue-on-error: true
+        run: |
+          python scripts/apply_editorial_packs.py \
+            --input artifacts/priority-editorial-staging-base.json \
+            --pack editorial/2026-09-02/international.json \
+            --output artifacts/priority-editorial-staging.json \
+            --require-all-pack-records
+          python scripts/validate_editorial_staging.py \
+            --input artifacts/priority-editorial-staging.json \
+            --chapter '국제 · 외교 · 안보' \
+            --require-ready
+      - name: Validate full editorial staging readiness
+        id: staging
+        continue-on-error: true
+        run: |
           python scripts/validate_editorial_staging.py \
             --input artifacts/priority-editorial-staging.json \
             --require-ready
@@ -118,6 +137,8 @@ jobs:
           echo "priority=${{ steps.priority.outcome }}"
           echo "arbitration=${{ steps.arbitration.outcome }}"
           echo "proposal=${{ steps.proposal.outcome }}"
+          echo "staging_build=${{ steps.staging_build.outcome }}"
+          echo "editorial_intl=${{ steps.editorial_intl.outcome }}"
           echo "staging=${{ steps.staging.outcome }}"
           echo "youtube=${{ steps.youtube.outcome }}"
           echo "sources=${{ steps.sources.outcome }}"
@@ -129,6 +150,8 @@ jobs:
             "${{ steps.priority.outcome }}" \
             "${{ steps.arbitration.outcome }}" \
             "${{ steps.proposal.outcome }}" \
+            "${{ steps.staging_build.outcome }}" \
+            "${{ steps.editorial_intl.outcome }}" \
             "${{ steps.staging.outcome }}" \
             "${{ steps.youtube.outcome }}" \
             "${{ steps.sources.outcome }}" \
