@@ -202,15 +202,14 @@ def self_test():
         kw=seed_terms[ch]
         for d in range(5):
             for j in range(2):
-                uniq=['alpha','bravo','charlie','delta','echo'][d] + (' one' if j==0 else ' two')
-                cs.append({'chapter':ch,'title':f'{kw} {uniq} company update','summary':kw,'url':f'https://s{d}.example.com/a/{j}','domain':f's{d}.example.com','published':now.isoformat(),'tier':2,'source':f'S{d}'})
+                uniq=f'event{d}{j} topic{d}{j} signal{d}{j}'
+                cs.append({'chapter':ch,'title':f'{kw} {uniq}','summary':kw,'url':f'https://s{d}.example.com/a/{j}','domain':f's{d}.example.com','published':now.isoformat(),'tier':2,'source':f'S{d}'})
     out=select({'candidates':cs})
     assert out['coverage_status']=='PASS', out
 
     assert count_terms('corporate celebration', ['rate']) == 0
     assert valid_url('https://www.eia.gov/todayinenergy/detail.php?id=')[0] is False
 
-    # Known editorial false positives must stay rejected.
     geo={'chapter':'국내·해외 주식 · 이슈기업','title':'US launches new strikes on Iran','summary':'military attack','url':'https://news.example/x','domain':'news.example','published':now.isoformat(),'tier':2,'source':'News'}
     assert score(geo,now)[0] is None
     political={'chapter':'국내·해외 주식 · 이슈기업','title':'Leader makes House of Commons debut','summary':'politics','url':'https://news.example/y','domain':'news.example','published':now.isoformat(),'tier':2,'source':'News'}
@@ -231,7 +230,6 @@ def self_test():
     maintenance={'chapter':'국내·해외 주식 · 이슈기업','title':'Cloud service supports database version 3.3.1','summary':'production support','url':'https://company.example/a','domain':'company.example','published':now.isoformat(),'tier':1,'source':'Company'}
     assert score(maintenance,now)[0] is None
 
-    # Event-level duplicate regression cases from manual audit.
     assert same_event('Germany blames Russia for airport drone incident, hits back with sanctions','Germany says Russia behind attempted drone attack at Leipzig airport')
     assert same_event('Iran retaliates after US strikes kill four at wedding party','Moment US strikes on Iranian port city hit wedding party')
     assert same_event('NASA’s Nancy Grace Roman Space Telescope Launches','Nasa launches powerful new space telescope')
