@@ -54,5 +54,7 @@ jobs:
 
           print(f'PASS: {len(stories)} stories, {len(trends)} trends')
           PY
+      - name: Validate source registry
+        run: python scripts/validate_source_registry.py
       - name: Audit source diversity
         run: python scripts/validate_sources.py
