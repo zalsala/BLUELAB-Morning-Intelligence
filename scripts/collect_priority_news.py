@@ -13,6 +13,8 @@ import datetime as dt
 import html
 import json
 import re
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -24,6 +26,8 @@ ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config" / "priority-news-acquisition.json"
 UA = "BLUELAB-Morning-Intelligence/1.0 (+https://github.com/zalsala/BLUELAB-Morning-Intelligence)"
 TIMEOUT = 20
+RETRYABLE = {429, 500, 502, 503, 504}
+RETRIES = 3
 
 
 def now_iso():
@@ -42,15 +46,27 @@ def host(url):
 
 
 def get(url):
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": UA,
-            "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, text/html;q=0.9, */*;q=0.5",
-        },
-    )
-    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-        return r.read(), r.headers.get_content_type()
+    last = None
+    for attempt in range(RETRIES):
+        try:
+            req = urllib.request.Request(
+                url,
+                headers={
+                    "User-Agent": UA,
+                    "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, text/html;q=0.9, */*;q=0.5",
+                },
+            )
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                return r.read(), r.headers.get_content_type()
+        except urllib.error.HTTPError as exc:
+            last = exc
+            if exc.code not in RETRYABLE:
+                break
+        except (urllib.error.URLError, TimeoutError) as exc:
+            last = exc
+        if attempt < RETRIES - 1:
+            time.sleep(1.5 * (2 ** attempt))
+    raise last
 
 
 def local(tag):
@@ -287,6 +303,7 @@ def self_test():
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
     assert len(config["chapters"]) == 4
     assert all(len(v) >= 5 for v in config["chapters"].values())
+    assert RETRIES >= 3 and 429 in RETRYABLE
     print("PASS: priority-news collector self-test")
 
 
@@ -345,7 +362,7 @@ def main():
         }
 
     payload = {
-        "schema_version":"priority-news-candidates-v3",
+        "schema_version":"priority-news-candidates-v4",
         "generated_at":now_iso(),
         "candidate_count":len(records),
         "error_count":len(errors),
