@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-priority-news-acquisition-v3",
+  "version": "2026-09-02-priority-news-acquisition-v4",
   "candidate_target_per_chapter": 30,
   "minimum_unique_domains_for_candidate_pool": 5,
   "chapters": {
@@ -15,7 +15,8 @@
       {"id":"nature-news","mode":"html","url":"https://www.nature.com/news","source":"Nature","tier":1,"include":["/articles/"]},
       {"id":"science-aaas","mode":"feed","url":"https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science","source":"Science","tier":1},
       {"id":"esa-news","mode":"html","url":"https://www.esa.int/Newsroom","source":"ESA","tier":1,"include":["/Newsroom/","/Science_Exploration/"]},
-      {"id":"cern-news","mode":"html","url":"https://home.cern/news","source":"CERN","tier":1,"include":["/news/"]}
+      {"id":"cern-news","mode":"html","url":"https://home.cern/news","source":"CERN","tier":1,"include":["/news/"]},
+      {"id":"bbc-science","mode":"feed","url":"https://feeds.bbci.co.uk/news/science_and_environment/rss.xml","source":"BBC Science & Environment","tier":2}
     ],
     "경제 · 시장": [
       {"id":"fed","mode":"feed","url":"https://www.federalreserve.gov/feeds/press_all.xml","source":"Federal Reserve","tier":0},
