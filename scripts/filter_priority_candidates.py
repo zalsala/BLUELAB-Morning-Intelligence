@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, sys
+import argparse, json, re, sys
 from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
 
 INTERNATIONAL_CHAPTER='국제 · 외교 · 안보'
 SCIENCE_CHAPTER='과학'
+ECONOMY_CHAPTER='경제 · 시장'
 NON_FACTUAL_SEGMENTS={'opinion','opinions','comment','comments','commentisfree','editorial','columns','column','press-review','press_reviews','analysis','fault-lines'}
 PUBLIC_SAFETY_INCIDENT_TERMS=('blast','explosion','bomb','detonated')
 SCIENCE_BRIEFING_TERMS=('media briefing','press briefing')
 SCIENCE_CONTENT_FILLER_TERMS=('podcast','podcast series')
+HISTORICAL_REFERENCE_TERMS=('characteristics of','census day')
 
 def classify_url(url: str) -> str:
     try:
@@ -21,6 +23,25 @@ def classify_url(url: str) -> str:
     except Exception:
         return 'bad_url'
     return ''
+
+def years_in(text: str) -> list[int]:
+    return [int(x) for x in re.findall(r'\b(?:19|20)\d{2}\b', text or '')]
+
+def is_historical_reference_release(c: dict, title: str, summary: str) -> bool:
+    if c.get('chapter') != ECONOMY_CHAPTER:
+        return False
+    source=(c.get('source') or '').lower()
+    if 'office for national statistics' not in source:
+        return False
+    text=title+' '+summary
+    if not any(term in text for term in HISTORICAL_REFERENCE_TERMS):
+        return False
+    published_years=years_in(c.get('published') or '')
+    reference_years=years_in(text)
+    if not published_years or not reference_years:
+        return False
+    publication_year=max(published_years)
+    return min(reference_years) <= publication_year-3
 
 def classify_candidate(c: dict) -> str:
     reason=classify_url(c.get('canonical_url') or c.get('url',''))
@@ -40,6 +61,8 @@ def classify_candidate(c: dict) -> str:
         roman_launch=('roman' in title and any(x in title for x in ('launch','lifts off','lift-off','lift off')))
         if source.startswith('esa') and roman_launch:
             return 'prefer_primary_source'
+    if is_historical_reference_release(c,title,summary):
+        return 'historical_reference_data'
     return ''
 
 def filter_data(data: dict) -> dict:
@@ -52,7 +75,7 @@ def filter_data(data: dict) -> dict:
             continue
         kept.append(c); chapters[c.get('chapter','')]+=1
     out=dict(data)
-    out['schema_version']='priority-news-factual-candidates-v6'
+    out['schema_version']='priority-news-factual-candidates-v7'
     out['unfiltered_candidate_count']=len(data.get('candidates',[]))
     out['candidate_count']=len(kept)
     out['factual_prefilter']={
@@ -68,25 +91,29 @@ def self_test():
     data={'candidates':[
       {'chapter':INTERNATIONAL_CHAPTER,'title':'Fact','url':'https://example.com/news/2026/fact'},
       {'chapter':INTERNATIONAL_CHAPTER,'title':'Opinion','url':'https://example.com/opinions/2026/view'},
-      {'chapter':'경제 · 시장','title':'Column','url':'https://example.com/columns/market-view'},
+      {'chapter':ECONOMY_CHAPTER,'title':'Column','url':'https://example.com/columns/market-view'},
       {'chapter':INTERNATIONAL_CHAPTER,'title':'Press review','url':'https://example.com/tv-shows/press-review/2026/story'},
       {'chapter':INTERNATIONAL_CHAPTER,'title':'Documentary','url':'https://example.com/video/fault-lines/2026/story'},
       {'chapter':INTERNATIONAL_CHAPTER,'title':"Blast near police station on Colombia's border leaves casualties",'summary':'A car packed with explosives detonated outside a police station','url':'https://example.com/world/incident'},
       {'chapter':SCIENCE_CHAPTER,'title':"Media briefing: BepiColombo's next milestone towards Mercury",'source':'ESA Space Science','url':'https://esa.example/briefing'},
       {'chapter':SCIENCE_CHAPTER,'title':'Expedition Sound podcast series','source':'ESA Space Science','url':'https://esa.example/podcast'},
       {'chapter':SCIENCE_CHAPTER,'title':'Roman lifts off on a mission to survey the infrared sky','source':'ESA Space Science','url':'https://esa.example/roman'},
-      {'chapter':SCIENCE_CHAPTER,'title':'NASA’s Nancy Grace Roman Space Telescope Launches','source':'NASA','url':'https://nasa.example/roman'}
+      {'chapter':SCIENCE_CHAPTER,'title':'NASA’s Nancy Grace Roman Space Telescope Launches','source':'NASA','url':'https://nasa.example/roman'},
+      {'chapter':ECONOMY_CHAPTER,'title':'Characteristics of young people not in education, employment or training: March 2021','summary':'Census Day 2021 cohort characteristics','source':'UK Office for National Statistics','published':'Wed, 02 Sep 2026 08:30:00 +0000','url':'https://ons.example/releases/neet-2021'},
+      {'chapter':ECONOMY_CHAPTER,'title':'Working and workless households in the UK: April to June 2026','summary':'Current labour market release','source':'UK Office for National Statistics','published':'Wed, 02 Sep 2026 08:30:00 +0000','url':'https://ons.example/releases/workless-2026'}
     ]}
     out=filter_data(data)
-    assert out['candidate_count']==2,out
-    assert out['factual_prefilter']['rejected_count']==8,out
+    assert out['candidate_count']==3,out
+    assert out['factual_prefilter']['rejected_count']==9,out
     assert out['factual_prefilter']['reason_counts']['non_factual_path']==4,out
     assert out['factual_prefilter']['reason_counts']['public_safety_incident']==1,out
     assert out['factual_prefilter']['reason_counts']['science_briefing']==1,out
     assert out['factual_prefilter']['reason_counts']['science_content_filler']==1,out
     assert out['factual_prefilter']['reason_counts']['prefer_primary_source']==1,out
+    assert out['factual_prefilter']['reason_counts']['historical_reference_data']==1,out
     kept_titles={x['title'] for x in out['candidates']}
     assert 'NASA’s Nancy Grace Roman Space Telescope Launches' in kept_titles
+    assert 'Working and workless households in the UK: April to June 2026' in kept_titles
     print('PASS: factual priority candidate prefilter self-test')
 
 def main():
