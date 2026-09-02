@@ -5,7 +5,7 @@ from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
 
-NON_FACTUAL_SEGMENTS={'opinion','opinions','comment','comments','commentisfree','editorial','columns','column','press-review','press_reviews','analysis'}
+NON_FACTUAL_SEGMENTS={'opinion','opinions','comment','comments','commentisfree','editorial','columns','column','press-review','press_reviews','analysis','fault-lines'}
 
 def classify(url: str) -> str:
     try:
@@ -27,7 +27,7 @@ def filter_data(data: dict) -> dict:
             continue
         kept.append(c); chapters[c.get('chapter','')]+=1
     out=dict(data)
-    out['schema_version']='priority-news-factual-candidates-v2'
+    out['schema_version']='priority-news-factual-candidates-v3'
     out['unfiltered_candidate_count']=len(data.get('candidates',[]))
     out['candidate_count']=len(kept)
     out['factual_prefilter']={
@@ -45,11 +45,12 @@ def self_test():
       {'chapter':'국제 · 외교 · 안보','title':'Opinion','url':'https://example.com/opinions/2026/view'},
       {'chapter':'경제 · 시장','title':'Column','url':'https://example.com/columns/market-view'},
       {'chapter':'국제 · 외교 · 안보','title':'Press review','url':'https://example.com/tv-shows/press-review/2026/story'},
+      {'chapter':'국제 · 외교 · 안보','title':'Documentary','url':'https://example.com/video/fault-lines/2026/story'},
     ]}
     out=filter_data(data)
     assert out['candidate_count']==1,out
-    assert out['factual_prefilter']['rejected_count']==3,out
-    assert out['factual_prefilter']['reason_counts']['non_factual_path']==3,out
+    assert out['factual_prefilter']['rejected_count']==4,out
+    assert out['factual_prefilter']['reason_counts']['non_factual_path']==4,out
     print('PASS: factual priority candidate prefilter self-test')
 
 def main():
