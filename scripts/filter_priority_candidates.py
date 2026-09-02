@@ -10,6 +10,7 @@ SCIENCE_CHAPTER='과학'
 NON_FACTUAL_SEGMENTS={'opinion','opinions','comment','comments','commentisfree','editorial','columns','column','press-review','press_reviews','analysis','fault-lines'}
 PUBLIC_SAFETY_INCIDENT_TERMS=('blast','explosion','bomb','detonated')
 SCIENCE_BRIEFING_TERMS=('media briefing','press briefing')
+SCIENCE_CONTENT_FILLER_TERMS=('podcast','podcast series')
 
 def classify_url(url: str) -> str:
     try:
@@ -33,6 +34,8 @@ def classify_candidate(c: dict) -> str:
     if chapter==SCIENCE_CHAPTER:
         if any(x in title for x in SCIENCE_BRIEFING_TERMS):
             return 'science_briefing'
+        if any(x in title for x in SCIENCE_CONTENT_FILLER_TERMS):
+            return 'science_content_filler'
         source=(c.get('source') or '').lower()
         roman_launch=('roman' in title and any(x in title for x in ('launch','lifts off','lift-off','lift off')))
         if source.startswith('esa') and roman_launch:
@@ -49,7 +52,7 @@ def filter_data(data: dict) -> dict:
             continue
         kept.append(c); chapters[c.get('chapter','')]+=1
     out=dict(data)
-    out['schema_version']='priority-news-factual-candidates-v5'
+    out['schema_version']='priority-news-factual-candidates-v6'
     out['unfiltered_candidate_count']=len(data.get('candidates',[]))
     out['candidate_count']=len(kept)
     out['factual_prefilter']={
@@ -70,15 +73,17 @@ def self_test():
       {'chapter':INTERNATIONAL_CHAPTER,'title':'Documentary','url':'https://example.com/video/fault-lines/2026/story'},
       {'chapter':INTERNATIONAL_CHAPTER,'title':"Blast near police station on Colombia's border leaves casualties",'summary':'A car packed with explosives detonated outside a police station','url':'https://example.com/world/incident'},
       {'chapter':SCIENCE_CHAPTER,'title':"Media briefing: BepiColombo's next milestone towards Mercury",'source':'ESA Space Science','url':'https://esa.example/briefing'},
+      {'chapter':SCIENCE_CHAPTER,'title':'Expedition Sound podcast series','source':'ESA Space Science','url':'https://esa.example/podcast'},
       {'chapter':SCIENCE_CHAPTER,'title':'Roman lifts off on a mission to survey the infrared sky','source':'ESA Space Science','url':'https://esa.example/roman'},
       {'chapter':SCIENCE_CHAPTER,'title':'NASA’s Nancy Grace Roman Space Telescope Launches','source':'NASA','url':'https://nasa.example/roman'}
     ]}
     out=filter_data(data)
     assert out['candidate_count']==2,out
-    assert out['factual_prefilter']['rejected_count']==7,out
+    assert out['factual_prefilter']['rejected_count']==8,out
     assert out['factual_prefilter']['reason_counts']['non_factual_path']==4,out
     assert out['factual_prefilter']['reason_counts']['public_safety_incident']==1,out
     assert out['factual_prefilter']['reason_counts']['science_briefing']==1,out
+    assert out['factual_prefilter']['reason_counts']['science_content_filler']==1,out
     assert out['factual_prefilter']['reason_counts']['prefer_primary_source']==1,out
     kept_titles={x['title'] for x in out['candidates']}
     assert 'NASA’s Nancy Grace Roman Space Telescope Launches' in kept_titles
