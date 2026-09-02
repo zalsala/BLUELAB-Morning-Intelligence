@@ -58,5 +58,46 @@ jobs:
         run: python scripts/validate_source_registry.py
       - name: Test vision research collectors offline
         run: python scripts/collect_vision_research.py --self-test
+      - name: Test vision research selector offline
+        run: python scripts/select_vision_research.py --self-test
+      - name: Live smoke scholarly APIs
+        id: live_vision
+        continue-on-error: true
+        run: |
+          python scripts/collect_vision_research.py --days 7 --limit-per-source 2 --output artifacts/vision-research-live-candidates.json
+          python scripts/select_vision_research.py --input artifacts/vision-research-live-candidates.json --output artifacts/vision-research-live-selected.json --target 10
+      - name: Report live smoke result
+        if: always()
+        run: |
+          echo "live_vision_outcome=${{ steps.live_vision.outcome }}"
+          if [ -f artifacts/vision-research-live-candidates.json ]; then
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('artifacts/vision-research-live-candidates.json').read_text())
+          print('LIVE candidate_count=',p.get('candidate_count'))
+          print('LIVE provider/topic errors=',len(p.get('errors',[])))
+          for e in p.get('errors',[])[:12]: print('LIVE ERROR',e)
+          PY
+          fi
+          if [ -f artifacts/vision-research-live-selected.json ]; then
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('artifacts/vision-research-live-selected.json').read_text())
+          print('LIVE selected_count=',p.get('selected_count'))
+          print('LIVE coverage_status=',p.get('coverage_status'))
+          print('LIVE topic_counts=',p.get('topic_counts'))
+          print('LIVE collector_source_counts=',p.get('collector_source_counts'))
+          PY
+          fi
+      - name: Upload vision live smoke artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vision-research-live-smoke
+          path: artifacts/vision-research-live-*.json
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Audit source diversity
         run: python scripts/validate_sources.py
