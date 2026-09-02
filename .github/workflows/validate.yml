@@ -60,13 +60,15 @@ jobs:
         run: python scripts/collect_vision_research.py --self-test
       - name: Test vision research selector offline
         run: python scripts/select_vision_research.py --self-test
+      - name: Test priority-news collector offline
+        run: python scripts/collect_priority_news.py --self-test
       - name: Live smoke scholarly APIs
         id: live_vision
         continue-on-error: true
         run: |
           python scripts/collect_vision_research.py --days 7 --limit-per-source 2 --output artifacts/vision-research-live-candidates.json
           python scripts/select_vision_research.py --input artifacts/vision-research-live-candidates.json --output artifacts/vision-research-live-selected.json --target 10
-      - name: Report live smoke result
+      - name: Report live scholarly smoke
         if: always()
         run: |
           echo "live_vision_outcome=${{ steps.live_vision.outcome }}"
@@ -91,12 +93,32 @@ jobs:
           print('LIVE collector_source_counts=',p.get('collector_source_counts'))
           PY
           fi
-      - name: Upload vision live smoke artifact
+      - name: Live smoke priority news sources
+        id: live_priority
+        continue-on-error: true
+        run: python scripts/collect_priority_news.py --limit-per-source 10 --output artifacts/priority-news-live-candidates.json
+      - name: Report priority-news smoke
+        if: always()
+        run: |
+          echo "live_priority_outcome=${{ steps.live_priority.outcome }}"
+          if [ -f artifacts/priority-news-live-candidates.json ]; then
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('artifacts/priority-news-live-candidates.json').read_text())
+          print('PRIORITY candidate_count=',p.get('candidate_count'))
+          print('PRIORITY source_errors=',p.get('error_count'))
+          for chapter,r in p.get('chapter_report',{}).items():
+              print('PRIORITY', chapter, r)
+          for e in p.get('errors',[])[:20]: print('PRIORITY ERROR',e)
+          PY
+          fi
+      - name: Upload live smoke artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vision-research-live-smoke
-          path: artifacts/vision-research-live-*.json
+          name: morning-intelligence-live-smoke
+          path: artifacts/*-live-*.json
           if-no-files-found: ignore
           retention-days: 7
       - name: Audit source diversity
