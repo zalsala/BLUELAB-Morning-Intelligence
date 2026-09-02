@@ -5,9 +5,11 @@ from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
 
+INTERNATIONAL_CHAPTER='국제 · 외교 · 안보'
 NON_FACTUAL_SEGMENTS={'opinion','opinions','comment','comments','commentisfree','editorial','columns','column','press-review','press_reviews','analysis','fault-lines'}
+PUBLIC_SAFETY_INCIDENT_TERMS=('blast','explosion','bomb','detonated')
 
-def classify(url: str) -> str:
+def classify_url(url: str) -> str:
     try:
         path=urlparse(url or '').path
         segments={x.lower() for x in path.split('/') if x}
@@ -17,17 +19,27 @@ def classify(url: str) -> str:
         return 'bad_url'
     return ''
 
+def classify_candidate(c: dict) -> str:
+    reason=classify_url(c.get('canonical_url') or c.get('url',''))
+    if reason:return reason
+    title=(c.get('title') or '').lower()
+    summary=(c.get('summary') or '').lower()
+    text=title+' '+summary
+    if c.get('chapter')==INTERNATIONAL_CHAPTER and 'police station' in text and any(x in text for x in PUBLIC_SAFETY_INCIDENT_TERMS):
+        return 'public_safety_incident'
+    return ''
+
 def filter_data(data: dict) -> dict:
     kept=[]; rejected=[]; reasons=Counter(); chapters=Counter()
     for c in data.get('candidates',[]):
-        reason=classify(c.get('canonical_url') or c.get('url',''))
+        reason=classify_candidate(c)
         if reason:
             reasons[reason]+=1
             rejected.append({'chapter':c.get('chapter'),'title':c.get('title'),'url':c.get('url'),'reason':reason})
             continue
         kept.append(c); chapters[c.get('chapter','')]+=1
     out=dict(data)
-    out['schema_version']='priority-news-factual-candidates-v3'
+    out['schema_version']='priority-news-factual-candidates-v4'
     out['unfiltered_candidate_count']=len(data.get('candidates',[]))
     out['candidate_count']=len(kept)
     out['factual_prefilter']={
@@ -41,16 +53,18 @@ def filter_data(data: dict) -> dict:
 
 def self_test():
     data={'candidates':[
-      {'chapter':'국제 · 외교 · 안보','title':'Fact','url':'https://example.com/news/2026/fact'},
-      {'chapter':'국제 · 외교 · 안보','title':'Opinion','url':'https://example.com/opinions/2026/view'},
+      {'chapter':INTERNATIONAL_CHAPTER,'title':'Fact','url':'https://example.com/news/2026/fact'},
+      {'chapter':INTERNATIONAL_CHAPTER,'title':'Opinion','url':'https://example.com/opinions/2026/view'},
       {'chapter':'경제 · 시장','title':'Column','url':'https://example.com/columns/market-view'},
-      {'chapter':'국제 · 외교 · 안보','title':'Press review','url':'https://example.com/tv-shows/press-review/2026/story'},
-      {'chapter':'국제 · 외교 · 안보','title':'Documentary','url':'https://example.com/video/fault-lines/2026/story'},
+      {'chapter':INTERNATIONAL_CHAPTER,'title':'Press review','url':'https://example.com/tv-shows/press-review/2026/story'},
+      {'chapter':INTERNATIONAL_CHAPTER,'title':'Documentary','url':'https://example.com/video/fault-lines/2026/story'},
+      {'chapter':INTERNATIONAL_CHAPTER,'title':"Blast near police station on Colombia's border leaves casualties",'summary':'A car packed with explosives detonated outside a police station','url':'https://example.com/world/incident'},
     ]}
     out=filter_data(data)
     assert out['candidate_count']==1,out
-    assert out['factual_prefilter']['rejected_count']==4,out
+    assert out['factual_prefilter']['rejected_count']==5,out
     assert out['factual_prefilter']['reason_counts']['non_factual_path']==4,out
+    assert out['factual_prefilter']['reason_counts']['public_safety_incident']==1,out
     print('PASS: factual priority candidate prefilter self-test')
 
 def main():
