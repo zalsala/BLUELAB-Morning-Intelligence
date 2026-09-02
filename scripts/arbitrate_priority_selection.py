@@ -14,7 +14,6 @@ def canonical_key(url):
     try:
         p=urlsplit(url or '')
         host=p.netloc.lower().removeprefix('www.')
-        # Tracking queries do not define a different editorial article.
         return urlunsplit((p.scheme.lower(),host,p.path.rstrip('/'),'',''))
     except Exception:
         return (url or '').strip()
@@ -23,14 +22,11 @@ def canonical_key(url):
 def preferred_chapter(items):
     chapters={x['chapter'] for x in items}
     title=' '.join(x.get('title','') for x in items)
-    # Explicit company/capital-market events belong in the company chapter.
     if '국내·해외 주식 · 이슈기업' in chapters and base.count_terms(title, base.STOCK_STRONG_TITLE_TERMS):
         return '국내·해외 주식 · 이슈기업'
-    # Generic diplomatic/security events belong in international rather than macro.
     if '국제 · 외교 · 안보' in chapters and '경제 · 시장' in chapters:
         if base.count_terms(title, base.ECONOMY_STRONG_TITLE_TERMS) < 1:
             return '국제 · 외교 · 안보'
-    # Preserve the first selected chapter as deterministic fallback.
     return items[0]['chapter']
 
 
@@ -127,18 +123,24 @@ def arbitrate(candidate_data, selected_data, target=TARGET):
 def self_test():
     now='2026-09-02T00:00:00+00:00'
     candidates=[]
-    seeds={'국제 · 외교 · 안보':'iran','과학':'research','경제 · 시장':'inflation','국내·해외 주식 · 이슈기업':'earnings'}
-    for ch,kw in seeds.items():
+    seeds={
+      '국제 · 외교 · 안보':('iran','intl'),
+      '과학':('research','science'),
+      '경제 · 시장':('inflation','economy'),
+      '국내·해외 주식 · 이슈기업':('earnings','stocks'),
+    }
+    for ch,(kw,slug) in seeds.items():
         for d in range(5):
             for j in range(3):
-                candidates.append({'chapter':ch,'title':f'{kw} unique{d}{j} event{d}{j} signal{d}{j}','summary':kw,'url':f'https://s{d}.example/{ch[:1]}/{j}','domain':f's{d}.example','published':now,'tier':2,'source':'Gold'})
-    # Add the same IPO URL to economy and stocks; stocks must own it globally.
+                candidates.append({'chapter':ch,'title':f'{kw} unique{d}{j} event{d}{j} signal{d}{j}','summary':kw,'url':f'https://s{d}.example/{slug}/{j}','domain':f's{d}.example','published':now,'tier':2,'source':'Gold'})
     shared='https://news.example/shein'
     candidates += [
       {'chapter':'경제 · 시장','title':'Shein stock market IPO debut','summary':'market','url':shared,'domain':'news.example','published':now,'tier':2,'source':'News'},
       {'chapter':'국내·해외 주식 · 이슈기업','title':'Shein IPO stock market debut','summary':'ipo','url':shared,'domain':'news.example','published':now,'tier':2,'source':'News'}]
     base_sel=base.select({'generated_at':now,'candidates':candidates},10,now)
     out=arbitrate({'generated_at':now,'candidates':candidates},base_sel)
+    assert len(out['duplicate_groups_resolved'])==1,out
+    assert out['duplicate_groups_resolved'][0]['winner']=='국내·해외 주식 · 이슈기업',out
     assert not out['cross_chapter_duplicate_urls'],out
     assert out['coverage_status']=='PASS',out
     print('PASS: global priority arbitration self-test')
