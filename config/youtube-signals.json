@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-youtube-signals-v1",
+  "version": "2026-09-02-youtube-signals-v2",
   "max_age_days": 3,
   "target": 10,
   "minimum_unique_channels": 4,
@@ -9,6 +9,11 @@
     {"id":"reuters","name":"Reuters","channel_id":"UChqUTb7kYRX8-EiaN3XFrSQ","tier":2},
     {"id":"associated-press","name":"Associated Press","channel_id":"UC52X5wxOL_s5yw0dQk7NtgA","tier":2},
     {"id":"the-economist","name":"The Economist","channel_id":"UC0p5jTq6Xx_DosDFxVXnWaQ","tier":3},
-    {"id":"nasa","name":"NASA","channel_id":"UCLA_DiR1FfKNvjuUpBHmylQ","tier":1}
+    {"id":"nasa","name":"NASA","channel_id":"UCLA_DiR1FfKNvjuUpBHmylQ","tier":1},
+    {"id":"sky-news","name":"Sky News","channel_id":"UCoMdktPbSTixAyNGwb-UYkQ","tier":2},
+    {"id":"abc-news","name":"ABC News","channel_id":"UCBi2mrWuNuyYy4gbM6fU18Q","tier":2},
+    {"id":"nbc-news","name":"NBC News","channel_id":"UCeY0bbntWzzVIaj2z3QigXg","tier":2},
+    {"id":"cbs-news","name":"CBS News","channel_id":"UC8p1vwvWtl6T73JiExfWs1g","tier":2},
+    {"id":"cnn","name":"CNN","channel_id":"UCupvZG-5ko_eiXAupbDfxWw","tier":2}
   ]
 }
