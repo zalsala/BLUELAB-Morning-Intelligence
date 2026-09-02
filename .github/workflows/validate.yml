@@ -25,6 +25,8 @@ jobs:
         run: python scripts/select_priority_news.py --self-test
       - name: Test cross-chapter arbitration offline
         run: python scripts/arbitrate_priority_selection.py --self-test
+      - name: Test replacement proposal safety offline
+        run: python scripts/build_replacement_proposal.py --self-test
       - name: Test YouTube signal collector offline
         run: python scripts/collect_youtube_signals.py --self-test
       - name: Validate editorial gold corpus seed
@@ -63,6 +65,13 @@ jobs:
             --selected artifacts/priority-news-live-selected.json \
             --output artifacts/priority-news-live-arbitrated.json \
             --target 10
+      - name: Build non-production priority replacement proposal
+        id: proposal
+        continue-on-error: true
+        run: |
+          python scripts/build_replacement_proposal.py \
+            --input artifacts/priority-news-live-arbitrated.json \
+            --output artifacts/priority-replacement-proposal.json
       - name: Live original YouTube signal acquisition
         id: youtube
         continue-on-error: true
@@ -94,6 +103,7 @@ jobs:
           echo "vision=${{ steps.vision.outcome }}"
           echo "priority=${{ steps.priority.outcome }}"
           echo "arbitration=${{ steps.arbitration.outcome }}"
+          echo "proposal=${{ steps.proposal.outcome }}"
           echo "youtube=${{ steps.youtube.outcome }}"
           echo "sources=${{ steps.sources.outcome }}"
           echo "gold=${{ steps.gold.outcome }}"
@@ -103,6 +113,7 @@ jobs:
             "${{ steps.vision.outcome }}" \
             "${{ steps.priority.outcome }}" \
             "${{ steps.arbitration.outcome }}" \
+            "${{ steps.proposal.outcome }}" \
             "${{ steps.youtube.outcome }}" \
             "${{ steps.sources.outcome }}" \
             "${{ steps.gold.outcome }}"; do
