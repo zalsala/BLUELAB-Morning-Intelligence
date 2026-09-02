@@ -34,7 +34,7 @@ MAX_PER_DOMAIN = 2
 GENERIC_PATHS = {'','/','/news','/world','/business','/technology','/research-highlights'}
 STOCK_STRONG_TITLE_TERMS = [
     'earnings','revenue','profit','forecast','guidance','shares','stock','acquisition','acquire','acquires','merger',
-    'investment','invests','shipping','launch','launches','launched','introduces','unveils','contract','partnership',
+    'investment','invests','shipping','introduces','unveils','contract','partnership',
     'ceo','manufacturing','production','capacity','ipo','debut','valued','valuation','layoffs','jobs cut','factory',
     'electric model','cpu','gpu','chip','chips','data center','datacenter'
 ]
@@ -73,7 +73,6 @@ def valid_url(raw):
     u=urlparse(raw or '')
     if u.scheme not in ('http','https') or not u.netloc: return False, 'bad_url'
     if u.path.rstrip('/') in GENERIC_PATHS: return False, 'generic_url'
-    # Known detail endpoints must contain a non-empty record identifier.
     if u.netloc.endswith('eia.gov') and u.path.endswith('/todayinenergy/detail.php'):
         if not parse_qs(u.query).get('id'): return False, 'incomplete_url'
     if raw.endswith('?') or re.search(r'[?&](?:id|article|story)=?$', raw):
@@ -88,9 +87,6 @@ def score(c, asof):
     if rel < 1: return None, 'low_relevance'
 
     if chapter == '국내·해외 주식 · 이슈기업':
-        # General media must have an explicit corporate/market signal in the headline.
-        # Primary company sources may qualify through major product/partnership news,
-        # but small operational feature updates are excluded.
         if int(c.get('tier',4)) >= 2 and count_terms(title, STOCK_STRONG_TITLE_TERMS) < 1:
             return None, 'weak_company_signal'
         if int(c.get('tier',4)) <= 1 and any(term_match(title,x) for x in LOW_IMPACT_PRIMARY_PATTERNS):
@@ -105,7 +101,6 @@ def score(c, asof):
     if not ok: return None, reason
     freshness=max(0, pol['max_age_days']-max(0,age))
     tier=max(0,4-int(c.get('tier',4)))
-    # Multiple independent relevance signals outrank one accidental mention.
     return rel*10 + freshness*2 + tier, None
 
 def select(data, target=TARGET):
@@ -166,11 +161,8 @@ def self_test():
     assert out['coverage_status']=='PASS', out
     bad={'chapter':'국제 · 외교 · 안보','title':'football celebrity tour','summary':'sports','url':'https://x.example/a','domain':'x.example','published':now.isoformat(),'tier':2,'source':'X'}
     assert select({'candidates':[bad]})['coverage_status']=='FAIL'
-    # Boundary check: "rate" must not match arbitrary words containing those letters.
     assert count_terms('corporate celebration', ['rate']) == 0
-    # Incomplete EIA record URL must be rejected.
     assert valid_url('https://www.eia.gov/todayinenergy/detail.php?id=')[0] is False
-    # Geopolitical "launches strikes" must not become a stock story merely because of launch wording.
     geo={'chapter':'국내·해외 주식 · 이슈기업','title':'US launches new strikes on Iran','summary':'military attack','url':'https://news.example/x','domain':'news.example','published':now.isoformat(),'tier':2,'source':'News'}
     assert score(geo,now)[0] is None
     print('PASS: priority-news selector self-test')
