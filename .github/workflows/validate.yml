@@ -18,7 +18,9 @@ jobs:
       - name: Validate frozen priority snapshot
         run: |
           python scripts/validate_priority_snapshot.py --self-test
-          python scripts/validate_priority_snapshot.py
+          python scripts/materialize_priority_snapshot.py --self-test
+          python scripts/validate_priority_snapshot.py --input editorial/2026-09-02/priority-snapshot.json
+          python scripts/materialize_priority_snapshot.py --input editorial/2026-09-02/priority-snapshot.json --output artifacts/priority-news-frozen-arbitrated.json
       - name: Test vision research collectors offline
         run: python scripts/collect_vision_research.py --self-test
       - name: Test vision research selector offline
@@ -80,16 +82,20 @@ jobs:
             --selected artifacts/priority-news-live-selected.json \
             --output artifacts/priority-news-live-arbitrated.json \
             --target 10
-      - name: Validate frozen priority snapshot
+      - name: Validate and materialize frozen priority snapshot
         id: snapshot
         continue-on-error: true
-        run: python scripts/validate_priority_snapshot.py
+        run: |
+          python scripts/validate_priority_snapshot.py --input editorial/2026-09-02/priority-snapshot.json
+          python scripts/materialize_priority_snapshot.py \
+            --input editorial/2026-09-02/priority-snapshot.json \
+            --output artifacts/priority-news-frozen-arbitrated.json
       - name: Build non-production priority replacement proposal from frozen snapshot
         id: proposal
         continue-on-error: true
         run: |
           python scripts/build_replacement_proposal.py \
-            --input editorial/2026-09-02/priority-snapshot.json \
+            --input artifacts/priority-news-frozen-arbitrated.json \
             --output artifacts/priority-replacement-proposal.json
       - name: Build editorial staging base
         id: staging_build
