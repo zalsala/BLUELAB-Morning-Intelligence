@@ -24,7 +24,7 @@ POLICY = {
     },
     '국내·해외 주식 · 이슈기업': {
         'max_age_days': 7,
-        'keywords': ['earnings','revenue','profit','profits','forecast','guidance','shares','stock','stocks','acquisition','acquire','acquires','merger','investment','invests','invested','shipping','launch','launches','launched','introduces','unveils','contract','partnership','ceo','manufacturing','production','capacity','ipo','debut','valued','valuation','layoffs','jobs cut','factory'],
+        'keywords': ['earnings','revenue','profit','profits','forecast','guidance','shares','stock','stocks','acquisition','acquire','acquires','merger','investment','invests','invested','funding','fundraise','fundraising','raises','raised','secures','secured','series a','series b','series c','valuation','valued','ipo','initial public offering','sale','sells','sold','shipping','launch','launches','launched','introduces','unveils','contract','partnership','ceo','manufacturing','production','capacity','layoffs','jobs cut','factory'],
         'exclude': ['arcade','baseball','friday night','travel','maps','skywatching','air strike','airstrikes','drone attack','missile attack','sanctions on russia'],
     },
 }
@@ -34,12 +34,12 @@ MAX_PER_DOMAIN = 2
 GENERIC_PATHS = {'','/','/news','/world','/business','/technology','/research-highlights'}
 STOCK_STRONG_TITLE_TERMS = [
     'earnings','revenue','profit','forecast','guidance','shares','stock','acquisition','acquire','acquires','merger',
-    'investment','invests','shipping','introduces','unveils','contract','partnership',
-    'ceo','manufacturing','production','capacity','ipo','debut','valued','valuation','layoffs','jobs cut','factory',
-    'electric model','cpu','gpu','chip','chips','data center','datacenter'
+    'investment','invests','funding','fundraise','fundraising','raises','raised','secures','secured','series a','series b','series c',
+    'ipo','initial public offering','valued','valuation','sale','sells','sold','shipping','introduces','unveils','contract','partnership',
+    'ceo','manufacturing','production','capacity','layoffs','jobs cut','factory','electric model','cpu','gpu','chip','chips','data center','datacenter'
 ]
 LOW_IMPACT_PRIMARY_PATTERNS = [
-    'now supports','now lets you','now available','available in additional','adds support for','console update','backup now'
+    'supports','now supports','now lets you','now available','available in additional','adds support for','console update','backup now','version update'
 ]
 
 def parse_dt(v):
@@ -87,8 +87,12 @@ def score(c, asof):
     if rel < 1: return None, 'low_relevance'
 
     if chapter == '국내·해외 주식 · 이슈기업':
+        # General media needs a title-level capital-market/corporate event signal.
+        # Generic words such as "launch" or "debut" alone are intentionally not strong enough.
         if int(c.get('tier',4)) >= 2 and count_terms(title, STOCK_STRONG_TITLE_TERMS) < 1:
             return None, 'weak_company_signal'
+        # Company newsrooms are useful primary sources, but minor product/API maintenance
+        # announcements are not material enough for this chapter.
         if int(c.get('tier',4)) <= 1 and any(term_match(title,x) for x in LOW_IMPACT_PRIMARY_PATTERNS):
             return None, 'low_impact_primary_update'
 
@@ -136,7 +140,7 @@ def select(data, target=TARGET):
         selected_all.extend(chosen)
     overall='PASS' if all(r['status']=='PASS' for r in reports.values()) else 'FAIL'
     return {
-        'schema_version':'priority-news-selection-v2','generated_at':datetime.now(timezone.utc).isoformat(),
+        'schema_version':'priority-news-selection-v3','generated_at':datetime.now(timezone.utc).isoformat(),
         'candidate_count':len(candidates),'selected_count':len(selected_all),'target_per_chapter':target,
         'minimum_unique_domains':MIN_DOMAINS,'max_per_domain':MAX_PER_DOMAIN,
         'coverage_status':overall,'chapter_report':reports,'selected':selected_all,
@@ -165,6 +169,12 @@ def self_test():
     assert valid_url('https://www.eia.gov/todayinenergy/detail.php?id=')[0] is False
     geo={'chapter':'국내·해외 주식 · 이슈기업','title':'US launches new strikes on Iran','summary':'military attack','url':'https://news.example/x','domain':'news.example','published':now.isoformat(),'tier':2,'source':'News'}
     assert score(geo,now)[0] is None
+    political={'chapter':'국내·해외 주식 · 이슈기업','title':'Leader makes House of Commons debut','summary':'politics','url':'https://news.example/y','domain':'news.example','published':now.isoformat(),'tier':2,'source':'News'}
+    assert score(political,now)[0] is None
+    funding={'chapter':'국내·해외 주식 · 이슈기업','title':'AIR raises $50M in funding for AI security platform','summary':'startup funding','url':'https://tech.example/z','domain':'tech.example','published':now.isoformat(),'tier':3,'source':'Tech'}
+    assert score(funding,now)[0] is not None
+    maintenance={'chapter':'국내·해외 주식 · 이슈기업','title':'Cloud service supports database version 3.3.1','summary':'production support','url':'https://company.example/a','domain':'company.example','published':now.isoformat(),'tier':1,'source':'Company'}
+    assert score(maintenance,now)[0] is None
     print('PASS: priority-news selector self-test')
 
 def main():
