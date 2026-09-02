@@ -11,6 +11,8 @@ import datetime as dt
 import html
 import json
 import re
+import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -20,6 +22,7 @@ ROOT = Path(__file__).resolve().parents[1]
 QUERY_FILE = ROOT / "config" / "vision-research-queries.json"
 USER_AGENT = "BLUELAB-Morning-Intelligence/1.0 (+https://github.com/zalsala/BLUELAB-Morning-Intelligence)"
 TIMEOUT = 25
+RETRIES = 3
 
 
 def now_iso():
@@ -65,16 +68,32 @@ def classify_kind(text):
     return "RESEARCH / ISSUE"
 
 
+def _request(url, accept=None):
+    headers = {"User-Agent": USER_AGENT}
+    if accept:
+        headers["Accept"] = accept
+    last = None
+    for attempt in range(RETRIES):
+        try:
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                return r.read().decode("utf-8")
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as exc:
+            last = exc
+            status = getattr(exc, "code", None)
+            if status not in (None, 429, 500, 502, 503, 504):
+                raise
+            if attempt + 1 < RETRIES:
+                time.sleep(1.0 * (attempt + 1))
+    raise last
+
+
 def request_json(url):
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
-    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-        return json.loads(r.read().decode("utf-8"))
+    return json.loads(_request(url, "application/json"))
 
 
 def request_text(url):
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-        return r.read().decode("utf-8")
+    return _request(url)
 
 
 def base_record(source, family, title, url, **extra):
@@ -104,7 +123,21 @@ def pubmed(family, days, limit):
     mindate = (dt.date.today() - dt.timedelta(days=days)).isoformat()
     term = f'({family["query"]}) AND ("{mindate}"[Date - Publication] : "3000"[Date - Publication])'
     q = urllib.parse.urlencode({"db":"pubmed","term":term,"retmode":"json","retmax":limit,"sort":"pub date"})
-    ids = request_json("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?" + q)["esearchresult"]["idlist"]
+    url = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?" + q
+    search = None
+    for attempt in range(RETRIES):
+        data = request_json(url)
+        search = data.get("esearchresult") if isinstance(data, dict) else None
+        if isinstance(search, dict) and isinstance(search.get("idlist"), list):
+            break
+        if attempt + 1 < RETRIES:
+            time.sleep(1.0 * (attempt + 1))
+    if not isinstance(search, dict):
+        raise RuntimeError(f"PubMed ESearch malformed response for {family['id']}")
+    if not isinstance(search.get("idlist"), list):
+        details = search.get("errorlist") or search.get("warninglist") or search
+        raise RuntimeError(f"PubMed ESearch returned no idlist for {family['id']}: {details}")
+    ids = search.get("idlist", [])
     if not ids:
         return []
     xml = request_text("https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?" + urllib.parse.urlencode({"db":"pubmed","id":",".join(ids),"retmode":"xml"}))
