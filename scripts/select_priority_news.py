@@ -16,10 +16,12 @@ TARGET=10; MIN_DOMAINS=5; MAX_PER_DOMAIN=2
 GENERIC_PATHS={'','/','/news','/world','/business','/technology','/research-highlights'}
 STOCK_STRONG_TITLE_TERMS=['earnings','revenue','profit','forecast','guidance','shares','stock','acquisition','acquire','acquires','merger','investment','invests','funding','fundraise','fundraising','raises','raised','secures','secured','series a','series b','series c','ipo','initial public offering','valued','valuation','sale','sells','sold','shipping','introduces','unveils','contract','partnership','ceo','manufacturing','production','capacity','layoffs','jobs cut','factory','electric model','cpu','gpu','chip','chips','data center','datacenter','lawsuit','sued','regulator','regulatory','antitrust','investigation','fine']
 ECONOMY_STRONG_TITLE_TERMS=['inflation','gdp','jobs','employment','unemployment','job openings','jolts','economy','economic','market','markets','bond','bonds','yield','yields','oil','energy','lng','trade','tariff','tariffs','central bank','federal reserve','fed chair','bank of england','bank of korea','interest rate','interest rates','consumer spending','retail sales','manufacturing','production','currency','dollar','growth','recession','g20','uranium production','debt','fiscal']
+INTERNATIONAL_STRONG_TITLE_TERMS=['war','strike','strikes','attack','attacks','missile','drone','sanction','sanctions','security','defense','defence','diplomacy','diplomatic','border','nuclear','ceasefire','military','trade war','g20','nato','airspace','aircraft carrier','foreign collusion','migration','press bans']
 LOW_IMPACT_PRIMARY_PATTERNS=['supports','now supports','now lets you','now available','available in additional','adds support for','console update','backup now','version update']
 ECONOMY_LOW_IMPACT_PRIMARY=['enforcement action','former employee','civil money penalty','prohibition order']
 STOPWORDS={'a','an','and','are','as','at','after','ahead','amid','be','been','by','for','from','has','have','in','into','is','it','its','new','of','on','or','over','says','say','the','their','this','to','with','will','us','u','s','about','against','know','what','report','reports','reported','moment','video','watch','powerful','historic','rare','first','next','generation','beginning','future','state','media'}
 EVENT_ACTION_TOKENS={'launch','strike','attack','drone','wedding','groundbreak','telescope','sanction','trade','war','deport','border','bond','inflation','downturn','production','fab','ipo','acquisition','funding','valuation','supercomputer','lawsuit','sued','regulator','antitrust','investigation','fine'}
+CONFLICT_ENTITY_TOKENS={'iran','russia','ukraine','israel','gaza','china','taiwan','venezuela'}
 TOKEN_ALIASES={'launches':'launch','launched':'launch','launching':'launch','strikes':'strike','struck':'strike','attacks':'attack','attacked':'attack','drones':'drone','sanctions':'sanction','deportees':'deport','deported':'deport','iranian':'iran','russian':'russia','german':'germany','groundbreaking':'groundbreak','groundbreakings':'groundbreak','telescopes':'telescope','markets':'market','bonds':'bond','tariffs':'tariff','lawsuits':'lawsuit','regulators':'regulator','fines':'fine'}
 
 def parse_dt(v):
@@ -59,7 +61,8 @@ def same_event(a,b):
     common=A&B
     if len(common)<3:return False
     containment=len(common)/min(len(A),len(B)); jaccard=len(common)/len(A|B); action=bool(common&EVENT_ACTION_TOKENS)
-    return (action and containment>=.34) or jaccard>=.45
+    conflict_core=bool(common&CONFLICT_ENTITY_TOKENS) and action and containment>=.30
+    return (action and containment>=.34) or jaccard>=.45 or conflict_core
 
 def valid_url(raw):
     u=urlparse(raw or '')
@@ -75,6 +78,10 @@ def score(c,asof):
     rel=count_terms(text,pol['keywords'])
     if rel<1:return None,'low_relevance'
     tier=int(c.get('tier',4))
+    if chapter=='국제 · 외교 · 안보':
+        macro=count_terms(title,ECONOMY_STRONG_TITLE_TERMS)
+        intl=count_terms(title,INTERNATIONAL_STRONG_TITLE_TERMS)
+        if macro>=1 and intl<1:return None,'macro_wrong_chapter'
     if chapter=='경제 · 시장':
         if tier>=2 and count_terms(title,ECONOMY_STRONG_TITLE_TERMS)<1:return None,'weak_macro_signal'
         if tier<=1 and any(term_match(title,x) for x in ECONOMY_LOW_IMPACT_PRIMARY):return None,'low_impact_primary_update'
@@ -120,7 +127,7 @@ def select(data,target=TARGET,asof=None):
         reports[chapter]={'eligible_count':len(ranked),'selected_count':len(chosen),'unique_domains':domains,'domain_counts':dict(domain_counts),'event_duplicates_skipped':event_dupes,'status':status,'reject_counts':{reason:n for (ch,reason),n in rejected.items() if ch==chapter}}
         selected_all.extend(chosen)
     overall='PASS' if all(r['status']=='PASS' for r in reports.values()) else 'FAIL'
-    return {'schema_version':'priority-news-selection-v6','generated_at':datetime.now(timezone.utc).isoformat(),'as_of':asof.isoformat(),'candidate_count':len(candidates),'selected_count':len(selected_all),'target_per_chapter':target,'minimum_unique_domains':MIN_DOMAINS,'max_per_domain':MAX_PER_DOMAIN,'coverage_status':overall,'chapter_report':reports,'selected':selected_all}
+    return {'schema_version':'priority-news-selection-v7','generated_at':datetime.now(timezone.utc).isoformat(),'as_of':asof.isoformat(),'candidate_count':len(candidates),'selected_count':len(selected_all),'target_per_chapter':target,'minimum_unique_domains':MIN_DOMAINS,'max_per_domain':MAX_PER_DOMAIN,'coverage_status':overall,'chapter_report':reports,'selected':selected_all}
 
 def self_test():
     now=datetime(2026,9,2,tzinfo=timezone.utc);cs=[];seed_terms={'국제 · 외교 · 안보':'iran','과학':'research','경제 · 시장':'inflation','국내·해외 주식 · 이슈기업':'earnings'}
@@ -140,12 +147,14 @@ def self_test():
       {'chapter':'경제 · 시장','title':'Fake 10 Downing Street listing exposes unfit Booking.com, says consumer group','summary':'consumer complaint','url':'https://news.example/b','domain':'news.example','published':now.isoformat(),'tier':2,'source':'News'},
       {'chapter':'경제 · 시장','title':'Federal Reserve Board issues enforcement action with former employee of Banco Popular','summary':'federal reserve','url':'https://fed.example/e','domain':'fed.example','published':now.isoformat(),'tier':0,'source':'Fed'},
       {'chapter':'과학','title':'APOD: Launch of the Roman Space Telescope','summary':'space telescope','url':'https://science.example/apod','domain':'science.example','published':now.isoformat(),'tier':1,'source':'NASA'},
-      {'chapter':'과학','title':'What’s Up: September 2026 Skywatching Tips from NASA','summary':'space','url':'https://science.example/sky','domain':'science.example','published':now.isoformat(),'tier':1,'source':'NASA'}]
+      {'chapter':'과학','title':'What’s Up: September 2026 Skywatching Tips from NASA','summary':'space','url':'https://science.example/sky','domain':'science.example','published':now.isoformat(),'tier':1,'source':'NASA'},
+      {'chapter':'국제 · 외교 · 안보','title':"Sharp rise in utility bills pushes Russia's inflation further off target",'summary':'Russian consumer prices rise','url':'https://world.example/russia-inflation','domain':'world.example','published':now.isoformat(),'tier':2,'source':'News'}]
     assert all(score(x,now)[0] is None for x in rejects)
     accepts=[
       {'chapter':'국내·해외 주식 · 이슈기업','title':'US trade regulator and states accuse Amazon in antitrust lawsuit','summary':'Regulatory action against Amazon.','url':'https://news.example/amazon','domain':'news.example','published':'2026-09-01','tier':2,'source':'News'},
       {'chapter':'국내·해외 주식 · 이슈기업','title':'Anthropic sued over alleged theft of songs','summary':'Corporate lawsuit.','url':'https://news2.example/anthropic','domain':'news2.example','published':'2026-09-01','tier':2,'source':'News'},
-      {'chapter':'경제 · 시장','title':'Euro area unemployment at 6.4% as job market steadies','summary':'Labor market data.','url':'https://stats.example/unemployment','domain':'stats.example','published':'2026-09-01','tier':0,'source':'Stats'}]
+      {'chapter':'경제 · 시장','title':'Euro area unemployment at 6.4% as job market steadies','summary':'Labor market data.','url':'https://stats.example/unemployment','domain':'stats.example','published':'2026-09-01','tier':0,'source':'Stats'},
+      {'chapter':'국제 · 외교 · 안보','title':'Canada and US escalate trade war after new tariffs','summary':'Bilateral diplomatic dispute','url':'https://world.example/trade-war','domain':'world.example','published':'2026-09-01','tier':2,'source':'News'}]
     assert all(score(x,now)[0] is not None for x in accepts)
     funding={'chapter':'국내·해외 주식 · 이슈기업','title':'AIR raises $50M in funding for AI security platform','summary':'startup funding','url':'https://tech.example/z','domain':'tech.example','published':now.isoformat(),'tier':3,'source':'Tech'};assert score(funding,now)[0] is not None
     maintenance={'chapter':'국내·해외 주식 · 이슈기업','title':'Cloud service supports database version 3.3.1','summary':'production support','url':'https://company.example/a','domain':'company.example','published':now.isoformat(),'tier':1,'source':'Company'};assert score(maintenance,now)[0] is None
@@ -155,6 +164,7 @@ def self_test():
     assert same_event('NASA’s Nancy Grace Roman Space Telescope Launches','Nasa launches powerful new space telescope')
     assert same_event('AI could cause global economic downturn, Andrew Bailey warns G20','AI could cause global economic downturn, Bank of England governor tells G20')
     assert same_event('SK hynix Indiana fab breaks ground as new hub for US AI innovation','SK hynix Holds Groundbreaking Ceremony for HBM Production Base in Indiana')
+    assert same_event('US launches new strikes in southern Iran, Tehran responds with attacks across region','Middle East live: Iran launches retaliatory strikes after fresh US bombing kills 11 people')
     assert not same_event('US launches new strikes on Iran','Iran retaliates after US strikes kill four at wedding party')
     print('PASS: priority-news selector self-test')
 
