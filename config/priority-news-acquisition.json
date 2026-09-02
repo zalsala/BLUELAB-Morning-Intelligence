@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-priority-news-acquisition-v7",
+  "version": "2026-09-02-priority-news-acquisition-v8",
   "candidate_target_per_chapter": 30,
   "minimum_unique_domains_for_candidate_pool": 5,
   "chapters": {
@@ -12,19 +12,19 @@
     ],
     "과학": [
       {"id":"nasa","mode":"feed","url":"https://www.nasa.gov/feed/","source":"NASA","tier":1},
-      {"id":"nature-news","mode":"html","url":"https://www.nature.com/news","source":"Nature","tier":1,"include":["/articles/"]},
+      {"id":"nature-news","mode":"html","url":"https://www.nature.com/news","source":"Nature","tier":1,"include":["/articles/"],"enrich_article_metadata":true},
       {"id":"science-aaas","mode":"feed","url":"https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science","source":"Science","tier":1},
-      {"id":"esa-news","mode":"html","url":"https://www.esa.int/Newsroom","source":"ESA","tier":1,"include":["/Newsroom/","/Science_Exploration/"]},
-      {"id":"cern-news","mode":"html","url":"https://home.cern/news","source":"CERN","tier":1,"include":["/news/"]},
+      {"id":"esa-news","mode":"html","url":"https://www.esa.int/Newsroom","source":"ESA","tier":1,"include":["/Newsroom/","/Science_Exploration/"],"enrich_article_metadata":true},
+      {"id":"cern-news","mode":"html","url":"https://home.cern/news","source":"CERN","tier":1,"include":["/news/"],"enrich_article_metadata":true},
       {"id":"bbc-science","mode":"feed","url":"https://feeds.bbci.co.uk/news/science_and_environment/rss.xml","source":"BBC Science & Environment","tier":2},
       {"id":"physorg","mode":"feed","url":"https://phys.org/rss-feed/","source":"Phys.org","tier":3}
     ],
     "경제 · 시장": [
       {"id":"fed","mode":"feed","url":"https://www.federalreserve.gov/feeds/press_all.xml","source":"Federal Reserve","tier":0},
       {"id":"eia","mode":"feed","url":"https://www.eia.gov/rss/todayinenergy.xml","source":"EIA","tier":0},
-      {"id":"bea","mode":"html","url":"https://www.bea.gov/news","source":"BEA","tier":0,"include":["/news/2026/","/news/"]},
-      {"id":"ecb","mode":"html","url":"https://www.ecb.europa.eu/press/html/index.en.html","source":"ECB","tier":0,"include":["/press/"]},
-      {"id":"bok","mode":"html","url":"https://www.bok.or.kr/eng/bbs/E0000634/list.do?menuNo=400069","source":"Bank of Korea","tier":0,"include":["/eng/bbs/"]},
+      {"id":"bea","mode":"html","url":"https://www.bea.gov/news","source":"BEA","tier":0,"include":["/news/2026/","/news/"],"enrich_article_metadata":true},
+      {"id":"ecb","mode":"html","url":"https://www.ecb.europa.eu/press/html/index.en.html","source":"ECB","tier":0,"include":["/press/"],"enrich_article_metadata":true},
+      {"id":"bok","mode":"html","url":"https://www.bok.or.kr/eng/bbs/E0000634/list.do?menuNo=400069","source":"Bank of Korea","tier":0,"include":["/eng/bbs/"],"enrich_article_metadata":true},
       {"id":"bbc-business","mode":"feed","url":"https://feeds.bbci.co.uk/news/business/rss.xml","source":"BBC Business","tier":2},
       {"id":"guardian-business","mode":"feed","url":"https://www.theguardian.com/business/rss","source":"The Guardian Business","tier":2},
       {"id":"france24-business","mode":"feed","url":"https://www.france24.com/en/rss","source":"France 24","tier":2},
