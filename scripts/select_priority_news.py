@@ -9,24 +9,35 @@ from urllib.parse import parse_qs, urlparse
 POLICY = {
     '국제 · 외교 · 안보': {'max_age_days':3,'keywords':['iran','russia','ukraine','g20','nato','china','taiwan','war','strike','strikes','missile','drone','sanction','sanctions','security','defense','defence','diplomacy','diplomatic','government','border','nuclear','ceasefire','military','trade war','venezuela'],'exclude':['football','rugby','tour','singer','actor','arcade','game','celebrity','baseball','trial deadlocked','cold case']},
     '과학': {'max_age_days':7,'keywords':['nasa','space','mars','moon','earth','climate','science','scientific','research','study','particle','physics','astronomy','telescope','glacier','ocean','weather','solar','quantum','genome','biology','iceberg','mission','satellite','cyclone'],'exclude':['sports','football','celebrity','game','shopping','apod','skywatching tips','what s up']},
-    '경제 · 시장': {'max_age_days':7,'keywords':['rate','rates','inflation','gdp','jobs','employment','economy','economic','market','markets','yield','yields','oil','energy','lng','trade','exports','export','imports','import','central bank','federal reserve','ecb','bank of korea','bea','eia','consumer','consumers','production','manufacturing','uranium','bond','bonds','tariff','tariffs','currency','dollar','growth','recession'],'exclude':['museum','exhibition','podcast','webcast','collection','cbdc','apple maps','google maps','lake america']},
-    '국내·해외 주식 · 이슈기업': {'max_age_days':7,'keywords':['earnings','revenue','profit','profits','forecast','guidance','shares','stock','stocks','acquisition','acquire','acquires','merger','investment','invests','invested','funding','fundraise','fundraising','raises','raised','secures','secured','series a','series b','series c','valuation','valued','ipo','initial public offering','sale','sells','sold','shipping','launch','launches','launched','introduces','unveils','contract','partnership','ceo','manufacturing','production','capacity','layoffs','jobs cut','factory'],'exclude':['arcade','baseball','friday night','travel','maps','skywatching','air strike','airstrikes','drone attack','missile attack','sanctions on russia','funding bill','government shutdown','house passes','congress passes']},
+    '경제 · 시장': {'max_age_days':7,'keywords':['rate','rates','inflation','gdp','jobs','employment','unemployment','job openings','jolts','economy','economic','market','markets','yield','yields','oil','energy','lng','trade','exports','export','imports','import','central bank','federal reserve','ecb','bank of korea','bea','eia','consumer','consumers','production','manufacturing','uranium','bond','bonds','tariff','tariffs','currency','dollar','growth','recession','debt','fiscal'],'exclude':['museum','exhibition','podcast','webcast','collection','cbdc','apple maps','google maps','lake america']},
+    '국내·해외 주식 · 이슈기업': {'max_age_days':7,'keywords':['earnings','revenue','profit','profits','forecast','guidance','shares','stock','stocks','acquisition','acquire','acquires','merger','investment','invests','invested','funding','fundraise','fundraising','raises','raised','secures','secured','series a','series b','series c','valuation','valued','ipo','initial public offering','sale','sells','sold','shipping','launch','launches','launched','introduces','unveils','contract','partnership','ceo','manufacturing','production','capacity','layoffs','jobs cut','factory','lawsuit','sued','regulator','regulatory','antitrust','investigation','fine'],'exclude':['arcade','baseball','friday night','travel','maps','skywatching','air strike','airstrikes','drone attack','missile attack','sanctions on russia','funding bill','government shutdown','house passes','congress passes']},
 }
 TARGET=10; MIN_DOMAINS=5; MAX_PER_DOMAIN=2
 GENERIC_PATHS={'','/','/news','/world','/business','/technology','/research-highlights'}
-STOCK_STRONG_TITLE_TERMS=['earnings','revenue','profit','forecast','guidance','shares','stock','acquisition','acquire','acquires','merger','investment','invests','funding','fundraise','fundraising','raises','raised','secures','secured','series a','series b','series c','ipo','initial public offering','valued','valuation','sale','sells','sold','shipping','introduces','unveils','contract','partnership','ceo','manufacturing','production','capacity','layoffs','jobs cut','factory','electric model','cpu','gpu','chip','chips','data center','datacenter']
-ECONOMY_STRONG_TITLE_TERMS=['inflation','gdp','jobs','employment','economy','economic','market','markets','bond','bonds','yield','yields','oil','energy','lng','trade','tariff','tariffs','central bank','federal reserve','fed chair','bank of england','bank of korea','interest rate','interest rates','consumer spending','retail sales','manufacturing','production','currency','dollar','growth','recession','g20','uranium production']
+STOCK_STRONG_TITLE_TERMS=['earnings','revenue','profit','forecast','guidance','shares','stock','acquisition','acquire','acquires','merger','investment','invests','funding','fundraise','fundraising','raises','raised','secures','secured','series a','series b','series c','ipo','initial public offering','valued','valuation','sale','sells','sold','shipping','introduces','unveils','contract','partnership','ceo','manufacturing','production','capacity','layoffs','jobs cut','factory','electric model','cpu','gpu','chip','chips','data center','datacenter','lawsuit','sued','regulator','regulatory','antitrust','investigation','fine']
+ECONOMY_STRONG_TITLE_TERMS=['inflation','gdp','jobs','employment','unemployment','job openings','jolts','economy','economic','market','markets','bond','bonds','yield','yields','oil','energy','lng','trade','tariff','tariffs','central bank','federal reserve','fed chair','bank of england','bank of korea','interest rate','interest rates','consumer spending','retail sales','manufacturing','production','currency','dollar','growth','recession','g20','uranium production','debt','fiscal']
 LOW_IMPACT_PRIMARY_PATTERNS=['supports','now supports','now lets you','now available','available in additional','adds support for','console update','backup now','version update']
 ECONOMY_LOW_IMPACT_PRIMARY=['enforcement action','former employee','civil money penalty','prohibition order']
 STOPWORDS={'a','an','and','are','as','at','after','ahead','amid','be','been','by','for','from','has','have','in','into','is','it','its','new','of','on','or','over','says','say','the','their','this','to','with','will','us','u','s','about','against','know','what','report','reports','reported','moment','video','watch','powerful','historic','rare','first','next','generation','beginning','future','state','media'}
-EVENT_ACTION_TOKENS={'launch','strike','attack','drone','wedding','groundbreak','telescope','sanction','trade','war','deport','border','bond','inflation','downturn','production','fab','ipo','acquisition','funding','valuation','supercomputer'}
-TOKEN_ALIASES={'launches':'launch','launched':'launch','launching':'launch','strikes':'strike','struck':'strike','attacks':'attack','attacked':'attack','drones':'drone','sanctions':'sanction','deportees':'deport','deported':'deport','iranian':'iran','russian':'russia','german':'germany','groundbreaking':'groundbreak','groundbreakings':'groundbreak','telescopes':'telescope','markets':'market','bonds':'bond','tariffs':'tariff'}
+EVENT_ACTION_TOKENS={'launch','strike','attack','drone','wedding','groundbreak','telescope','sanction','trade','war','deport','border','bond','inflation','downturn','production','fab','ipo','acquisition','funding','valuation','supercomputer','lawsuit','sued','regulator','antitrust','investigation','fine'}
+TOKEN_ALIASES={'launches':'launch','launched':'launch','launching':'launch','strikes':'strike','struck':'strike','attacks':'attack','attacked':'attack','drones':'drone','sanctions':'sanction','deportees':'deport','deported':'deport','iranian':'iran','russian':'russia','german':'germany','groundbreaking':'groundbreak','groundbreakings':'groundbreak','telescopes':'telescope','markets':'market','bonds':'bond','tariffs':'tariff','lawsuits':'lawsuit','regulators':'regulator','fines':'fine'}
 
 def parse_dt(v):
     if not v:return None
+    s=str(v).strip()
     try:
-        if re.match(r'^\d{4}-\d{2}-\d{2}T',v):return datetime.fromisoformat(v.replace('Z','+00:00')).astimezone(timezone.utc)
-        return parsedate_to_datetime(v).astimezone(timezone.utc)
+        if re.fullmatch(r'\d{4}-\d{2}-\d{2}',s):
+            return datetime.fromisoformat(s).replace(tzinfo=timezone.utc)
+        if re.match(r'^\d{4}-\d{2}-\d{2}T',s):
+            parsed=datetime.fromisoformat(s.replace('Z','+00:00'))
+            if parsed.tzinfo is None:parsed=parsed.replace(tzinfo=timezone.utc)
+            return parsed.astimezone(timezone.utc)
+        for fmt in ('%d %B %Y','%B %d, %Y','%d %b %Y','%b %d, %Y'):
+            try:return datetime.strptime(s,fmt).replace(tzinfo=timezone.utc)
+            except ValueError:pass
+        parsed=parsedate_to_datetime(s)
+        if parsed.tzinfo is None:parsed=parsed.replace(tzinfo=timezone.utc)
+        return parsed.astimezone(timezone.utc)
     except Exception:return None
 
 def norm_title(s):return re.sub(r'[^a-z0-9가-힣]+',' ',(s or '').lower()).strip()
@@ -109,7 +120,7 @@ def select(data,target=TARGET,asof=None):
         reports[chapter]={'eligible_count':len(ranked),'selected_count':len(chosen),'unique_domains':domains,'domain_counts':dict(domain_counts),'event_duplicates_skipped':event_dupes,'status':status,'reject_counts':{reason:n for (ch,reason),n in rejected.items() if ch==chapter}}
         selected_all.extend(chosen)
     overall='PASS' if all(r['status']=='PASS' for r in reports.values()) else 'FAIL'
-    return {'schema_version':'priority-news-selection-v5','generated_at':datetime.now(timezone.utc).isoformat(),'as_of':asof.isoformat(),'candidate_count':len(candidates),'selected_count':len(selected_all),'target_per_chapter':target,'minimum_unique_domains':MIN_DOMAINS,'max_per_domain':MAX_PER_DOMAIN,'coverage_status':overall,'chapter_report':reports,'selected':selected_all}
+    return {'schema_version':'priority-news-selection-v6','generated_at':datetime.now(timezone.utc).isoformat(),'as_of':asof.isoformat(),'candidate_count':len(candidates),'selected_count':len(selected_all),'target_per_chapter':target,'minimum_unique_domains':MIN_DOMAINS,'max_per_domain':MAX_PER_DOMAIN,'coverage_status':overall,'chapter_report':reports,'selected':selected_all}
 
 def self_test():
     now=datetime(2026,9,2,tzinfo=timezone.utc);cs=[];seed_terms={'국제 · 외교 · 안보':'iran','과학':'research','경제 · 시장':'inflation','국내·해외 주식 · 이슈기업':'earnings'}
@@ -119,6 +130,8 @@ def self_test():
             for j in range(2):
                 uniq=f'event{d}{j} topic{d}{j} signal{d}{j}';cs.append({'chapter':ch,'title':f'{kw} {uniq}','summary':kw,'url':f'https://s{d}.example.com/a/{j}','domain':f's{d}.example.com','published':now.isoformat(),'tier':2,'source':f'S{d}'})
     out=select({'candidates':cs,'generated_at':now.isoformat()},asof=now);assert out['coverage_status']=='PASS',out;assert out['as_of'].startswith('2026-09-02')
+    assert parse_dt('2026-09-01')==datetime(2026,9,1,tzinfo=timezone.utc)
+    assert parse_dt('1 September 2026')==datetime(2026,9,1,tzinfo=timezone.utc)
     assert count_terms('corporate celebration',['rate'])==0;assert valid_url('https://www.eia.gov/todayinenergy/detail.php?id=')[0] is False
     rejects=[
       {'chapter':'국내·해외 주식 · 이슈기업','title':'US launches new strikes on Iran','summary':'military attack','url':'https://news.example/x','domain':'news.example','published':now.isoformat(),'tier':2,'source':'News'},
@@ -129,6 +142,11 @@ def self_test():
       {'chapter':'과학','title':'APOD: Launch of the Roman Space Telescope','summary':'space telescope','url':'https://science.example/apod','domain':'science.example','published':now.isoformat(),'tier':1,'source':'NASA'},
       {'chapter':'과학','title':'What’s Up: September 2026 Skywatching Tips from NASA','summary':'space','url':'https://science.example/sky','domain':'science.example','published':now.isoformat(),'tier':1,'source':'NASA'}]
     assert all(score(x,now)[0] is None for x in rejects)
+    accepts=[
+      {'chapter':'국내·해외 주식 · 이슈기업','title':'US trade regulator and states accuse Amazon in antitrust lawsuit','summary':'Regulatory action against Amazon.','url':'https://news.example/amazon','domain':'news.example','published':'2026-09-01','tier':2,'source':'News'},
+      {'chapter':'국내·해외 주식 · 이슈기업','title':'Anthropic sued over alleged theft of songs','summary':'Corporate lawsuit.','url':'https://news2.example/anthropic','domain':'news2.example','published':'2026-09-01','tier':2,'source':'News'},
+      {'chapter':'경제 · 시장','title':'Euro area unemployment at 6.4% as job market steadies','summary':'Labor market data.','url':'https://stats.example/unemployment','domain':'stats.example','published':'2026-09-01','tier':0,'source':'Stats'}]
+    assert all(score(x,now)[0] is not None for x in accepts)
     funding={'chapter':'국내·해외 주식 · 이슈기업','title':'AIR raises $50M in funding for AI security platform','summary':'startup funding','url':'https://tech.example/z','domain':'tech.example','published':now.isoformat(),'tier':3,'source':'Tech'};assert score(funding,now)[0] is not None
     maintenance={'chapter':'국내·해외 주식 · 이슈기업','title':'Cloud service supports database version 3.3.1','summary':'production support','url':'https://company.example/a','domain':'company.example','published':now.isoformat(),'tier':1,'source':'Company'};assert score(maintenance,now)[0] is None
     assert same_event('Germany blames Russia for airport drone incident, hits back with sanctions','Germany says Russia behind attempted drone attack at Leipzig airport')
