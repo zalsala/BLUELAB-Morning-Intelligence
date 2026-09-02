@@ -27,6 +27,10 @@ jobs:
         run: python scripts/arbitrate_priority_selection.py --self-test
       - name: Test replacement proposal safety offline
         run: python scripts/build_replacement_proposal.py --self-test
+      - name: Test editorial staging builder offline
+        run: python scripts/build_editorial_staging.py --self-test
+      - name: Test editorial staging validator offline
+        run: python scripts/validate_editorial_staging.py --self-test
       - name: Test YouTube signal collector offline
         run: python scripts/collect_youtube_signals.py --self-test
       - name: Validate editorial gold corpus seed
@@ -72,6 +76,16 @@ jobs:
           python scripts/build_replacement_proposal.py \
             --input artifacts/priority-news-live-arbitrated.json \
             --output artifacts/priority-replacement-proposal.json
+      - name: Build and validate editorial staging
+        id: staging
+        continue-on-error: true
+        run: |
+          python scripts/build_editorial_staging.py \
+            --input artifacts/priority-replacement-proposal.json \
+            --output artifacts/priority-editorial-staging.json
+          python scripts/validate_editorial_staging.py \
+            --input artifacts/priority-editorial-staging.json \
+            --require-ready
       - name: Live original YouTube signal acquisition
         id: youtube
         continue-on-error: true
@@ -104,6 +118,7 @@ jobs:
           echo "priority=${{ steps.priority.outcome }}"
           echo "arbitration=${{ steps.arbitration.outcome }}"
           echo "proposal=${{ steps.proposal.outcome }}"
+          echo "staging=${{ steps.staging.outcome }}"
           echo "youtube=${{ steps.youtube.outcome }}"
           echo "sources=${{ steps.sources.outcome }}"
           echo "gold=${{ steps.gold.outcome }}"
@@ -114,6 +129,7 @@ jobs:
             "${{ steps.priority.outcome }}" \
             "${{ steps.arbitration.outcome }}" \
             "${{ steps.proposal.outcome }}" \
+            "${{ steps.staging.outcome }}" \
             "${{ steps.youtube.outcome }}" \
             "${{ steps.sources.outcome }}" \
             "${{ steps.gold.outcome }}"; do
