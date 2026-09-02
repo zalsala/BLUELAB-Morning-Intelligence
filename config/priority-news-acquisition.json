@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-priority-news-acquisition-v8",
+  "version": "2026-09-02-priority-news-acquisition-v9",
   "candidate_target_per_chapter": 30,
   "minimum_unique_domains_for_candidate_pool": 5,
   "chapters": {
@@ -25,6 +25,8 @@
       {"id":"bea","mode":"html","url":"https://www.bea.gov/news","source":"BEA","tier":0,"include":["/news/2026/","/news/"],"enrich_article_metadata":true},
       {"id":"ecb","mode":"html","url":"https://www.ecb.europa.eu/press/html/index.en.html","source":"ECB","tier":0,"include":["/press/"],"enrich_article_metadata":true},
       {"id":"bok","mode":"html","url":"https://www.bok.or.kr/eng/bbs/E0000634/list.do?menuNo=400069","source":"Bank of Korea","tier":0,"include":["/eng/bbs/"],"enrich_article_metadata":true},
+      {"id":"eurostat-indicators","mode":"html","url":"https://ec.europa.eu/eurostat/news/euro-indicators","source":"Eurostat","tier":0,"include":["/web/products-euro-indicators/w/"],"enrich_article_metadata":true},
+      {"id":"imf-news","mode":"html","url":"https://www.imf.org/en/news","source":"IMF","tier":0,"include":["/en/news/articles/2026/"],"enrich_article_metadata":true},
       {"id":"bbc-business","mode":"feed","url":"https://feeds.bbci.co.uk/news/business/rss.xml","source":"BBC Business","tier":2},
       {"id":"guardian-business","mode":"feed","url":"https://www.theguardian.com/business/rss","source":"The Guardian Business","tier":2},
       {"id":"france24-business","mode":"feed","url":"https://www.france24.com/en/rss","source":"France 24","tier":2},
