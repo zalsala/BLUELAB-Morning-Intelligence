@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-priority-news-acquisition-v4",
+  "version": "2026-09-02-priority-news-acquisition-v5",
   "candidate_target_per_chapter": 30,
   "minimum_unique_domains_for_candidate_pool": 5,
   "chapters": {
@@ -16,21 +16,30 @@
       {"id":"science-aaas","mode":"feed","url":"https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science","source":"Science","tier":1},
       {"id":"esa-news","mode":"html","url":"https://www.esa.int/Newsroom","source":"ESA","tier":1,"include":["/Newsroom/","/Science_Exploration/"]},
       {"id":"cern-news","mode":"html","url":"https://home.cern/news","source":"CERN","tier":1,"include":["/news/"]},
-      {"id":"bbc-science","mode":"feed","url":"https://feeds.bbci.co.uk/news/science_and_environment/rss.xml","source":"BBC Science & Environment","tier":2}
+      {"id":"bbc-science","mode":"feed","url":"https://feeds.bbci.co.uk/news/science_and_environment/rss.xml","source":"BBC Science & Environment","tier":2},
+      {"id":"physorg","mode":"feed","url":"https://phys.org/rss-feed/","source":"Phys.org","tier":3}
     ],
     "경제 · 시장": [
       {"id":"fed","mode":"feed","url":"https://www.federalreserve.gov/feeds/press_all.xml","source":"Federal Reserve","tier":0},
       {"id":"eia","mode":"feed","url":"https://www.eia.gov/rss/todayinenergy.xml","source":"EIA","tier":0},
       {"id":"bea","mode":"html","url":"https://www.bea.gov/news","source":"BEA","tier":0,"include":["/news/2026/","/news/"]},
       {"id":"ecb","mode":"html","url":"https://www.ecb.europa.eu/press/html/index.en.html","source":"ECB","tier":0,"include":["/press/"]},
-      {"id":"bok","mode":"html","url":"https://www.bok.or.kr/eng/bbs/E0000634/list.do?menuNo=400069","source":"Bank of Korea","tier":0,"include":["/eng/bbs/"]}
+      {"id":"bok","mode":"html","url":"https://www.bok.or.kr/eng/bbs/E0000634/list.do?menuNo=400069","source":"Bank of Korea","tier":0,"include":["/eng/bbs/"]},
+      {"id":"bbc-business","mode":"feed","url":"https://feeds.bbci.co.uk/news/business/rss.xml","source":"BBC Business","tier":2},
+      {"id":"guardian-business","mode":"feed","url":"https://www.theguardian.com/business/rss","source":"The Guardian Business","tier":2},
+      {"id":"france24-business","mode":"feed","url":"https://www.france24.com/en/rss","source":"France 24","tier":2},
+      {"id":"aljazeera-economy","mode":"feed","url":"https://www.aljazeera.com/xml/rss/all.xml","source":"Al Jazeera","tier":2}
     ],
     "국내·해외 주식 · 이슈기업": [
       {"id":"nvidia-blog","mode":"feed","url":"https://blogs.nvidia.com/feed/","source":"NVIDIA","tier":1},
       {"id":"microsoft-blog","mode":"feed","url":"https://blogs.microsoft.com/feed/","source":"Microsoft","tier":1},
       {"id":"apple-newsroom","mode":"feed","url":"https://www.apple.com/newsroom/rss-feed.rss","source":"Apple","tier":1},
       {"id":"google-blog","mode":"feed","url":"https://blog.google/rss/","source":"Google","tier":1},
-      {"id":"aws-whats-new","mode":"feed","url":"https://aws.amazon.com/about-aws/whats-new/recent/feed/","source":"AWS","tier":1}
+      {"id":"aws-whats-new","mode":"feed","url":"https://aws.amazon.com/about-aws/whats-new/recent/feed/","source":"AWS","tier":1},
+      {"id":"bbc-business-stocks","mode":"feed","url":"https://feeds.bbci.co.uk/news/business/rss.xml","source":"BBC Business","tier":2},
+      {"id":"guardian-business-stocks","mode":"feed","url":"https://www.theguardian.com/business/rss","source":"The Guardian Business","tier":2},
+      {"id":"france24-business-stocks","mode":"feed","url":"https://www.france24.com/en/rss","source":"France 24","tier":2},
+      {"id":"aljazeera-economy-stocks","mode":"feed","url":"https://www.aljazeera.com/xml/rss/all.xml","source":"Al Jazeera","tier":2}
     ]
   }
 }
