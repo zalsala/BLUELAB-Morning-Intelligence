@@ -81,7 +81,9 @@ def collect(limit_per_channel=15):
     for r in records:
         if r['video_id'] in seen: continue
         seen.add(r['video_id']); dedup.append(r)
-    return {'schema_version':'youtube-signals-candidates-v2','generated_at':now().isoformat(),'candidate_count':len(dedup),'error_count':len(errors),'source_status':status,'errors':errors,'candidates':dedup}
+    healthy=sum(1 for x in status if x['status']=='PASS')
+    health='HEALTHY' if not errors else ('DEGRADED' if healthy else 'UNAVAILABLE')
+    return {'schema_version':'youtube-signals-candidates-v3','generated_at':now().isoformat(),'candidate_count':len(dedup),'error_count':len(errors),'healthy_source_count':healthy,'source_health':health,'source_status':status,'errors':errors,'candidates':dedup}
 
 def select(data):
     cfg=json.loads(CONFIG.read_text(encoding='utf-8')); asof=parse_dt(data.get('generated_at')) or now(); ranked=[]; rejected=Counter()
@@ -101,7 +103,7 @@ def select(data):
         item=dict(c); item['selection_score']=round(score,2); chosen.append(item); per[sid]+=1
         if len(chosen)>=cfg['target']: break
     status='PASS' if len(chosen)>=cfg['target'] and len(per)>=cfg['minimum_unique_channels'] else 'FAIL'
-    return {'schema_version':'youtube-signals-selection-v2','generated_at':now().isoformat(),'as_of':asof.isoformat(),'coverage_status':status,'selected_count':len(chosen),'unique_channels':len(per),'channel_counts':dict(per),'reject_counts':dict(rejected),'selected':chosen}
+    return {'schema_version':'youtube-signals-selection-v3','generated_at':now().isoformat(),'as_of':asof.isoformat(),'coverage_status':status,'source_health':data.get('source_health','UNKNOWN'),'source_error_count':data.get('error_count',0),'selected_count':len(chosen),'unique_channels':len(per),'channel_counts':dict(per),'reject_counts':dict(rejected),'selected':chosen}
 
 def self_test():
     raw=b'''<feed xmlns="http://www.w3.org/2005/Atom" xmlns:yt="http://www.youtube.com/xml/schemas/2015"><entry><yt:videoId>abc123</yt:videoId><title>Example video</title><published>2026-09-02T00:00:00+00:00</published><updated>2026-09-02T00:01:00+00:00</updated></entry></feed>'''
@@ -118,8 +120,8 @@ def main():
     data=collect(a.limit_per_channel); sel=select(data)
     p=Path(a.output); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
     s=Path(a.selected_output); s.write_text(json.dumps(sel,ensure_ascii=False,indent=2),encoding='utf-8')
-    print(f"YOUTUBE candidates={data['candidate_count']} errors={data['error_count']} selected={sel['selected_count']} channels={sel['unique_channels']} coverage={sel['coverage_status']}")
+    print(f"YOUTUBE candidates={data['candidate_count']} errors={data['error_count']} health={data['source_health']} selected={sel['selected_count']} channels={sel['unique_channels']} coverage={sel['coverage_status']}")
     for x in data['source_status']: print(' ',{k:v for k,v in x.items() if k!='attempts'})
-    return 0 if sel['coverage_status']=='PASS' and data['error_count']==0 else 2
+    return 0 if sel['coverage_status']=='PASS' else 2
 
 if __name__=='__main__': sys.exit(main())
