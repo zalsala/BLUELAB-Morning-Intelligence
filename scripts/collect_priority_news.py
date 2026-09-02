@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Collect diverse candidate links for the four priority Morning Intelligence chapters.
 
-The collector uses public RSS/Atom feeds when available and conservative same-domain
-HTML link discovery for official pages. It does not publish stories. Its purpose is
-to prove that the candidate pool can be diversified before editorial selection.
+Public RSS/Atom feeds are preferred. Conservative same-domain HTML discovery is
+used for official pages without a reliable feed. The collector never publishes
+stories; it only produces a candidate pool for later verification/editorial use.
 """
 from __future__ import annotations
 
@@ -41,41 +41,44 @@ def host(url):
 
 
 def get(url):
-    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, text/html;q=0.9, */*;q=0.5"})
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": UA,
+            "Accept": "application/rss+xml, application/atom+xml, application/xml, text/xml, text/html;q=0.9, */*;q=0.5",
+        },
+    )
     with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
         return r.read(), r.headers.get_content_type()
 
 
-def first_text(node, names):
-    for name in names:
-        found = node.find(name)
-        if found is not None and clean("".join(found.itertext())):
-            return clean("".join(found.itertext()))
-    return ""
+def local(tag):
+    return tag.rsplit("}", 1)[-1].lower()
+
+
+def feed_entries(root):
+    # Covers RSS, RDF/RSS and Atom regardless of XML namespace.
+    items = [n for n in root.iter() if local(n.tag) in {"item", "entry"}]
+    return items
 
 
 def parse_feed(raw, source_cfg, chapter, limit):
     root = ET.fromstring(raw)
     records = []
-    # RSS / RDF
-    items = root.findall(".//item")
-    # Atom fallback; namespace-agnostic by local-name matching.
-    if not items:
-        items = [n for n in root.iter() if n.tag.rsplit("}", 1)[-1] == "entry"]
-    for item in items[:limit]:
+    for item in feed_entries(root)[:limit]:
         title = ""
         link = ""
         published = ""
         summary = ""
         for child in list(item):
-            local = child.tag.rsplit("}", 1)[-1]
-            if local == "title" and not title:
+            name = local(child.tag)
+            if name == "title" and not title:
                 title = clean("".join(child.itertext()))
-            elif local == "link" and not link:
+            elif name == "link" and not link:
                 link = clean(child.attrib.get("href") or child.text or "")
-            elif local in {"pubDate", "published", "updated", "date"} and not published:
+            elif name in {"pubdate", "published", "updated", "date", "issued"} and not published:
                 published = clean("".join(child.itertext()))
-            elif local in {"description", "summary", "content"} and not summary:
+            elif name in {"description", "summary", "content", "encoded"} and not summary:
                 summary = clean(re.sub(r"<[^>]+>", " ", "".join(child.itertext())))
         if title and link.startswith("http"):
             records.append({
@@ -116,9 +119,13 @@ class LinkParser(HTMLParser):
             self._text = []
 
 
+def same_site(candidate, base):
+    a, b = host(candidate), host(base)
+    return a == b or a.endswith("." + b) or b.endswith("." + a)
+
+
 def parse_html(raw, source_cfg, chapter, limit):
     base = source_cfg["url"]
-    allowed_domain = host(base)
     patterns = source_cfg.get("include", [])
     parser = LinkParser()
     parser.feed(raw.decode("utf-8", errors="replace"))
@@ -127,7 +134,7 @@ def parse_html(raw, source_cfg, chapter, limit):
         if not href or len(title) < 12:
             continue
         url = urllib.parse.urljoin(base, href)
-        if not url.startswith("http") or host(url) != allowed_domain:
+        if not url.startswith("http") or not same_site(url, base):
             continue
         path = urllib.parse.urlparse(url).path
         if patterns and not any(p in path for p in patterns):
@@ -172,11 +179,21 @@ def self_test():
     cfg = {"id":"x","source":"Example","tier":1}
     got = parse_feed(rss, cfg, "경제 · 시장", 10)
     assert len(got) == 1 and got[0]["domain"] == "example.com"
+
+    rdf = b'''<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://purl.org/rss/1.0/"><item><title>Namespaced science item</title><link>https://science.example.org/paper</link></item></rdf:RDF>'''
+    got_rdf = parse_feed(rdf, cfg, "과학", 10)
+    assert len(got_rdf) == 1 and got_rdf[0]["domain"] == "science.example.org"
+
+    atom = b'''<feed xmlns="http://www.w3.org/2005/Atom"><entry><title>Atom science item</title><link href="https://atom.example.org/paper"/><updated>2026-09-02T00:00:00Z</updated></entry></feed>'''
+    got_atom = parse_feed(atom, cfg, "과학", 10)
+    assert len(got_atom) == 1 and got_atom[0]["url"] == "https://atom.example.org/paper"
+
     html_raw = b'<html><a href="/news/2026/story-one">A sufficiently descriptive science story title</a></html>'
     cfg2 = {"id":"y","source":"Example","tier":0,"url":"https://example.org/news","include":["/news/"]}
     got2 = parse_html(html_raw, cfg2, "과학", 10)
     assert len(got2) == 1 and got2[0]["url"] == "https://example.org/news/2026/story-one"
     assert len(dedupe(got + got)) == 1
+
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
     assert len(config["chapters"]) == 4
     assert all(len(v) >= 5 for v in config["chapters"].values())
