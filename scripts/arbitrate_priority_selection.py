@@ -123,6 +123,7 @@ def arbitrate(candidate_data, selected_data, target=TARGET):
 def self_test():
     now='2026-09-02T00:00:00+00:00'
     candidates=[]
+    selected=[]
     seeds={
       '국제 · 외교 · 안보':('iran','intl'),
       '과학':('research','science'),
@@ -132,17 +133,27 @@ def self_test():
     for ch,(kw,slug) in seeds.items():
         for d in range(5):
             for j in range(3):
-                candidates.append({'chapter':ch,'title':f'{kw} unique{d}{j} event{d}{j} signal{d}{j}','summary':kw,'url':f'https://s{d}.example/{slug}/{j}','domain':f's{d}.example','published':now,'tier':2,'source':'Gold'})
+                item={'chapter':ch,'title':f'{kw} unique{d}{j} event{d}{j} signal{d}{j}','summary':kw,'url':f'https://s{d}.example/{slug}/{j}','domain':f's{d}.example','published':now,'tier':2,'source':'Gold'}
+                candidates.append(item)
+                if j < 2:
+                    selected.append(dict(item))
     shared='https://news.example/shein'
-    candidates += [
-      {'chapter':'경제 · 시장','title':'Shein stock market IPO debut','summary':'market','url':shared,'domain':'news.example','published':now,'tier':2,'source':'News'},
-      {'chapter':'국내·해외 주식 · 이슈기업','title':'Shein IPO stock market debut','summary':'ipo','url':shared,'domain':'news.example','published':now,'tier':2,'source':'News'}]
-    base_sel=base.select({'generated_at':now,'candidates':candidates},10,now)
-    out=arbitrate({'generated_at':now,'candidates':candidates},base_sel)
+    economy_shared={'chapter':'경제 · 시장','title':'Shein stock market IPO debut','summary':'market inflation','url':shared,'domain':'news.example','published':now,'tier':2,'source':'News'}
+    stocks_shared={'chapter':'국내·해외 주식 · 이슈기업','title':'Shein IPO stock market debut','summary':'ipo earnings','url':shared,'domain':'news.example','published':now,'tier':2,'source':'News'}
+    candidates.extend([economy_shared,stocks_shared])
+    # Replace one selected economy and one selected stocks row with the same URL so arbitration is the only component under test.
+    selected=[x for x in selected if not (x['chapter']=='경제 · 시장' and x['url']=='https://s4.example/economy/1')]
+    selected=[x for x in selected if not (x['chapter']=='국내·해외 주식 · 이슈기업' and x['url']=='https://s4.example/stocks/1')]
+    selected.extend([economy_shared,stocks_shared])
+    selected_data={'as_of':now,'selected':selected}
+    out=arbitrate({'generated_at':now,'candidates':candidates},selected_data)
     assert len(out['duplicate_groups_resolved'])==1,out
     assert out['duplicate_groups_resolved'][0]['winner']=='국내·해외 주식 · 이슈기업',out
+    assert out['removed_count']==1,out
     assert not out['cross_chapter_duplicate_urls'],out
     assert out['coverage_status']=='PASS',out
+    assert out['chapter_report']['경제 · 시장']['selected_count']==10,out
+    assert out['chapter_report']['국내·해외 주식 · 이슈기업']['selected_count']==10,out
     print('PASS: global priority arbitration self-test')
 
 
