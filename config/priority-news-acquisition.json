@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-priority-news-acquisition-v2",
+  "version": "2026-09-02-priority-news-acquisition-v3",
   "candidate_target_per_chapter": 30,
   "minimum_unique_domains_for_candidate_pool": 5,
   "chapters": {
@@ -8,14 +8,14 @@
       {"id":"aljazeera","mode":"feed","url":"https://www.aljazeera.com/xml/rss/all.xml","source":"Al Jazeera","tier":2},
       {"id":"france24","mode":"feed","url":"https://www.france24.com/en/rss","source":"France 24","tier":2},
       {"id":"dw-world","mode":"feed","url":"https://rss.dw.com/rdf/rss-en-world","source":"DW","tier":2},
-      {"id":"nato-news","mode":"html","url":"https://www.nato.int/cps/en/natohq/news.htm","source":"NATO","tier":1,"include":["/cps/en/natohq/news_"]}
+      {"id":"guardian-world","mode":"feed","url":"https://www.theguardian.com/world/rss","source":"The Guardian","tier":2}
     ],
     "과학": [
       {"id":"nasa","mode":"feed","url":"https://www.nasa.gov/feed/","source":"NASA","tier":1},
-      {"id":"nature","mode":"feed","url":"https://www.nature.com/nature.rss","source":"Nature","tier":1},
+      {"id":"nature-news","mode":"html","url":"https://www.nature.com/news","source":"Nature","tier":1,"include":["/articles/"]},
       {"id":"science-aaas","mode":"feed","url":"https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science","source":"Science","tier":1},
-      {"id":"arxiv-science","mode":"feed","url":"https://export.arxiv.org/api/query?search_query=all%3Avision%20OR%20all%3Aphysics%20OR%20all%3Aastronomy&start=0&max_results=10&sortBy=submittedDate&sortOrder=descending","source":"arXiv","tier":1},
-      {"id":"esa-news","mode":"html","url":"https://www.esa.int/Newsroom","source":"ESA","tier":1,"include":["/Newsroom/","/Science_Exploration/"]}
+      {"id":"esa-news","mode":"html","url":"https://www.esa.int/Newsroom","source":"ESA","tier":1,"include":["/Newsroom/","/Science_Exploration/"]},
+      {"id":"cern-news","mode":"html","url":"https://home.cern/news","source":"CERN","tier":1,"include":["/news/"]}
     ],
     "경제 · 시장": [
       {"id":"fed","mode":"feed","url":"https://www.federalreserve.gov/feeds/press_all.xml","source":"Federal Reserve","tier":0},
