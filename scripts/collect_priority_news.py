@@ -58,8 +58,7 @@ def local(tag):
 
 def feed_entries(root):
     # Covers RSS, RDF/RSS and Atom regardless of XML namespace.
-    items = [n for n in root.iter() if local(n.tag) in {"item", "entry"}]
-    return items
+    return [n for n in root.iter() if local(n.tag) in {"item", "entry"}]
 
 
 def parse_feed(raw, source_cfg, chapter, limit):
@@ -161,15 +160,24 @@ def parse_html(raw, source_cfg, chapter, limit):
 
 
 def dedupe(records):
+    """Deduplicate within a chapter, not globally across chapters.
+
+    The same source article may legitimately be a candidate for both economy and
+    stocks; the later chapter-specific selector decides whether it belongs in
+    either final section. Global dedup here incorrectly starved later chapters.
+    """
     seen_urls, seen_titles, out = set(), set(), []
     for r in records:
+        chapter = r.get("chapter", "")
         u = r["url"].rstrip("/")
         t = re.sub(r"[^a-z0-9가-힣]+", " ", r["title"].lower()).strip()
-        if not u or u in seen_urls or (t and t in seen_titles):
+        url_key = (chapter, u)
+        title_key = (chapter, t)
+        if not u or url_key in seen_urls or (t and title_key in seen_titles):
             continue
-        seen_urls.add(u)
+        seen_urls.add(url_key)
         if t:
-            seen_titles.add(t)
+            seen_titles.add(title_key)
         out.append(r)
     return out
 
@@ -192,7 +200,13 @@ def self_test():
     cfg2 = {"id":"y","source":"Example","tier":0,"url":"https://example.org/news","include":["/news/"]}
     got2 = parse_html(html_raw, cfg2, "과학", 10)
     assert len(got2) == 1 and got2[0]["url"] == "https://example.org/news/2026/story-one"
+
+    # Same URL is one candidate inside a chapter, but may remain a candidate in
+    # a second chapter for later semantic classification.
+    same_econ = dict(got[0])
+    same_stock = dict(got[0], chapter="국내·해외 주식 · 이슈기업")
     assert len(dedupe(got + got)) == 1
+    assert len(dedupe([same_econ, same_stock])) == 2
 
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
     assert len(config["chapters"]) == 4
@@ -246,7 +260,7 @@ def main():
         }
 
     payload = {
-        "schema_version":"priority-news-candidates-v1",
+        "schema_version":"priority-news-candidates-v2",
         "generated_at":now_iso(),
         "candidate_count":len(records),
         "error_count":len(errors),
