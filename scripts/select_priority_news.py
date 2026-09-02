@@ -17,6 +17,8 @@ GENERIC_PATHS={'','/','/news','/world','/business','/technology','/research-high
 STOCK_STRONG_TITLE_TERMS=['earnings','revenue','profit','forecast','guidance','shares','stock','acquisition','acquire','acquires','merger','investment','invests','funding','fundraise','fundraising','raises','raised','secures','secured','series a','series b','series c','ipo','initial public offering','valued','valuation','sale','sells','sold','shipping','introduces','unveils','contract','partnership','ceo','manufacturing','production','capacity','layoffs','jobs cut','factory','electric model','cpu','gpu','chip','chips','data center','datacenter','lawsuit','sued','regulator','regulatory','antitrust','investigation','fine']
 ECONOMY_STRONG_TITLE_TERMS=['inflation','gdp','jobs','employment','unemployment','job openings','jolts','economy','economic','market','markets','bond','bonds','yield','yields','oil','energy','lng','trade','tariff','tariffs','central bank','federal reserve','fed chair','bank of england','bank of korea','interest rate','interest rates','consumer spending','retail sales','manufacturing','production','currency','dollar','growth','recession','g20','uranium production','debt','fiscal']
 INTERNATIONAL_STRONG_TITLE_TERMS=['war','strike','strikes','attack','attacks','missile','drone','sanction','sanctions','security','defense','defence','diplomacy','diplomatic','border','nuclear','ceasefire','military','trade war','g20','nato','airspace','aircraft carrier','foreign collusion','migration','press bans']
+INTERNATIONAL_GEOPOLITICAL_OVERRIDE_TERMS=['war','strike','strikes','attack','attacks','missile','drone','sanction','sanctions','defense','defence','diplomacy','diplomatic','border','nuclear','ceasefire','military','trade war','g20','nato','airspace','aircraft carrier','foreign collusion','migration','press bans']
+PUBLIC_SAFETY_TITLE_TERMS=['drug','drugs','narcotic','narcotics','meth','methamphetamine','cocaine','heroin','cartel','smuggling','trafficking']
 LOW_IMPACT_PRIMARY_PATTERNS=['supports','now supports','now lets you','now available','available in additional','adds support for','console update','backup now','version update']
 ECONOMY_LOW_IMPACT_PRIMARY=['enforcement action','former employee','civil money penalty','prohibition order']
 STOPWORDS={'a','an','and','are','as','at','after','ahead','amid','be','been','by','for','from','has','have','in','into','is','it','its','new','of','on','or','over','says','say','the','their','this','to','with','will','us','u','s','about','against','know','what','report','reports','reported','moment','video','watch','powerful','historic','rare','first','next','generation','beginning','future','state','media'}
@@ -81,7 +83,10 @@ def score(c,asof):
     if chapter=='국제 · 외교 · 안보':
         macro=count_terms(title,ECONOMY_STRONG_TITLE_TERMS)
         intl=count_terms(title,INTERNATIONAL_STRONG_TITLE_TERMS)
+        public_safety=count_terms(title,PUBLIC_SAFETY_TITLE_TERMS)
+        geopolitical_override=count_terms(title,INTERNATIONAL_GEOPOLITICAL_OVERRIDE_TERMS)
         if macro>=1 and intl<1:return None,'macro_wrong_chapter'
+        if public_safety>=1 and geopolitical_override<1:return None,'public_safety_wrong_chapter'
     if chapter=='경제 · 시장':
         if tier>=2 and count_terms(title,ECONOMY_STRONG_TITLE_TERMS)<1:return None,'weak_macro_signal'
         if tier<=1 and any(term_match(title,x) for x in ECONOMY_LOW_IMPACT_PRIMARY):return None,'low_impact_primary_update'
@@ -127,7 +132,7 @@ def select(data,target=TARGET,asof=None):
         reports[chapter]={'eligible_count':len(ranked),'selected_count':len(chosen),'unique_domains':domains,'domain_counts':dict(domain_counts),'event_duplicates_skipped':event_dupes,'status':status,'reject_counts':{reason:n for (ch,reason),n in rejected.items() if ch==chapter}}
         selected_all.extend(chosen)
     overall='PASS' if all(r['status']=='PASS' for r in reports.values()) else 'FAIL'
-    return {'schema_version':'priority-news-selection-v8','generated_at':datetime.now(timezone.utc).isoformat(),'as_of':asof.isoformat(),'candidate_count':len(candidates),'selected_count':len(selected_all),'target_per_chapter':target,'minimum_unique_domains':MIN_DOMAINS,'max_per_domain':MAX_PER_DOMAIN,'coverage_status':overall,'chapter_report':reports,'selected':selected_all}
+    return {'schema_version':'priority-news-selection-v9','generated_at':datetime.now(timezone.utc).isoformat(),'as_of':asof.isoformat(),'candidate_count':len(candidates),'selected_count':len(selected_all),'target_per_chapter':target,'minimum_unique_domains':MIN_DOMAINS,'max_per_domain':MAX_PER_DOMAIN,'coverage_status':overall,'chapter_report':reports,'selected':selected_all}
 
 def self_test():
     now=datetime(2026,9,2,tzinfo=timezone.utc);cs=[];seed_terms={'국제 · 외교 · 안보':'iran','과학':'research','경제 · 시장':'inflation','국내·해외 주식 · 이슈기업':'earnings'}
@@ -148,8 +153,10 @@ def self_test():
       {'chapter':'경제 · 시장','title':'Federal Reserve Board issues enforcement action with former employee of Banco Popular','summary':'federal reserve','url':'https://fed.example/e','domain':'fed.example','published':now.isoformat(),'tier':0,'source':'Fed'},
       {'chapter':'과학','title':'APOD: Launch of the Roman Space Telescope','summary':'space telescope','url':'https://science.example/apod','domain':'science.example','published':now.isoformat(),'tier':1,'source':'NASA'},
       {'chapter':'과학','title':'What’s Up: September 2026 Skywatching Tips from NASA','summary':'space','url':'https://science.example/sky','domain':'science.example','published':now.isoformat(),'tier':1,'source':'NASA'},
-      {'chapter':'국제 · 외교 · 안보','title':"Sharp rise in utility bills pushes Russia's inflation further off target",'summary':'Russian consumer prices rise','url':'https://world.example/russia-inflation','domain':'world.example','published':now.isoformat(),'tier':2,'source':'News'}]
+      {'chapter':'국제 · 외교 · 안보','title':"Sharp rise in utility bills pushes Russia's inflation further off target",'summary':'Russian consumer prices rise','url':'https://world.example/russia-inflation','domain':'world.example','published':now.isoformat(),'tier':2,'source':'News'},
+      {'chapter':'국제 · 외교 · 안보','title':'US and Sri Lanka security cooperation busts Pakistan meth trafficking network','summary':'Public security narcotics operation','url':'https://world.example/drug-network','domain':'world.example','published':now.isoformat(),'tier':2,'source':'News'}]
     assert all(score(x,now)[0] is None for x in rejects)
+    assert score(rejects[-1],now)[1]=='public_safety_wrong_chapter'
     accepts=[
       {'chapter':'국내·해외 주식 · 이슈기업','title':'US trade regulator and states accuse Amazon in antitrust lawsuit','summary':'Regulatory action against Amazon.','url':'https://news.example/amazon','domain':'news.example','published':'2026-09-01','tier':2,'source':'News'},
       {'chapter':'국내·해외 주식 · 이슈기업','title':'Anthropic sued over alleged theft of songs','summary':'Corporate lawsuit.','url':'https://news2.example/anthropic','domain':'news2.example','published':'2026-09-01','tier':2,'source':'News'},
