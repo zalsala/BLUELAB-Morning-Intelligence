@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-priority-news-acquisition-v14",
+  "version": "2026-09-02-priority-news-acquisition-v15",
   "candidate_target_per_chapter": 30,
   "minimum_unique_domains_for_candidate_pool": 6,
   "chapters": {
@@ -10,7 +10,8 @@
       {"id":"dw-world","mode":"feed","url":"https://rss.dw.com/rdf/rss-en-world","source":"DW","tier":2},
       {"id":"guardian-world","mode":"feed","url":"https://www.theguardian.com/world/rss","source":"The Guardian","tier":2},
       {"id":"euronews-world","mode":"feed","url":"https://www.euronews.com/rss?format=mrss&level=theme&name=news","source":"Euronews","tier":2},
-      {"id":"skynews-world","mode":"feed","url":"https://feeds.skynews.com/feeds/rss/world.xml","source":"Sky News","tier":2}
+      {"id":"skynews-world","mode":"feed","url":"https://feeds.skynews.com/feeds/rss/world.xml","source":"Sky News","tier":2},
+      {"id":"abc-international","mode":"feed","url":"https://feeds.abcnews.com/abcnews/internationalheadlines","source":"ABC News","tier":2}
     ],
     "과학": [
       {"id":"nasa","mode":"feed","url":"https://www.nasa.gov/feed/","source":"NASA","tier":1},
