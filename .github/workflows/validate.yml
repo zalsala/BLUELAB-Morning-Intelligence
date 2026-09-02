@@ -15,6 +15,10 @@ jobs:
         run: python scripts/validate_release_contract.py
       - name: Validate source registry
         run: python scripts/validate_source_registry.py
+      - name: Validate frozen priority snapshot
+        run: |
+          python scripts/validate_priority_snapshot.py --self-test
+          python scripts/validate_priority_snapshot.py
       - name: Test vision research collectors offline
         run: python scripts/collect_vision_research.py --self-test
       - name: Test vision research selector offline
@@ -76,12 +80,16 @@ jobs:
             --selected artifacts/priority-news-live-selected.json \
             --output artifacts/priority-news-live-arbitrated.json \
             --target 10
-      - name: Build non-production priority replacement proposal
+      - name: Validate frozen priority snapshot
+        id: snapshot
+        continue-on-error: true
+        run: python scripts/validate_priority_snapshot.py
+      - name: Build non-production priority replacement proposal from frozen snapshot
         id: proposal
         continue-on-error: true
         run: |
           python scripts/build_replacement_proposal.py \
-            --input artifacts/priority-news-live-arbitrated.json \
+            --input editorial/2026-09-02/priority-snapshot.json \
             --output artifacts/priority-replacement-proposal.json
       - name: Build editorial staging base
         id: staging_build
@@ -140,6 +148,7 @@ jobs:
           echo "vision=${{ steps.vision.outcome }}"
           echo "priority=${{ steps.priority.outcome }}"
           echo "arbitration=${{ steps.arbitration.outcome }}"
+          echo "snapshot=${{ steps.snapshot.outcome }}"
           echo "proposal=${{ steps.proposal.outcome }}"
           echo "staging_build=${{ steps.staging_build.outcome }}"
           echo "editorial_intl=${{ steps.editorial_intl.outcome }}"
@@ -153,6 +162,7 @@ jobs:
             "${{ steps.vision.outcome }}" \
             "${{ steps.priority.outcome }}" \
             "${{ steps.arbitration.outcome }}" \
+            "${{ steps.snapshot.outcome }}" \
             "${{ steps.proposal.outcome }}" \
             "${{ steps.staging_build.outcome }}" \
             "${{ steps.editorial_intl.outcome }}" \
