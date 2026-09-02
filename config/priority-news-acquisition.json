@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-priority-news-acquisition-v15",
+  "version": "2026-09-02-priority-news-acquisition-v16",
   "candidate_target_per_chapter": 30,
   "minimum_unique_domains_for_candidate_pool": 6,
   "chapters": {
@@ -17,6 +17,7 @@
       {"id":"nasa","mode":"feed","url":"https://www.nasa.gov/feed/","source":"NASA","tier":1},
       {"id":"nature-news","mode":"html","url":"https://www.nature.com/news","source":"Nature","tier":1,"include":["/articles/"],"enrich_article_metadata":true},
       {"id":"science-aaas","mode":"feed","url":"https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science","source":"Science","tier":1},
+      {"id":"esa-space-science","mode":"feed","url":"https://www.esa.int/rssfeed/Our_Activities/Space_Science","source":"ESA Space Science","tier":1},
       {"id":"esa-news","mode":"html","url":"https://www.esa.int/Newsroom","source":"ESA","tier":1,"include":["/Newsroom/","/Science_Exploration/"],"enrich_article_metadata":true},
       {"id":"cern-news","mode":"html","url":"https://home.cern/news","source":"CERN","tier":1,"include":["/news/"],"enrich_article_metadata":true},
       {"id":"bbc-science","mode":"feed","url":"https://feeds.bbci.co.uk/news/science_and_environment/rss.xml","source":"BBC Science & Environment","tier":2},
