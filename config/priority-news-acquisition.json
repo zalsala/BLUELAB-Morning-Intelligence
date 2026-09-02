@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-02-priority-news-acquisition-v5",
+  "version": "2026-09-02-priority-news-acquisition-v6",
   "candidate_target_per_chapter": 30,
   "minimum_unique_domains_for_candidate_pool": 5,
   "chapters": {
@@ -36,6 +36,9 @@
       {"id":"apple-newsroom","mode":"feed","url":"https://www.apple.com/newsroom/rss-feed.rss","source":"Apple","tier":1},
       {"id":"google-blog","mode":"feed","url":"https://blog.google/rss/","source":"Google","tier":1},
       {"id":"aws-whats-new","mode":"feed","url":"https://aws.amazon.com/about-aws/whats-new/recent/feed/","source":"AWS","tier":1},
+      {"id":"amd-newsroom","mode":"feed","url":"https://newsroom.amd.com/rss.xml?content-type=news","source":"AMD","tier":1},
+      {"id":"samsung-global-newsroom","mode":"feed","url":"https://news.samsung.com/global/feed/rss","source":"Samsung Global Newsroom","tier":1},
+      {"id":"techcrunch","mode":"feed","url":"https://techcrunch.com/feed/","source":"TechCrunch","tier":3},
       {"id":"bbc-business-stocks","mode":"feed","url":"https://feeds.bbci.co.uk/news/business/rss.xml","source":"BBC Business","tier":2},
       {"id":"guardian-business-stocks","mode":"feed","url":"https://www.theguardian.com/business/rss","source":"The Guardian Business","tier":2},
       {"id":"france24-business-stocks","mode":"feed","url":"https://www.france24.com/en/rss","source":"France 24","tier":2},
