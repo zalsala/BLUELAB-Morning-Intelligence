@@ -29,8 +29,11 @@ def preferred_chapter(items):
     if '국내·해외 주식 · 이슈기업' in chapters and base.count_terms(title, base.STOCK_STRONG_TITLE_TERMS):
         return '국내·해외 주식 · 이슈기업'
     if '국제 · 외교 · 안보' in chapters and '경제 · 시장' in chapters:
-        if base.count_terms(title, base.ECONOMY_STRONG_TITLE_TERMS) < 1:
-            return '국제 · 외교 · 안보'
+        # Explicit ownership: macro/market events belong to Economy even when
+        # the event also has diplomatic significance. Otherwise International owns it.
+        if base.count_terms(title, base.ECONOMY_STRONG_TITLE_TERMS) >= 1:
+            return '경제 · 시장'
+        return '국제 · 외교 · 안보'
     return items[0]['chapter']
 
 
@@ -67,14 +70,7 @@ def valid_add(chosen, candidate, globally_used):
 
 
 def refill_chapter(chosen, ranked, globally_used, target):
-    """Fill a chapter after cross-chapter removals without relaxing base quality.
-
-    Pass 1 preserves every surviving selected item. If that cannot reach target,
-    pass 2 re-solves the chapter from the full ranked eligible pool while keeping
-    globally-owned URLs from other chapters excluded. This allows a different
-    combination of same-event/domain candidates to satisfy the quota rather than
-    getting trapped by greedy survivor ordering.
-    """
+    """Fill a chapter after cross-chapter removals without relaxing base quality."""
     rejects=Counter(); added=[]
     for score,published,c in ranked:
         if len(chosen)>=target: break
@@ -87,8 +83,6 @@ def refill_chapter(chosen, ranked, globally_used, target):
     if len(chosen)>=target:
         return chosen,globally_used,added,rejects,False
 
-    # Remove this chapter's URLs from the global set, then solve the chapter again
-    # from the complete quality-qualified ranking. Other chapters remain reserved.
     for x in chosen:
         globally_used.discard(canonical_key(x.get('canonical_url') or x.get('url')))
     rebuilt=[]; rebuilt_added=[]; second_rejects=Counter()
@@ -160,7 +154,7 @@ def arbitrate(candidate_data, selected_data, target=TARGET):
     cross_duplicates=[k for k,n in Counter(keys).items() if k and n>1]
     status='PASS' if all(x['status']=='PASS' for x in report.values()) and not cross_duplicates and len(final)==target*len(base.POLICY) else 'FAIL'
     return {
-      'schema_version':'priority-news-global-arbitration-v2','generated_at':base.datetime.now(base.timezone.utc).isoformat(),
+      'schema_version':'priority-news-global-arbitration-v3','generated_at':base.datetime.now(base.timezone.utc).isoformat(),
       'as_of':asof.isoformat(),'coverage_status':status,'selected_count':len(final),'target_per_chapter':target,
       'duplicate_groups_resolved':duplicate_groups,'removed_count':len(removed),'backfilled':backfilled,
       'refill_diagnostics':refill_diagnostics,'cross_chapter_duplicate_urls':cross_duplicates,'chapter_report':report,'selected':final
@@ -192,14 +186,11 @@ def self_test():
     assert out['coverage_status']=='PASS' and out['selected_count']==40,out
     assert out['chapter_report']['경제 · 시장']['selected_count']==10,out
 
-    # Regression: two cross-chapter duplicate losses from economy must be refillable
-    # from the full quality-qualified economy ranking without lowering thresholds.
     candidates2=[dict(x) for x in candidates]; selected2=[dict(x) for x in selected if canonical_key(x.get('url'))!=canonical_key(shared)]
     shared2='https://news.example/g20'
     intl2={'chapter':'국제 · 외교 · 안보','title':'G20 leaders discuss security tensions','summary':'security diplomacy','url':shared2,'domain':'news.example','published':now,'tier':2,'source':'News'}
     econ2={'chapter':'경제 · 시장','title':'G20 leaders discuss security tensions','summary':'inflation market','url':shared2,'domain':'news.example','published':now,'tier':2,'source':'News'}
     candidates2.extend([intl2,econ2])
-    # Make selected lists exactly ten/chapter and inject two economy duplicates.
     by=defaultdict(list)
     for x in selected2: by[x['chapter']].append(x)
     by['국제 · 외교 · 안보']=by['국제 · 외교 · 안보'][:9]+[intl2]
@@ -211,6 +202,18 @@ def self_test():
     assert len(out2['duplicate_groups_resolved'])>=2,out2
     assert out2['coverage_status']=='PASS' and out2['selected_count']==40,out2
     assert out2['chapter_report']['경제 · 시장']['selected_count']==10,out2
+
+    oil_url='https://news.example/venezuela-oil'
+    oil_items=[
+      {'chapter':'국제 · 외교 · 안보','title':'US energy secretary vows oil output will double on visit to Venezuela','url':oil_url},
+      {'chapter':'경제 · 시장','title':'US energy secretary vows oil output will double on visit to Venezuela','url':oil_url},
+    ]
+    assert preferred_chapter(oil_items)=='경제 · 시장'
+    security_items=[
+      {'chapter':'국제 · 외교 · 안보','title':'Leaders discuss border security and diplomacy','url':'https://news.example/security'},
+      {'chapter':'경제 · 시장','title':'Leaders discuss border security and diplomacy','url':'https://news.example/security'},
+    ]
+    assert preferred_chapter(security_items)=='국제 · 외교 · 안보'
     print('PASS: global priority arbitration self-test')
 
 
