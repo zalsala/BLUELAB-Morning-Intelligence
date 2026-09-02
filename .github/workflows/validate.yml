@@ -66,6 +66,8 @@ jobs:
       - name: Live original YouTube signal acquisition
         id: youtube
         continue-on-error: true
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: |
           mkdir -p artifacts
           python scripts/collect_youtube_signals.py --limit-per-channel 15 --output artifacts/youtube-signals-live.json --selected-output artifacts/youtube-signals-selected.json
