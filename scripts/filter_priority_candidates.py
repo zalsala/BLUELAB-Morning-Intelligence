@@ -10,6 +10,8 @@ SCIENCE_CHAPTER='과학'
 ECONOMY_CHAPTER='경제 · 시장'
 NON_FACTUAL_SEGMENTS={'opinion','opinions','comment','comments','commentisfree','editorial','columns','column','press-review','press_reviews','analysis','fault-lines'}
 PUBLIC_SAFETY_INCIDENT_TERMS=('blast','explosion','bomb','detonated')
+INDUSTRIAL_EXPANSION_TERMS=('aluminum expansion','aluminium expansion','coal to power')
+INTERNATIONAL_OVERRIDE_TERMS=('war','strike','attack','missile','drone','sanction','security','defense','defence','diplomacy','border','nuclear','ceasefire','military','trade war','g20','nato','airspace')
 SCIENCE_BRIEFING_TERMS=('media briefing','press briefing')
 SCIENCE_CONTENT_FILLER_TERMS=('podcast','podcast series')
 HISTORICAL_REFERENCE_TERMS=('characteristics of','census day')
@@ -50,8 +52,13 @@ def classify_candidate(c: dict) -> str:
     summary=(c.get('summary') or '').lower()
     text=title+' '+summary
     chapter=c.get('chapter')
-    if chapter==INTERNATIONAL_CHAPTER and 'police station' in text and any(x in text for x in PUBLIC_SAFETY_INCIDENT_TERMS):
-        return 'public_safety_incident'
+    if chapter==INTERNATIONAL_CHAPTER:
+        if 'police station' in text and any(x in text for x in PUBLIC_SAFETY_INCIDENT_TERMS):
+            return 'public_safety_incident'
+        industrial=any(x in title for x in INDUSTRIAL_EXPANSION_TERMS)
+        geopolitical=any(x in title for x in INTERNATIONAL_OVERRIDE_TERMS)
+        if industrial and not geopolitical:
+            return 'industrial_expansion_wrong_chapter'
     if chapter==SCIENCE_CHAPTER:
         if any(x in title for x in SCIENCE_BRIEFING_TERMS):
             return 'science_briefing'
@@ -75,7 +82,7 @@ def filter_data(data: dict) -> dict:
             continue
         kept.append(c); chapters[c.get('chapter','')]+=1
     out=dict(data)
-    out['schema_version']='priority-news-factual-candidates-v7'
+    out['schema_version']='priority-news-factual-candidates-v8'
     out['unfiltered_candidate_count']=len(data.get('candidates',[]))
     out['candidate_count']=len(kept)
     out['factual_prefilter']={
@@ -95,6 +102,8 @@ def self_test():
       {'chapter':INTERNATIONAL_CHAPTER,'title':'Press review','url':'https://example.com/tv-shows/press-review/2026/story'},
       {'chapter':INTERNATIONAL_CHAPTER,'title':'Documentary','url':'https://example.com/video/fault-lines/2026/story'},
       {'chapter':INTERNATIONAL_CHAPTER,'title':"Blast near police station on Colombia's border leaves casualties",'summary':'A car packed with explosives detonated outside a police station','url':'https://example.com/world/incident'},
+      {'chapter':INTERNATIONAL_CHAPTER,'title':'Indonesia doubles down on coal to power its aluminum expansion','summary':'Industrial energy expansion','url':'https://example.com/world/industry'},
+      {'chapter':INTERNATIONAL_CHAPTER,'title':'Sanctions hit aluminum expansion as trade war escalates','summary':'Geopolitical industrial dispute','url':'https://example.com/world/sanctions'},
       {'chapter':SCIENCE_CHAPTER,'title':"Media briefing: BepiColombo's next milestone towards Mercury",'source':'ESA Space Science','url':'https://esa.example/briefing'},
       {'chapter':SCIENCE_CHAPTER,'title':'Expedition Sound podcast series','source':'ESA Space Science','url':'https://esa.example/podcast'},
       {'chapter':SCIENCE_CHAPTER,'title':'Roman lifts off on a mission to survey the infrared sky','source':'ESA Space Science','url':'https://esa.example/roman'},
@@ -103,15 +112,17 @@ def self_test():
       {'chapter':ECONOMY_CHAPTER,'title':'Working and workless households in the UK: April to June 2026','summary':'Current labour market release','source':'UK Office for National Statistics','published':'Wed, 02 Sep 2026 08:30:00 +0000','url':'https://ons.example/releases/workless-2026'}
     ]}
     out=filter_data(data)
-    assert out['candidate_count']==3,out
-    assert out['factual_prefilter']['rejected_count']==9,out
+    assert out['candidate_count']==4,out
+    assert out['factual_prefilter']['rejected_count']==10,out
     assert out['factual_prefilter']['reason_counts']['non_factual_path']==4,out
     assert out['factual_prefilter']['reason_counts']['public_safety_incident']==1,out
+    assert out['factual_prefilter']['reason_counts']['industrial_expansion_wrong_chapter']==1,out
     assert out['factual_prefilter']['reason_counts']['science_briefing']==1,out
     assert out['factual_prefilter']['reason_counts']['science_content_filler']==1,out
     assert out['factual_prefilter']['reason_counts']['prefer_primary_source']==1,out
     assert out['factual_prefilter']['reason_counts']['historical_reference_data']==1,out
     kept_titles={x['title'] for x in out['candidates']}
+    assert 'Sanctions hit aluminum expansion as trade war escalates' in kept_titles
     assert 'NASA’s Nancy Grace Roman Space Telescope Launches' in kept_titles
     assert 'Working and workless households in the UK: April to June 2026' in kept_titles
     print('PASS: factual priority candidate prefilter self-test')
