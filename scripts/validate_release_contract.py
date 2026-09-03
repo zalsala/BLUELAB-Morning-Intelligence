@@ -2,14 +2,17 @@
 from __future__ import annotations
 import argparse, json, re, sys
 from collections import Counter, defaultdict
+from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
+from zoneinfo import ZoneInfo
 
 ROOT=Path(__file__).resolve().parents[1]
 DATA=ROOT/"public"/"data"
 SOURCE_POLICY=ROOT/"config"/"source-policy.json"
 EXPECTED_FILES=[f"stories-{i}.json" for i in range(1,6)]
 PLACEHOLDER=re.compile(r"(^|\W)(undefined|null|tbd|todo|placeholder)(\W|$)",re.I)
+KST=ZoneInfo("Asia/Seoul")
 
 def fail(errors,msg):
     errors.append(msg)
@@ -34,9 +37,18 @@ def load():
                 if isinstance(chunk,list): stories.extend(chunk)
     return today,policy,files,stories
 
-def audit(release=False):
+def audit(release=False, expected_date=None):
     today,policy,files,stories=load()
     errors=[]
+    if expected_date:
+        meta=today.get("meta",{})
+        actual_date=str(meta.get("date","")).strip()
+        actual_edition=str(meta.get("edition","")).strip()
+        expected_edition=f"daily-{expected_date}"
+        if actual_date != expected_date:
+            fail(errors,f"edition freshness mismatch: meta.date={actual_date or '<missing>'} expected={expected_date}")
+        if actual_edition != expected_edition:
+            fail(errors,f"edition identity mismatch: meta.edition={actual_edition or '<missing>'} expected={expected_edition}")
     if files!=EXPECTED_FILES: fail(errors,f"story_files must equal {EXPECTED_FILES}")
     if len(stories)<5: fail(errors,"story bundles contain fewer than 5 stories")
     titles=[s.get("title","").strip() for s in stories]
@@ -88,7 +100,7 @@ def audit(release=False):
         walk(today)
 
     mode="RELEASE" if release else "STRUCTURAL"
-    print(f"CONTRACT_{mode} edition={today.get('meta',{}).get('edition','unknown')}")
+    print(f"CONTRACT_{mode} edition={today.get('meta',{}).get('edition','unknown')} expected_date={expected_date or 'not-enforced'}")
     for ch,n in chapter_counts.items(): print(f"  {ch}: {n}")
     if errors:
         print("ERRORS:")
@@ -100,7 +112,16 @@ def audit(release=False):
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument("--release",action="store_true")
+    ap.add_argument("--expected-date", default=None)
+    ap.add_argument("--expected-today-kst", action="store_true")
     args=ap.parse_args()
-    return audit(args.release)
+    expected=args.expected_date
+    if args.expected_today_kst:
+        today_kst=datetime.now(KST).date().isoformat()
+        if expected and expected != today_kst:
+            print(f"FAIL: --expected-date={expected} conflicts with KST today={today_kst}")
+            return 2
+        expected=today_kst
+    return audit(args.release, expected)
 
 if __name__=="__main__": sys.exit(main())
