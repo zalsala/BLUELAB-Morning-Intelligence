@@ -24,6 +24,7 @@ from pipeline.schema import (
     TrendingKeyword,
     BriefingBundle,
 )
+from pipeline.youtube_collector import collect_youtube_hot_issues
 
 
 def fetch_geomdan_weather() -> WeatherData:
@@ -225,6 +226,8 @@ def assemble_bundle(articles: List[Article]) -> BriefingBundle:
     trending_kw = extract_top_20_trending_keywords(articles)
     print(f"  └─ 20대 실시간 트렌드 키워드 추출 완료 ({len(trending_kw)}개)")
 
+    youtube_hot = collect_youtube_hot_issues()
+
     three_lines = generate_three_line_summary(top_5, weather)
 
     articles_by_ch: Dict[str, List[Article]] = {c["id"]: [] for c in CHAPTER_DEFINITIONS}
@@ -254,7 +257,8 @@ def assemble_bundle(articles: List[Article]) -> BriefingBundle:
         "generated_at": now.isoformat(),
         "total_chapters": len(chapters),
         "total_articles": len(articles),
-        "version": "1.0.0",
+        "total_youtube_videos": len(youtube_hot),
+        "version": "1.1.0",
         "publisher": "BLUELAB Morning Intelligence Automated System"
     }
 
@@ -268,11 +272,12 @@ def assemble_bundle(articles: List[Article]) -> BriefingBundle:
         top_5_highlights=top_5,
         trending_keywords=trending_kw,
         chapters=chapters,
+        youtube_hot_issues=youtube_hot,
         integrity_hash=integrity_hash
     )
 
     print("-" * 70)
-    print(f" [Step 4 완료] 총 {len(chapters)}개 챕터 / {len(articles)}개 기사 무결성 번들 조립 완료 (해시: {integrity_hash[:16]}...)")
+    print(f" [Step 4 완료] 총 {len(chapters)}개 챕터 / {len(articles)}개 기사 / 유튜브 {len(youtube_hot)}개 영상 번들 조립 완료 (해시: {integrity_hash[:16]}...)")
     print("=" * 70)
     return bundle
 

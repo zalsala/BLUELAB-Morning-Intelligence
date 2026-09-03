@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BLUELAB Morning Intelligence</title>
-  <meta name="description" content="14개 챕터 140개 인텔리전스 뉴스 & 인천 검단 날씨 아침 종합 브리핑" />
+  <meta name="description" content="14개 챕터 140개 인텔리전스 뉴스, 실시간 인기순위 & 유튜브 핫이슈 브리핑" />
   
   <!-- Pretendard & Inter Web Fonts for Maximum Readability -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -35,9 +35,9 @@
             darkbg: {
               main: '#090d16',
               card: '#131b2e',
-              subtle: '#1e293b',
-              hover: '#24324a',
-              border: '#2e3d5b'
+              subtle: '#1b2438',
+              hover: '#222f47',
+              border: '#2a3b5c'
             }
           }
         }
@@ -45,36 +45,27 @@
     }
   </script>
   <style>
-    /* Readability & Layout Styles */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #090d16;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #2e3d5b;
-      border-radius: 4px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #475569;
-    }
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+    /* Custom Scrollbar & Utility Classes */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #090d16; }
+    ::-webkit-scrollbar-thumb { background: #2a3b5c; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
     .tab-active {
       background: #0284c7 !important;
       color: #ffffff !important;
       border-color: #38bdf8 !important;
-      box-shadow: 0 0 12px rgba(14, 165, 233, 0.4);
+      box-shadow: 0 0 14px rgba(14, 165, 233, 0.45);
+    }
+    .view-tab-active {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
     }
     
-    /* Font Size Scaler Utility Classes */
+    /* Font Size Scaler Utility */
     .fs-normal .art-title { font-size: 1.0625rem; line-height: 1.5; }
     .fs-normal .art-body { font-size: 0.9375rem; line-height: 1.7; }
     
@@ -88,19 +79,19 @@
       body { background: white !important; color: black !important; }
       .no-print { display: none !important; }
       .editorial-content { display: block !important; }
-      .article-card { break-inside: avoid; border: 1px solid #ccc !important; }
+      .article-row { break-inside: avoid; border: 1px solid #ccc !important; }
     }
   </style>
 </head>
-<body id="bodyRoot" class="fs-normal bg-slate-100 dark:bg-darkbg-main text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-200 antialiased selection:bg-cyan-500 selection:text-white">
+<body id="bodyRoot" class="fs-normal bg-slate-100 dark:bg-darkbg-main text-slate-900 dark:text-slate-100 min-h-screen transition-colors duration-200 antialiased selection:bg-sky-500 selection:text-white">
 
   <!-- Top Sticky Header -->
-  <header class="sticky top-0 z-50 bg-white/90 dark:bg-darkbg-main/90 backdrop-blur-md border-b border-slate-200 dark:border-darkbg-border shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+  <header class="sticky top-0 z-50 bg-white/90 dark:bg-darkbg-main/90 backdrop-blur-md border-b-2 border-slate-200 dark:border-darkbg-border shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
       
       <!-- Brand Logo -->
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-600 via-sky-500 to-blue-600 flex items-center justify-center text-white font-black text-xl shadow-md shadow-sky-500/20 shrink-0">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 via-cyan-500 to-blue-600 flex items-center justify-center text-white font-black text-xl shadow-md shadow-sky-500/20 shrink-0">
           B
         </div>
         <div>
@@ -112,7 +103,7 @@
               Morning Intelligence
             </span>
           </div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 font-medium" id="headerDateText">
+          <p class="text-xs text-slate-500 dark:text-slate-400 font-semibold" id="headerDateText">
             데이터 로딩 중...
           </p>
         </div>
@@ -136,7 +127,7 @@
 
         <!-- Font Size Scaler (가독성 글자 크기 조절) -->
         <div class="flex items-center rounded-lg border border-slate-300 dark:border-darkbg-border bg-slate-100 dark:bg-darkbg-card p-0.5" title="글자 크기 조절">
-          <button onclick="setFontSize('normal')" id="fs-normal-btn" class="px-2 py-1 text-xs font-bold rounded text-sky-600 dark:text-sky-400 bg-white dark:bg-darkbg-hover shadow-xs">가</button>
+          <button onclick="setFontSize('normal')" id="fs-normal-btn" class="px-2 py-1 text-xs font-black rounded text-sky-600 dark:text-sky-400 bg-white dark:bg-darkbg-hover shadow-xs">가</button>
           <button onclick="setFontSize('large')" id="fs-large-btn" class="px-2 py-1 text-sm font-bold rounded text-slate-600 dark:text-slate-400 hover:text-sky-500">가+</button>
           <button onclick="setFontSize('xlarge')" id="fs-xlarge-btn" class="px-2 py-1 text-base font-bold rounded text-slate-600 dark:text-slate-400 hover:text-sky-500">가++</button>
         </div>
@@ -187,158 +178,207 @@
     </div>
   </header>
 
+  <!-- Main View Mode Switcher (뉴스 인텔리전스 / 유튜브 핫이슈) -->
+  <div class="bg-white dark:bg-darkbg-card border-b border-slate-200 dark:border-darkbg-border shadow-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-2">
+      <div class="flex items-center gap-2">
+        <button 
+          onclick="switchMainView('news')" 
+          id="btn-view-news"
+          class="view-tab-active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs"
+        >
+          <span>📰</span> 14개 챕터 인텔리전스 (140)
+        </button>
+        <button 
+          onclick="switchMainView('youtube')" 
+          id="btn-view-youtube"
+          class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2"
+        >
+          <span class="text-red-500">🎬</span> 실시간 유튜브 핫이슈 <span class="px-1.5 py-0.2 rounded-full bg-red-500/20 text-red-500 text-[10px] font-mono" id="youtubeBadge">LIVE</span>
+        </button>
+      </div>
+
+      <!-- Quick Status -->
+      <span class="hidden sm:flex text-xs font-bold text-emerald-600 dark:text-emerald-400 items-center gap-1.5">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> 100% 무결성 QA 통과
+      </span>
+    </div>
+  </div>
+
   <!-- Main Content Container -->
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
 
-    <!-- Hero Section: Weather Widget & 3-Line Intelligence Summary -->
-    <section class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-      
-      <!-- Weather Card (인천 서구 검단) -->
-      <div class="lg:col-span-1 bg-gradient-to-br from-sky-900/50 via-slate-900/80 to-darkbg-card border-2 border-sky-500/40 rounded-2xl p-5 shadow-lg backdrop-blur-sm relative overflow-hidden flex flex-col justify-between text-white">
-        <div class="absolute -right-8 -bottom-8 w-36 h-36 bg-sky-500/15 rounded-full blur-2xl pointer-events-none"></div>
+    <!-- NEWS VIEW CONTAINER -->
+    <div id="view-container-news" class="space-y-6">
+
+      <!-- Hero Section: Weather Widget & 3-Line Intelligence Summary -->
+      <section class="grid grid-cols-1 lg:grid-cols-3 gap-5">
         
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-2">
+        <!-- Weather Card (인천 서구 검단) -->
+        <div class="lg:col-span-1 bg-gradient-to-br from-sky-900/50 via-slate-900/80 to-darkbg-card border-2 border-sky-500/40 rounded-2xl p-5 shadow-lg backdrop-blur-sm relative overflow-hidden flex flex-col justify-between text-white">
+          <div class="absolute -right-8 -bottom-8 w-36 h-36 bg-sky-500/15 rounded-full blur-2xl pointer-events-none"></div>
+          
+          <div>
+            <div class="flex items-center justify-between mb-3">
               <span class="text-xs font-black px-2.5 py-1 rounded-full bg-sky-500/30 text-sky-200 border border-sky-400/40">
                 인천 서구 검단 날씨
               </span>
+              <span class="text-3xl" id="weatherConditionIcon">☀️</span>
             </div>
-            <span class="text-3xl" id="weatherConditionIcon">☀️</span>
+
+            <div class="flex items-baseline gap-3 my-2">
+              <span class="text-5xl font-black text-white tracking-tight" id="weatherTempCurrent">--℃</span>
+              <span class="text-sm font-semibold text-slate-300" id="weatherTempRange">최저 --℃ / 최고 --℃</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-700/60 text-xs">
+              <div class="bg-slate-800/60 p-2 rounded-lg text-center">
+                <span class="text-slate-400 block text-[11px]">상태</span>
+                <span class="font-bold text-sky-300 text-sm" id="weatherCondition">--</span>
+              </div>
+              <div class="bg-slate-800/60 p-2 rounded-lg text-center">
+                <span class="text-slate-400 block text-[11px]">강수확률</span>
+                <span class="font-bold text-blue-300 text-sm" id="weatherPop">--%</span>
+              </div>
+              <div class="bg-slate-800/60 p-2 rounded-lg text-center">
+                <span class="text-slate-400 block text-[11px]">대기질</span>
+                <span class="font-bold text-emerald-400 text-sm" id="weatherAir">보통</span>
+              </div>
+            </div>
           </div>
 
-          <div class="flex items-baseline gap-3 my-2">
-            <span class="text-5xl font-black text-white tracking-tight" id="weatherTempCurrent">--℃</span>
-            <span class="text-sm font-semibold text-slate-300" id="weatherTempRange">최저 --℃ / 최고 --℃</span>
-          </div>
-
-          <div class="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-700/60 text-xs">
-            <div class="bg-slate-800/60 p-2 rounded-lg text-center">
-              <span class="text-slate-400 block text-[11px]">상태</span>
-              <span class="font-bold text-sky-300 text-sm" id="weatherCondition">--</span>
-            </div>
-            <div class="bg-slate-800/60 p-2 rounded-lg text-center">
-              <span class="text-slate-400 block text-[11px]">강수확률</span>
-              <span class="font-bold text-blue-300 text-sm" id="weatherPop">--%</span>
-            </div>
-            <div class="bg-slate-800/60 p-2 rounded-lg text-center">
-              <span class="text-slate-400 block text-[11px]">대기질</span>
-              <span class="font-bold text-emerald-400 text-sm" id="weatherAir">보통</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-4 pt-3 border-t border-slate-700/60 text-xs text-sky-100 flex items-start gap-2 bg-sky-950/40 p-2.5 rounded-lg border border-sky-500/20">
-          <span class="text-base">👔</span>
-          <p id="weatherClothingTip" class="leading-relaxed font-medium">날씨 정보를 불러오는 중입니다...</p>
-        </div>
-      </div>
-
-      <!-- 3-Line Intelligence Summary Card -->
-      <div class="lg:col-span-2 bg-white dark:bg-darkbg-card border-2 border-slate-200 dark:border-darkbg-border rounded-2xl p-5 shadow-lg flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-3">
-            <div class="flex items-center gap-2">
-              <span class="text-xs font-black px-2.5 py-1 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30">
-                DAILY INTELLIGENCE BRIEF
-              </span>
-              <h2 class="text-base font-bold text-slate-900 dark:text-slate-100">오늘의 3줄 핵심 총평</h2>
-            </div>
-            <span class="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono" id="briefingMetaStats">14 Chapters · 140 Articles</span>
-          </div>
-
-          <div class="space-y-2.5 my-3" id="threeLineSummaryContainer">
-            <div class="p-3 rounded-xl bg-slate-50 dark:bg-darkbg-subtle text-sm text-slate-800 dark:text-slate-200 flex items-start gap-3 border border-slate-200 dark:border-darkbg-border">
-              <span class="w-6 h-6 rounded-full bg-sky-500 text-white font-black flex items-center justify-center text-xs shrink-0 mt-0.5">1</span>
-              <p class="leading-relaxed font-semibold">브리핑 요약을 불러오는 중입니다...</p>
-            </div>
+          <div class="mt-4 pt-3 border-t border-slate-700/60 text-xs text-sky-100 flex items-start gap-2 bg-sky-950/40 p-2.5 rounded-lg border border-sky-500/20">
+            <span class="text-base">👔</span>
+            <p id="weatherClothingTip" class="leading-relaxed font-medium">날씨 정보를 불러오는 중입니다...</p>
           </div>
         </div>
 
-        <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-200 dark:border-darkbg-border">
-          <span id="integrityHashDisplay" class="font-mono text-xs">Hash: Verifying...</span>
-          <span class="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1.5">
-            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span> 100% 무결성 QA 통과
+        <!-- 3-Line Intelligence Summary Card -->
+        <div class="lg:col-span-2 bg-white dark:bg-darkbg-card border-2 border-slate-200 dark:border-darkbg-border rounded-2xl p-5 shadow-lg flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-black px-2.5 py-1 rounded-full bg-red-500/15 text-red-600 dark:text-red-400 border border-red-500/30">
+                  DAILY INTELLIGENCE BRIEF
+                </span>
+                <h2 class="text-base font-bold text-slate-900 dark:text-slate-100">오늘의 3줄 핵심 총평</h2>
+              </div>
+              <span class="text-xs font-bold text-slate-500 dark:text-slate-400 font-mono" id="briefingMetaStats">14 Chapters · 140 Articles</span>
+            </div>
+
+            <div class="space-y-2.5 my-3" id="threeLineSummaryContainer">
+              <div class="p-3 rounded-xl bg-slate-50 dark:bg-darkbg-subtle text-sm text-slate-800 dark:text-slate-200 flex items-start gap-3 border border-slate-200 dark:border-darkbg-border">
+                <span class="w-6 h-6 rounded-full bg-sky-500 text-white font-black flex items-center justify-center text-xs shrink-0 mt-0.5">1</span>
+                <p class="leading-relaxed font-semibold">브리핑 요약을 불러오는 중입니다...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-200 dark:border-darkbg-border">
+            <span id="integrityHashDisplay" class="font-mono text-xs">Hash: Verifying...</span>
+            <span class="text-sky-600 dark:text-sky-400 font-bold">인텔리전스 노드: 140개</span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- Real-time Popularity TOP 10 Ranked List (목록형 실시간 순위표) -->
+      <section class="bg-white dark:bg-darkbg-card border-2 border-slate-200 dark:border-darkbg-border rounded-2xl p-5 shadow-sm space-y-3.5">
+        <div class="flex items-center justify-between border-b border-slate-200 dark:border-darkbg-border pb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🏆</span>
+            <h3 class="text-base sm:text-lg font-black text-slate-900 dark:text-white">실시간 인기 순위 TOP 10</h3>
+            <span class="text-xs font-bold px-2 py-0.5 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">HOT RANKING</span>
+          </div>
+          <span class="text-xs text-slate-500 font-medium">클릭 시 해당 기사의 4대 심층 분석으로 즉시 이동합니다</span>
+        </div>
+
+        <!-- 1~10 Ranked List Rows -->
+        <div class="divide-y divide-slate-100 dark:divide-slate-800" id="top10ListContainer">
+          <!-- Dynamic Top 10 Rows -->
+        </div>
+      </section>
+
+      <!-- 20 Trending Keywords Bar -->
+      <section class="bg-white dark:bg-darkbg-card border-2 border-slate-200 dark:border-darkbg-border rounded-2xl p-4 shadow-sm space-y-2.5">
+        <div class="flex items-center justify-between">
+          <span class="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+            <span>📊</span> 실시간 20대 핵심 트렌드 키워드
+          </span>
+          <button onclick="clearKeywordFilter()" id="clearKeywordFilterBtn" class="hidden text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline">
+            필터 초기화 ✕
+          </button>
+        </div>
+        <div class="flex flex-wrap gap-2" id="trendingKeywordsContainer">
+          <!-- Dynamic Keyword Chips -->
+        </div>
+      </section>
+
+      <!-- Sticky 14-Chapter Navigation Bar -->
+      <nav class="sticky top-16 z-40 bg-slate-100/95 dark:bg-darkbg-main/95 backdrop-blur-md py-2.5 border-y-2 border-slate-200 dark:border-darkbg-border -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 shadow-sm">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+          
+          <!-- Chapter Tabs Horizontal Scroll -->
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="chapterTabsContainer">
+            <!-- Dynamic Chapter Tab Buttons -->
+          </div>
+
+          <!-- Global Expand / Collapse Button -->
+          <div class="shrink-0 flex items-center gap-2">
+            <button 
+              id="expandAllBtn" 
+              onclick="toggleExpandAll()" 
+              class="px-3.5 py-1.5 rounded-lg bg-white dark:bg-darkbg-card hover:bg-slate-200 dark:hover:bg-darkbg-hover border border-slate-300 dark:border-darkbg-border text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1.5 shadow-xs"
+            >
+              <span id="expandAllIcon">📂</span>
+              <span id="expandAllText">전체 펼치기</span>
+            </button>
+          </div>
+
+        </div>
+      </nav>
+
+      <!-- Chapter Blocks & Compact Article List Stream (공간 효율 극대화 챕터 블록형) -->
+      <section id="chapterBlocksContainer" class="space-y-8 pb-16">
+        <!-- Dynamic Chapter Blocks with Accordion Rows -->
+      </section>
+
+    </div>
+
+    <!-- YOUTUBE VIEW CONTAINER (유튜브 핫이슈 전용 뷰) -->
+    <div id="view-container-youtube" class="hidden space-y-6">
+      
+      <!-- YouTube Hero Banner -->
+      <div class="bg-gradient-to-r from-red-900/60 via-slate-900 to-darkbg-card border-2 border-red-500/40 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+        <div class="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <div class="flex items-center gap-2.5 mb-2">
+              <span class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-white font-black text-sm shadow-md">▶</span>
+              <h2 class="text-xl sm:text-2xl font-black text-white">실시간 유튜브 핫이슈 브리핑</h2>
+            </div>
+            <p class="text-sm text-slate-300">
+              KBS, MBC, SBS, YTN, JTBC, 삼프로TV, 슈카월드 등 국내외 주요 방송 및 경제 채널의 실시간 핵심 영상을 큐레이션합니다.
+            </p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 border border-red-500/40 text-xs font-bold font-mono">
+            UPDATED HOURLY
           </span>
         </div>
       </div>
 
-    </section>
-
-    <!-- Top 5 Breaking Highlights Section -->
-    <section class="space-y-3">
-      <div class="flex items-center justify-between">
-        <h3 class="text-lg font-black flex items-center gap-2 text-slate-900 dark:text-white">
-          <span class="text-xl">🔥</span> TOP 5 메이저 하이라이트
-        </h3>
-        <span class="text-xs font-semibold text-slate-500 dark:text-slate-400">오늘 가장 주목받는 5대 핵심 사안</span>
+      <!-- YouTube Videos Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="youtubeGridContainer">
+        <!-- Dynamic YouTube Video Cards -->
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3.5" id="top5Container">
-        <!-- Dynamic Top 5 Cards -->
-      </div>
-    </section>
-
-    <!-- 20 Trending Keywords Bar -->
-    <section class="bg-white dark:bg-darkbg-card border-2 border-slate-200 dark:border-darkbg-border rounded-2xl p-4 shadow-sm space-y-2.5">
-      <div class="flex items-center justify-between">
-        <span class="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
-          <span>📊</span> 실시간 20대 핵심 트렌드 키워드
-        </span>
-        <button onclick="clearKeywordFilter()" id="clearKeywordFilterBtn" class="hidden text-xs font-bold text-sky-600 dark:text-sky-400 hover:underline">
-          필터 초기화 ✕
-        </button>
-      </div>
-      <div class="flex flex-wrap gap-2" id="trendingKeywordsContainer">
-        <!-- Dynamic Keyword Chips -->
-      </div>
-    </section>
-
-    <!-- Sticky 14-Chapter Navigation & Expansion Control Bar -->
-    <nav class="sticky top-16 z-40 bg-slate-100/95 dark:bg-darkbg-main/95 backdrop-blur-md py-2.5 border-y-2 border-slate-200 dark:border-darkbg-border -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 shadow-sm">
-      <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
-        
-        <!-- Chapter Pills Scrollable List -->
-        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1" id="chapterTabsContainer">
-          <button 
-            onclick="filterByChapter('all')" 
-            id="tab-all"
-            class="chapter-tab tab-active px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border-2 border-slate-300 dark:border-darkbg-border transition flex items-center gap-1.5"
-          >
-            <span>전체 챕터</span>
-            <span class="text-[11px] px-1.5 py-0.2 rounded-full bg-white/30 text-white font-mono" id="totalArticlesBadge">140</span>
-          </button>
-        </div>
-
-        <!-- Global Expand / Collapse Button -->
-        <div class="shrink-0 flex items-center gap-2">
-          <button 
-            id="expandAllBtn" 
-            onclick="toggleExpandAll()" 
-            class="px-3 py-1.5 rounded-lg bg-white dark:bg-darkbg-card hover:bg-slate-200 dark:hover:bg-darkbg-hover border border-slate-300 dark:border-darkbg-border text-slate-800 dark:text-slate-200 text-xs font-bold transition flex items-center gap-1 shadow-xs"
-          >
-            <span id="expandAllIcon">📂</span>
-            <span id="expandAllText">전체 펼치기</span>
-          </button>
-        </div>
-
-      </div>
-    </nav>
-
-    <!-- Main Articles Stream Section -->
-    <section id="articlesSection" class="space-y-10 pb-16">
-      <div class="text-center py-16 text-slate-500 space-y-3">
-        <div class="w-8 h-8 border-4 border-sky-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-        <p class="text-sm font-semibold">14개 챕터 140개 인텔리전스 기사를 구성하고 있습니다...</p>
-      </div>
-    </section>
+    </div>
 
   </main>
 
   <!-- Footer -->
   <footer class="bg-white dark:bg-darkbg-main border-t border-slate-200 dark:border-darkbg-border py-8 text-center text-xs text-slate-500 dark:text-slate-400 space-y-2">
     <p class="font-bold text-sm text-slate-700 dark:text-slate-300">BLUELAB Morning Intelligence Automated Briefing Engine</p>
-    <p>140 Curated Intelligence Articles · Deep Editorial Syntheses · 100% Deterministic Integrity Gate</p>
+    <p>140 Curated Intelligence Articles · Realtime YouTube Hot Issues · 100% Deterministic Integrity Gate</p>
     <p class="text-[11px] text-slate-400">매일 아침 05:30 KST 자동 실행 · GitHub Actions & GitHub Pages Powered</p>
   </footer>
 
@@ -351,6 +391,29 @@
     let bookmarkedIds = new Set(JSON.parse(localStorage.getItem('bluelab_bookmarks') || '[]'));
     let isAllExpanded = false;
     let currentFontSize = localStorage.getItem('bluelab_fontsize') || 'normal';
+    let currentView = 'news';
+
+    // Switch Main View (News / YouTube)
+    function switchMainView(view) {
+      currentView = view;
+      const newsContainer = document.getElementById('view-container-news');
+      const ytContainer = document.getElementById('view-container-youtube');
+      const btnNews = document.getElementById('btn-view-news');
+      const btnYt = document.getElementById('btn-view-youtube');
+
+      if (view === 'news') {
+        newsContainer.classList.remove('hidden');
+        ytContainer.classList.add('hidden');
+        btnNews.className = 'view-tab-active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs';
+        btnYt.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2';
+      } else {
+        newsContainer.classList.add('hidden');
+        ytContainer.classList.remove('hidden');
+        btnYt.className = 'view-tab-active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs';
+        btnNews.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2';
+        renderYouTubeView();
+      }
+    }
 
     // Set Font Size
     function setFontSize(size) {
@@ -420,14 +483,17 @@
     function toggleAccordion(articleId) {
       const content = document.getElementById(`content-${articleId}`);
       const arrow = document.getElementById(`arrow-${articleId}`);
+      const row = document.getElementById(`art-row-${articleId}`);
       if (!content) return;
 
       if (content.classList.contains('hidden')) {
         content.classList.remove('hidden');
         if (arrow) arrow.style.transform = 'rotate(180deg)';
+        if (row) row.classList.add('bg-sky-500/5', 'dark:bg-sky-950/20');
       } else {
         content.classList.add('hidden');
         if (arrow) arrow.style.transform = 'rotate(0deg)';
+        if (row) row.classList.remove('bg-sky-500/5', 'dark:bg-sky-950/20');
       }
     }
 
@@ -453,6 +519,23 @@
       document.getElementById('expandAllIcon').textContent = isAllExpanded ? '📁' : '📂';
     }
 
+    // Toggle Specific Chapter All Articles
+    function toggleChapterExpand(chapterId) {
+      const chapterContainer = document.getElementById(`chapter-block-${chapterId}`);
+      if (!chapterContainer) return;
+      const contents = chapterContainer.querySelectorAll('.editorial-content');
+      const arrows = chapterContainer.querySelectorAll('.accordion-arrow');
+      
+      const isAnyHidden = Array.from(contents).some(c => c.classList.contains('hidden'));
+      contents.forEach(c => {
+        if (isAnyHidden) c.classList.remove('hidden');
+        else c.classList.add('hidden');
+      });
+      arrows.forEach(a => {
+        a.style.transform = isAnyHidden ? 'rotate(180deg)' : 'rotate(0deg)';
+      });
+    }
+
     // Load Data
     async function loadBriefingData() {
       try {
@@ -462,13 +545,13 @@
         renderUI();
       } catch (err) {
         console.error('Failed to load today.json:', err);
-        document.getElementById('articlesSection').innerHTML = `
+        document.getElementById('chapterBlocksContainer').innerHTML = `
           <div class="bg-red-900/20 border-2 border-red-500/50 rounded-2xl p-8 text-center space-y-4 max-w-xl mx-auto my-12">
             <div class="text-4xl">⚠️</div>
             <h3 class="text-lg font-bold text-red-400">데이터 로드 대기 중</h3>
             <p class="text-sm text-slate-300 leading-relaxed">
-              <code>public/data/today.json</code> 데이터를 아직 찾을 수 없거나 파이프라인 생성 전입니다.<br/>
-              터미널에서 <code>python run_pipeline.py</code>를 실행하여 오늘의 최신 브리핑을 생성해주세요.
+              <code>public/data/today.json</code> 데이터를 아직 찾을 수 없습니다.<br/>
+              터미널에서 <code>python run_pipeline.py</code>를 실행하여 최신 브리핑 데이터를 생성해주세요.
             </p>
           </div>
         `;
@@ -504,28 +587,8 @@
         </div>
       `).join('');
 
-      // Top 5 Highlights
-      const top5Container = document.getElementById('top5Container');
-      const top5 = briefingData.top_5_highlights || [];
-      top5Container.innerHTML = top5.map((art, idx) => `
-        <div onclick="scrollToArticle('${art.id}')" class="cursor-pointer bg-white dark:bg-darkbg-card border-2 border-slate-200 dark:border-darkbg-border hover:border-sky-500 dark:hover:border-sky-400 rounded-2xl p-4 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
-          <div>
-            <div class="flex items-center justify-between text-xs mb-2">
-              <span class="font-black text-red-500 bg-red-500/10 px-2 py-0.5 rounded-md border border-red-500/20">
-                TOP ${idx + 1}
-              </span>
-              <span class="text-slate-400 text-xs font-medium">${art.chapter_name}</span>
-            </div>
-            <h4 class="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-sky-500 dark:group-hover:text-sky-400 transition line-clamp-2 leading-snug">
-              ${art.title}
-            </h4>
-          </div>
-          <div class="mt-3 pt-2.5 border-t border-slate-100 dark:border-darkbg-border flex items-center justify-between text-xs text-slate-500">
-            <span class="font-medium">${art.source}</span>
-            <span class="text-sky-500 font-bold">심층 분석 →</span>
-          </div>
-        </div>
-      `).join('');
+      // Top 10 Ranked List (목록형 실시간 순위표 렌더링)
+      renderTop10RankedList();
 
       // 20 Trending Keywords
       const trendingContainer = document.getElementById('trendingKeywordsContainer');
@@ -541,7 +604,7 @@
         </button>
       `).join('');
 
-      // Chapter Tabs
+      // Chapter Navigation Tabs
       const tabsContainer = document.getElementById('chapterTabsContainer');
       const chapters = briefingData.chapters || [];
       const chapterTabHTML = chapters.map(ch => `
@@ -560,8 +623,7 @@
           id="tab-all"
           class="chapter-tab tab-active px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border-2 border-slate-300 dark:border-darkbg-border transition flex items-center gap-1.5"
         >
-          <span>전체 챕터</span>
-          <span class="text-[11px] px-1.5 py-0.2 rounded-full bg-white/30 text-white font-mono" id="totalArticlesBadge">${meta.total_articles || 140}</span>
+          <span>전체 챕터 (140)</span>
         </button>
         ${chapterTabHTML}
       `;
@@ -570,10 +632,57 @@
       renderArticles();
     }
 
+    // Render Real-time Popularity TOP 10 Ranked List
+    function renderTop10RankedList() {
+      const topContainer = document.getElementById('top10ListContainer');
+      const allArticles = [];
+      (briefingData.chapters || []).forEach(ch => {
+        (ch.articles || []).forEach(a => allArticles.push(a));
+      });
+
+      // Sort by importance score & index
+      const top10 = allArticles.slice(0, 10);
+
+      topContainer.innerHTML = top10.map((art, idx) => {
+        const rank = idx + 1;
+        let rankBadgeClass = "bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300";
+        if (rank === 1) rankBadgeClass = "bg-amber-500 text-white shadow-md shadow-amber-500/30 font-black";
+        else if (rank === 2) rankBadgeClass = "bg-slate-400 text-white font-black";
+        else if (rank === 3) rankBadgeClass = "bg-amber-700 text-white font-black";
+        else rankBadgeClass = "bg-sky-500/20 text-sky-600 dark:text-sky-400 font-bold border border-sky-500/30";
+
+        return `
+          <div onclick="scrollToArticle('${art.id}')" class="py-3 px-3 sm:px-4 hover:bg-sky-50/60 dark:hover:bg-darkbg-hover/80 transition cursor-pointer flex items-center justify-between gap-3 group rounded-xl">
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="w-7 h-7 rounded-lg ${rankBadgeClass} flex items-center justify-center text-xs shrink-0 font-mono">
+                ${rank}
+              </span>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 text-xs text-slate-500 mb-0.5">
+                  <span class="font-bold text-slate-800 dark:text-slate-200">${art.source}</span>
+                  <span class="text-slate-400">·</span>
+                  <span class="text-slate-500 font-medium">${art.chapter_name}</span>
+                  <span class="hidden sm:inline text-slate-400 text-[11px] font-mono">${art.published_at ? art.published_at.slice(11, 16) : ''}</span>
+                </div>
+                <h4 class="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition truncate leading-snug">
+                  ${art.title}
+                </h4>
+              </div>
+            </div>
+            <div class="shrink-0 flex items-center gap-2 text-xs font-bold text-sky-600 dark:text-sky-400 opacity-80 group-hover:opacity-100">
+              <span class="hidden md:inline text-slate-400 font-normal text-xs">심층 분석</span>
+              <span>→</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render Chapter Blocks & Compact Article List Stream (공간 효율 극대화)
     function renderArticles() {
       if (!briefingData) return;
 
-      const container = document.getElementById('articlesSection');
+      const container = document.getElementById('chapterBlocksContainer');
       const chapters = briefingData.chapters || [];
       const searchTerm = (document.getElementById('searchInput').value || document.getElementById('searchInputMobile').value || '').trim().toLowerCase();
 
@@ -619,59 +728,56 @@
         if (arts.length === 0) return;
         totalVisible += arts.length;
 
-        const chCardsHTML = arts.map((art, idx) => {
+        // 10 Articles as Compact Rows inside Chapter Master Card
+        const chapterRowsHTML = arts.map((art, idx) => {
           const isBm = bookmarkedIds.has(art.id);
           const ed = art.editorial || {};
           const checkpoints = ed.checkpoints || [];
           const keywords = art.keywords || [];
 
           return `
-            <div id="art-card-${art.id}" class="article-card bg-white dark:bg-darkbg-card border-2 border-slate-200 dark:border-darkbg-border rounded-2xl shadow-sm hover:shadow-lg hover:border-sky-500/60 transition duration-200 overflow-hidden">
+            <div id="art-row-${art.id}" class="article-row border-b border-slate-100 dark:border-slate-800 last:border-b-0 transition duration-150">
               
-              <!-- Card Header / Title (Click to toggle) -->
-              <div onclick="toggleAccordion('${art.id}')" class="p-4 sm:p-5 cursor-pointer select-none space-y-3">
+              <!-- Compact List Row Header (Click to Open Editorial Dropdown) -->
+              <div onclick="toggleAccordion('${art.id}')" class="py-3.5 px-4 sm:px-5 cursor-pointer hover:bg-sky-500/5 dark:hover:bg-darkbg-hover/70 transition flex items-center justify-between gap-3 group select-none">
                 
-                <div class="flex items-center justify-between text-xs text-slate-500">
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <span class="text-xs px-2.5 py-1 rounded-md bg-sky-500/15 text-sky-700 dark:text-sky-300 font-bold border border-sky-500/30">
-                      #${idx + 1} ${ch.name}
-                    </span>
-                    <span class="font-bold text-slate-800 dark:text-slate-200">${art.source}</span>
-                    <span class="text-slate-400 text-xs font-mono">${art.published_at ? art.published_at.slice(0, 16) : ''}</span>
-                  </div>
-                  
-                  <div class="flex items-center gap-2 shrink-0" onclick="event.stopPropagation()">
-                    <button 
-                      id="bm-btn-${art.id}" 
-                      onclick="toggleBookmark('${art.id}', event)" 
-                      class="${isBm ? 'text-amber-400 font-bold text-lg' : 'text-slate-400 hover:text-amber-400 text-lg'} p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-darkbg-hover transition"
-                      title="북마크 토글"
-                    >
-                      ${isBm ? '★' : '☆'}
-                    </button>
-                    <svg id="arrow-${art.id}" class="accordion-arrow w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
-                    </svg>
+                <div class="flex items-center gap-3 min-w-0">
+                  <span class="w-6 h-6 rounded-md bg-slate-100 dark:bg-darkbg-subtle text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-darkbg-border flex items-center justify-center text-xs font-black shrink-0 font-mono">
+                    ${idx + 1}
+                  </span>
+
+                  <div class="min-w-0 space-y-0.5">
+                    <div class="flex items-center gap-2 text-xs text-slate-500">
+                      <span class="font-bold text-slate-800 dark:text-slate-200">${art.source}</span>
+                      <span class="text-slate-400 font-mono text-[11px]">${art.published_at ? art.published_at.slice(11, 16) : ''}</span>
+                      <div class="hidden sm:flex items-center gap-1">
+                        ${keywords.slice(0, 2).map(kw => `<span class="text-[10px] px-1.5 py-0.2 rounded bg-slate-200/60 dark:bg-slate-800 text-slate-600 dark:text-slate-400">#${kw}</span>`).join('')}
+                      </div>
+                    </div>
+                    <h4 class="art-title font-bold text-slate-900 dark:text-slate-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition leading-snug">
+                      ${art.title}
+                    </h4>
                   </div>
                 </div>
 
-                <h3 class="art-title font-bold text-slate-900 dark:text-slate-100 leading-snug hover:text-sky-600 dark:hover:text-sky-400 transition">
-                  ${art.title}
-                </h3>
-
-                <!-- Quick Keywords Tag Preview -->
-                <div class="flex flex-wrap gap-1.5 pt-1">
-                  ${keywords.map(kw => `
-                    <span class="text-xs font-semibold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-darkbg-subtle text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-darkbg-border">
-                      #${kw}
-                    </span>
-                  `).join('')}
+                <div class="shrink-0 flex items-center gap-2" onclick="event.stopPropagation()">
+                  <button 
+                    id="bm-btn-${art.id}" 
+                    onclick="toggleBookmark('${art.id}', event)" 
+                    class="${isBm ? 'text-amber-400 font-bold text-lg' : 'text-slate-400 hover:text-amber-400 text-lg'} p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-darkbg-hover transition"
+                    title="북마크"
+                  >
+                    ${isBm ? '★' : '☆'}
+                  </button>
+                  <svg id="arrow-${art.id}" class="accordion-arrow w-5 h-5 text-slate-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                  </svg>
                 </div>
 
               </div>
 
-              <!-- Collapsible Editorial Intelligence Content (4-Block High Readability Layout) -->
-              <div id="content-${art.id}" class="editorial-content ${isAllExpanded ? '' : 'hidden'} px-4 sm:px-5 pb-5 pt-3 border-t-2 border-slate-100 dark:border-darkbg-border bg-slate-50/70 dark:bg-darkbg-subtle/50 space-y-4">
+              <!-- Collapsible 4-Block Editorial Intelligence (Expanded Accordion) -->
+              <div id="content-${art.id}" class="editorial-content ${isAllExpanded ? '' : 'hidden'} px-4 sm:px-6 py-4 bg-slate-50/80 dark:bg-darkbg-subtle/60 border-t border-slate-200 dark:border-darkbg-border space-y-3.5">
                 
                 <!-- 1. 핵심 팩트 -->
                 <div class="border-l-4 border-sky-500 pl-3.5 py-1 bg-sky-50/70 dark:bg-sky-950/20 rounded-r-xl border-y border-r border-sky-200/50 dark:border-sky-800/30 p-3">
@@ -720,7 +826,9 @@
 
                 <!-- Action Button & Source Link -->
                 <div class="pt-2 flex items-center justify-between">
-                  <span class="text-xs text-slate-400 font-mono">Node ID: ${art.id.slice(0, 10)}</span>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    ${keywords.map(kw => `<span class="text-xs font-medium text-slate-500">#${kw}</span>`).join(' ')}
+                  </div>
                   <a 
                     href="${art.link}" 
                     target="_blank" 
@@ -740,20 +848,39 @@
           `;
         }).join('');
 
+        // Master Chapter Block Card
         htmlParts.push(`
-          <div id="chapter-section-${ch.id}" class="space-y-4 pt-2">
-            <div class="flex items-center justify-between border-b-2 border-slate-200 dark:border-darkbg-border pb-2.5">
-              <div class="flex items-center gap-2.5">
-                <span class="text-2xl">${ch.icon}</span>
-                <h2 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white">${ch.name}</h2>
-                <span class="text-xs text-slate-500 dark:text-slate-400 font-bold">(${ch.name_en})</span>
+          <div id="chapter-block-${ch.id}" class="bg-white dark:bg-darkbg-card border-2 border-slate-200 dark:border-darkbg-border rounded-2xl shadow-sm overflow-hidden space-y-0">
+            
+            <!-- Chapter Master Block Header -->
+            <div class="p-4 sm:p-5 bg-gradient-to-r from-slate-50 to-white dark:from-darkbg-card dark:to-darkbg-subtle border-b-2 border-slate-200 dark:border-darkbg-border flex items-center justify-between flex-wrap gap-3">
+              <div>
+                <div class="flex items-center gap-2.5">
+                  <span class="text-2xl">${ch.icon}</span>
+                  <h3 class="text-lg sm:text-xl font-black text-slate-900 dark:text-white">${ch.name}</h3>
+                  <span class="text-xs text-slate-500 dark:text-slate-400 font-bold">(${ch.name_en})</span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">${ch.description}</p>
               </div>
-              <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-sky-500/15 text-sky-600 dark:text-sky-400 font-bold border border-sky-500/30">${arts.length} Articles</span>
+
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono px-3 py-1 rounded-full bg-sky-500/15 text-sky-600 dark:text-sky-400 font-bold border border-sky-500/30">
+                  ${arts.length}개 기사
+                </span>
+                <button 
+                  onclick="toggleChapterExpand('${ch.id}')"
+                  class="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 dark:border-darkbg-border text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-darkbg-hover transition"
+                >
+                  펼치기/접기
+                </button>
+              </div>
             </div>
-            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium -mt-2">${ch.description}</p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-              ${chCardsHTML}
+
+            <!-- Compact Articles List -->
+            <div class="divide-y divide-slate-100 dark:divide-slate-800">
+              ${chapterRowsHTML}
             </div>
+
           </div>
         `);
       });
@@ -770,6 +897,68 @@
       } else {
         container.innerHTML = htmlParts.join('');
       }
+    }
+
+    // Render YouTube Hot Issues View
+    function renderYouTubeView() {
+      const ytContainer = document.getElementById('youtubeGridContainer');
+      const vids = briefingData.youtube_hot_issues || [];
+
+      if (vids.length === 0) {
+        ytContainer.innerHTML = `
+          <div class="col-span-full bg-white dark:bg-darkbg-card border-2 border-slate-200 dark:border-darkbg-border rounded-2xl p-12 text-center space-y-3">
+            <div class="text-4xl">🎬</div>
+            <h4 class="text-base font-bold text-slate-800 dark:text-slate-200">유튜브 핫이슈 영상을 불러오는 중입니다...</h4>
+            <p class="text-xs text-slate-500">주요 방송사 및 경제 채널의 피드를 업데이트하고 있습니다.</p>
+          </div>
+        `;
+        return;
+      }
+
+      ytContainer.innerHTML = vids.map((vid, idx) => `
+        <div class="bg-white dark:bg-darkbg-card border-2 border-slate-200 dark:border-darkbg-border rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition group flex flex-col justify-between">
+          <div>
+            <!-- Video Thumbnail & Category -->
+            <div class="relative aspect-video bg-black overflow-hidden cursor-pointer" onclick="window.open('${vid.video_url}', '_blank')">
+              <img src="${vid.thumbnail}" alt="${vid.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" onerror="this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=600&auto=format&fit=crop&q=80'" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+              <span class="absolute bottom-2 left-2 px-2.5 py-0.5 rounded-md bg-red-600 text-white text-[11px] font-black">
+                ${vid.category}
+              </span>
+              <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/80 text-white text-[10px] font-mono">
+                ${vid.published_at}
+              </span>
+            </div>
+
+            <!-- Content Details -->
+            <div class="p-4 sm:p-5 space-y-2">
+              <div class="flex items-center gap-2 text-xs font-bold text-slate-500">
+                <span class="text-red-500">📺</span>
+                <span class="text-slate-800 dark:text-slate-200">${vid.channel}</span>
+              </div>
+              <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 group-hover:text-red-500 transition line-clamp-2 leading-snug">
+                ${vid.title}
+              </h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
+                ${vid.summary}
+              </p>
+            </div>
+          </div>
+
+          <!-- Watch Button -->
+          <div class="p-4 pt-0">
+            <a 
+              href="${vid.video_url}" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-xs"
+            >
+              <span>YouTube에서 시청하기</span>
+              <span>▶</span>
+            </a>
+          </div>
+        </div>
+      `).join('');
     }
 
     // Filter Functions
@@ -815,17 +1004,18 @@
     }
 
     function scrollToArticle(articleId) {
+      switchMainView('news');
       filterByChapter('all');
       setTimeout(() => {
-        const card = document.getElementById(`art-card-${articleId}`);
-        if (card) {
-          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const row = document.getElementById(`art-row-${articleId}`);
+        if (row) {
+          row.scrollIntoView({ behavior: 'smooth', block: 'center' });
           const content = document.getElementById(`content-${articleId}`);
           if (content && content.classList.contains('hidden')) {
             toggleAccordion(articleId);
           }
-          card.classList.add('ring-4', 'ring-sky-500');
-          setTimeout(() => card.classList.remove('ring-4', 'ring-sky-500'), 2500);
+          row.classList.add('ring-4', 'ring-sky-500');
+          setTimeout(() => row.classList.remove('ring-4', 'ring-sky-500'), 2500);
         }
       }, 100);
     }

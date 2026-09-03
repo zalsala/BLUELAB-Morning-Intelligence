@@ -236,6 +236,7 @@ class BriefingBundle:
     top_5_highlights: List[Article]
     trending_keywords: List[TrendingKeyword]
     chapters: List[ChapterBundle]
+    youtube_hot_issues: List[Dict[str, Any]] = field(default_factory=list)
     integrity_hash: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
@@ -246,6 +247,7 @@ class BriefingBundle:
             "top_5_highlights": [a.to_dict() if isinstance(a, Article) else a for a in self.top_5_highlights],
             "trending_keywords": [k.to_dict() if isinstance(k, TrendingKeyword) else k for k in self.trending_keywords],
             "chapters": [c.to_dict() if isinstance(c, ChapterBundle) else c for c in self.chapters],
+            "youtube_hot_issues": self.youtube_hot_issues,
             "integrity_hash": self.integrity_hash
         }
 
