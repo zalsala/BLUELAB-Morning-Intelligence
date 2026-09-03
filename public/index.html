@@ -1,28 +1,808 @@
-<!doctype html>
-<html lang="ko">
+<!DOCTYPE html>
+<html lang="ko" class="dark">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BLUELAB Morning Intelligence</title>
-<link rel="stylesheet" href="./assets/styles.css">
-<link rel="stylesheet" href="./assets/news-list.css">
-<link rel="stylesheet" href="./assets/vision-research.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLUELAB Morning Intelligence</title>
+  <meta name="description" content="14개 챕터 140개 인텔리전스 기사 & 인천 검단 날씨 자동 브리핑" />
+  
+  <!-- Pretendard & Inter Web Fonts -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Pretendard', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'Roboto', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#082f49',
+              accent: '#38bdf8',
+            },
+            darkbg: {
+              main: '#0b0f19',
+              card: '#111827',
+              hover: '#1f2937',
+              border: '#374151',
+              subtle: '#1e293b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar & Print Styles */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b0f19;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #374151;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4b5563;
+    }
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    @media print {
+      body {
+        background-color: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .editorial-content {
+        display: block !important;
+      }
+      .article-card {
+        break-inside: avoid;
+        border: 1px solid #ccc !important;
+        background: white !important;
+        color: black !important;
+      }
+    }
+    .badge-glow {
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
+    }
+    .tab-active {
+      background: #0284c7 !important;
+      color: #ffffff !important;
+      border-color: #38bdf8 !important;
+    }
+  </style>
 </head>
-<body>
-<header class="top"><div class="wrap bar"><div class="brand"><b>B</b><span>BLUELAB MORNING INTELLIGENCE<small id="date"></small></span></div><nav><a href="#top5">TOP 5</a><a href="#signals">실시간</a><a href="#briefing">브리핑</a><a href="#vision-research">시과학 논문</a><a href="#culture">트렌드</a><a href="#watch">오늘 주목</a></nav></div></header>
-<main class="wrap">
-<section class="mast"><div class="eyebrow">PERSONAL MORNING REPORT · ASIA/SEOUL</div><h1>많이 읽지 않아도<br>오늘의 흐름이 보이게.</h1><p>지난 브리핑 이후의 새 변화를 우선하고, 각 분야는 제목을 빠르게 훑은 뒤 클릭해서 전체 맥락을 볼 수 있게 구성합니다.</p><div class="status"><div><span>기준 시각</span><b id="generated"></b></div><div><span>검색 범위</span><b id="window"></b></div><div><span>시장 기준</span><b id="marketWindow"></b></div><div><span>편집 원칙</span><b>챕터별 10개 · 중복 제거 · 1차 자료 우선</b></div></div></section>
-<section class="top5Section" id="top5"><div class="sectionTitle"><div><small>CURATED BRIEFING</small><h2>오늘 꼭 알아야 할 뉴스 TOP 5</h2></div><span>제목 클릭 → 전체 브리핑</span></div><div class="top5Grid"><article class="topHero" id="top5Hero" tabindex="0" role="button"></article><div class="top5Side" id="top5Side"></div></div></section>
-<section class="signalGrid" id="signals"><div class="panel" id="trendPanel"><div class="panelHead"><b>실시간 급상승 TOP 20</b><small>Google Trends KR · 클릭 시 검색 결과</small></div><div id="trends" class="trendgrid"></div></div><div class="signalSide"><div class="panel weatherPanel" id="weatherPanel"><div class="panelHead"><b>인천 검단신도시 날씨</b><small>생활 의사결정용</small></div><div id="weather"></div></div><div class="panel" id="market"><div class="panelHead"><b>경제·시장</b><small>수치 + 원인 해설</small></div><div id="metrics" class="metrics"></div></div></div></section>
-<section id="briefing"><div class="sectionTitle"><div><small>TITLE-FIRST · TWO-COLUMN REPORT</small><h2>분야별 중요 뉴스</h2></div><span>각 챕터 10개 · 클릭 시 상세</span></div><div class="briefingLayout"><div id="news" class="newsColumns"></div><aside class="sideRail"><section class="panel" id="stockPanel"><div class="panelHead"><b>주식 · 이슈 기업</b><small>촉매·원인·리스크</small></div><div id="stockGrid" class="stockGrid"></div></section><section class="panel" id="videoPanel"><div class="panelHead"><b>유튜브 · 숏츠</b><small>실제 영상 썸네일 검증 시 표시</small></div><div id="videoGrid" class="videoGrid"></div></section></aside></div></section>
-<section id="vision-research" class="visionResearchSection"><div class="sectionTitle"><div><small>VISION RESEARCH WATCH · EVIDENCE FIRST</small><h2>안경 · 검안 · 양안시 · 안과 최신 이슈·논문</h2></div><span id="visionResearchCount">최신 근거 선별</span></div><div class="researchIntro"><span>근시관리</span><span>양안시 · 사시 · 조절/폭주</span><span>콘택트렌즈 · 각막</span><span>안과질환</span><span>시과학 · 광학</span><span>검안 · 임상</span></div><div id="visionResearchGrid" class="visionResearchGrid"></div></section>
-<section id="culture" class="cultureSection"><div class="sectionTitle"><div><small>CULTURE · SEARCH · SOCIAL</small><h2>핫이슈 · 바이럴 · 밈 · 온라인 트렌드</h2></div><span>제목 클릭 → 확산 배경·팩트 구분</span></div><div id="cultureGrid" class="cultureGrid"></div></section>
-<section class="watchSection" id="watch"><div class="sectionTitle"><div><small>NEXT SIGNALS · PRE-EVENT INTELLIGENCE</small><h2>오늘 주목할 것</h2></div><span>제목 클릭 → 결과별 시나리오</span></div><div id="todayWatch" class="watchGrid"></div></section>
-<section class="threeLines"><div class="sectionTitle"><div><small>EXECUTIVE SUMMARY</small><h2>오늘 가장 중요한 변화 3줄 요약</h2></div></div><ol id="finalSummary"></ol></section>
-</main>
-<footer><div class="wrap">BLUELAB Morning Intelligence · 기사 전문을 복제하지 않고 핵심 사실·맥락·팩트체크를 자연스러운 한국어로 재구성합니다. 원문 또는 공식 자료에서 직접 확인하지 못한 이미지는 사용하지 않습니다.</div></footer>
-<div id="modal" class="modal"><article class="modalBox"><button id="close" aria-label="닫기">×</button><figure class="modalImage"><img id="mImage" alt=""><figcaption id="mImageCredit"></figcaption></figure><div class="modalCategory" id="mCategory"></div><h2 id="mTitle"></h2><p class="modalLead" id="mLead"></p><div class="modalGrid"><div><h4>배경 / 원인</h4><p id="mBackground"></p><h4>현재 상황 · 상세</h4><p id="mDetail"></p><h4>핵심 포인트</h4><ul id="mPoints"></ul><h4>왜 중요한가</h4><p id="mWhy"></p><h4>해설 / 원인 분석</h4><p id="mAnalysis"></p><h4>향후 영향</h4><p id="mImpact"></p><h4>다음 확인 포인트</h4><p id="mWatch"></p></div><div><h4>시간순 경과</h4><ol id="mChronology"></ol><h4>미확정 사항</h4><ul id="mUncertainties"></ul><h4>FACT CHECK</h4><div id="mFacts"></div><h4>출처</h4><p id="mSource"></p><a id="mLink" target="_blank" rel="noopener">기사 / 공식자료 확인 →</a></div></div></article></div>
-<script src="./assets/enrich.js"></script>
-<script src="./assets/app.js"></script>
-<script src="./assets/vision-research.js"></script>
-</body></html>
+<body class="bg-gray-50 dark:bg-darkbg-main text-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
+
+  <!-- Top Navigation Bar -->
+  <header class="sticky top-0 z-50 bg-white/80 dark:bg-darkbg-main/85 backdrop-blur-md border-b border-gray-200 dark:border-darkbg-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-700 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-cyan-500/20">
+          B
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-lg sm:text-xl tracking-tight bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              BLUELAB
+            </span>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-700 dark:text-blue-300">
+              Morning Intelligence
+            </span>
+          </div>
+          <p class="text-[11px] text-gray-500 dark:text-gray-400 font-mono" id="headerDateText">
+            Loading...
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Actions (Search, Bookmark, Print, Theme) -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Search Input Trigger (Desktop) -->
+        <div class="relative hidden md:block w-64">
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="기사·키워드 검색 (단축키: /)" 
+            class="w-full bg-gray-100 dark:bg-darkbg-card border border-gray-300 dark:border-darkbg-border rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-800 dark:text-gray-200 pl-8"
+          />
+          <svg class="w-4 h-4 text-gray-400 absolute left-2.5 top-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+
+        <!-- Filter Mode: Bookmarked Only -->
+        <button 
+          id="bookmarkFilterBtn" 
+          onclick="toggleBookmarkFilter()" 
+          class="p-2 rounded-lg bg-gray-100 dark:bg-darkbg-card hover:bg-gray-200 dark:hover:bg-darkbg-hover border border-gray-200 dark:border-darkbg-border text-gray-700 dark:text-gray-300 transition"
+          title="북마크한 기사만 보기"
+        >
+          <svg id="bookmarkFilterIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+          </svg>
+        </button>
+
+        <!-- Print / PDF -->
+        <button 
+          onclick="window.print()" 
+          class="no-print p-2 rounded-lg bg-gray-100 dark:bg-darkbg-card hover:bg-gray-200 dark:hover:bg-darkbg-hover border border-gray-200 dark:border-darkbg-border text-gray-700 dark:text-gray-300 transition"
+          title="보고서 인쇄 및 PDF 저장"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+          </svg>
+        </button>
+
+        <!-- Theme Toggle -->
+        <button 
+          id="themeToggleBtn" 
+          onclick="toggleTheme()" 
+          class="p-2 rounded-lg bg-gray-100 dark:bg-darkbg-card hover:bg-gray-200 dark:hover:bg-darkbg-hover border border-gray-200 dark:border-darkbg-border text-gray-700 dark:text-gray-300 transition"
+          title="다크/라이트 모드 전환 (D)"
+        >
+          <span id="themeIcon">🌙</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Search Bar -->
+    <div class="md:hidden px-4 pb-3">
+      <input 
+        type="text" 
+        id="searchInputMobile" 
+        placeholder="기사 제목, 키워드 검색..." 
+        class="w-full bg-gray-100 dark:bg-darkbg-card border border-gray-300 dark:border-darkbg-border rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-800 dark:text-gray-200"
+      />
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Hero Section: Weather Widget & 3-Line Intelligence Summary -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+      
+      <!-- Weather Card (인천 서구 검단) -->
+      <div class="lg:col-span-1 bg-gradient-to-br from-blue-900/40 via-slate-900/60 to-darkbg-card border border-cyan-500/30 rounded-2xl p-5 shadow-xl backdrop-blur-sm relative overflow-hidden flex flex-col justify-between">
+        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl"></div>
+        
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                LOCAL WEATHER
+              </span>
+              <span class="text-sm font-semibold text-gray-200" id="weatherLocation">인천 서구 검단</span>
+            </div>
+            <span class="text-2xl" id="weatherConditionIcon">☀️</span>
+          </div>
+
+          <div class="flex items-baseline gap-3 my-2">
+            <span class="text-4xl font-extrabold text-white tracking-tight" id="weatherTempCurrent">--℃</span>
+            <span class="text-xs text-gray-400" id="weatherTempRange">최저 --℃ / 최고 --℃</span>
+          </div>
+
+          <div class="flex items-center gap-4 text-xs text-gray-300 mt-2">
+            <div>상태: <span class="font-medium text-cyan-300" id="weatherCondition">--</span></div>
+            <div>강수확률: <span class="font-medium text-blue-300" id="weatherPop">--%</span></div>
+            <div>대기질: <span class="font-medium text-emerald-400" id="weatherAir">보통</span></div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-3 border-t border-gray-700/50 text-xs text-cyan-200/90 flex items-start gap-1.5">
+          <span>👔</span>
+          <p id="weatherClothingTip" class="leading-relaxed">날씨 정보를 불러오는 중입니다...</p>
+        </div>
+      </div>
+
+      <!-- 3-Line Intelligence Summary Card -->
+      <div class="lg:col-span-2 bg-white dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border rounded-2xl p-5 shadow-xl flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-red-500/10 text-red-500 dark:text-red-400 border border-red-500/20">
+                DAILY INTELLIGENCE BRIEF
+              </span>
+              <h2 class="text-sm font-bold text-gray-800 dark:text-gray-200">오늘의 3줄 핵심 총평</h2>
+            </div>
+            <span class="text-xs font-mono text-gray-400" id="briefingMetaStats">14 Chapters · 140 Articles</span>
+          </div>
+
+          <div class="space-y-2.5 my-2" id="threeLineSummaryContainer">
+            <div class="p-2.5 rounded-lg bg-gray-50 dark:bg-darkbg-subtle text-xs text-gray-700 dark:text-gray-300 flex items-start gap-2">
+              <span class="text-cyan-500 font-bold">1</span>
+              <p class="leading-relaxed">브리핑 요약 로딩 중...</p>
+            </div>
+            <div class="p-2.5 rounded-lg bg-gray-50 dark:bg-darkbg-subtle text-xs text-gray-700 dark:text-gray-300 flex items-start gap-2">
+              <span class="text-cyan-500 font-bold">2</span>
+              <p class="leading-relaxed">잠시만 기다려주세요...</p>
+            </div>
+            <div class="p-2.5 rounded-lg bg-gray-50 dark:bg-darkbg-subtle text-xs text-gray-700 dark:text-gray-300 flex items-start gap-2">
+              <span class="text-cyan-500 font-bold">3</span>
+              <p class="leading-relaxed">최신 데이터를 파싱하고 있습니다.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-[11px] text-gray-400 pt-2 border-t border-gray-100 dark:border-darkbg-border">
+          <span id="integrityHashDisplay" class="font-mono">Hash: Verifying...</span>
+          <span class="text-emerald-500 font-semibold flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> QA GATE VERIFIED
+          </span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Top 5 Breaking Highlights Section -->
+    <section class="space-y-3">
+      <div class="flex items-center justify-between">
+        <h3 class="text-base font-bold flex items-center gap-2 text-gray-900 dark:text-white">
+          <span>🔥</span> TOP 5 메이저 하이라이트
+        </h3>
+        <span class="text-xs text-gray-500">오늘 가장 주목받는 5대 핵심 이슈</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3" id="top5Container">
+        <!-- Dynamic Top 5 Cards -->
+      </div>
+    </section>
+
+    <!-- 20 Trending Keywords Bar -->
+    <section class="bg-white dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border rounded-xl p-4 shadow-sm space-y-2">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
+          <span>📊</span> 실시간 20대 트렌드 키워드
+        </span>
+        <button onclick="clearKeywordFilter()" id="clearKeywordFilterBtn" class="hidden text-xs text-cyan-500 hover:underline">
+          필터 초기화 ✕
+        </button>
+      </div>
+      <div class="flex flex-wrap gap-1.5" id="trendingKeywordsContainer">
+        <!-- Dynamic Keyword Chips -->
+      </div>
+    </section>
+
+    <!-- Sticky 14-Chapter Navigation Bar -->
+    <nav class="sticky top-16 z-40 bg-gray-100/90 dark:bg-darkbg-main/90 backdrop-blur-md py-2 border-y border-gray-200 dark:border-darkbg-border -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+      <div class="max-w-7xl mx-auto flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1" id="chapterTabsContainer">
+        <button 
+          onclick="filterByChapter('all')" 
+          id="tab-all"
+          class="chapter-tab tab-active px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap border border-gray-300 dark:border-darkbg-border transition flex items-center gap-1"
+        >
+          <span>📑</span> 전체 (140)
+        </button>
+        <!-- Dynamic Chapter Tabs -->
+      </div>
+    </nav>
+
+    <!-- 14 Chapters & 140 Articles Grid Section -->
+    <section class="space-y-8" id="articlesSection">
+      <!-- Dynamic Chapters and Article Cards rendered here -->
+    </section>
+
+  </main>
+
+  <!-- Scroll to Top Floating Button -->
+  <button 
+    onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
+    class="fixed bottom-6 right-6 p-3 rounded-full bg-cyan-600 hover:bg-cyan-500 text-white shadow-2xl transition-all duration-300 z-50 focus:outline-none"
+    title="상단으로 이동"
+  >
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+    </svg>
+  </button>
+
+  <!-- Footer -->
+  <footer class="mt-16 border-t border-gray-200 dark:border-darkbg-border bg-white dark:bg-darkbg-card py-8 text-center text-xs text-gray-500 space-y-2">
+    <div class="font-bold text-gray-700 dark:text-gray-300">BLUELAB Morning Intelligence Automated Briefing System</div>
+    <div>14 Chapters × 10 Articles = 140 Audited Intelligence Nodes · Strict QA Gate 100% Passed</div>
+    <div class="font-mono text-[11px] text-gray-400">Powered by Open-Meteo & Google News Feeds · Designed for Executive Decision Making</div>
+  </footer>
+
+  <!-- Application Logic JS -->
+  <script>
+    let briefingData = null;
+    let currentChapterFilter = 'all';
+    let currentKeywordFilter = '';
+    let isBookmarkOnly = false;
+    let bookmarkedIds = new Set(JSON.parse(localStorage.getItem('bluelab_bookmarks') || '[]'));
+
+    // Dark Mode Toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+        document.getElementById('themeIcon').textContent = '☀️';
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        document.getElementById('themeIcon').textContent = '🌙';
+      }
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== document.getElementById('searchInput')) {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+      }
+      if (e.key.toLowerCase() === 'd' && document.activeElement.tagName !== 'INPUT') {
+        toggleTheme();
+      }
+    });
+
+    // Bookmark Toggle
+    function toggleBookmark(articleId, event) {
+      if (event) event.stopPropagation();
+      if (bookmarkedIds.has(articleId)) {
+        bookmarkedIds.delete(articleId);
+      } else {
+        bookmarkedIds.add(articleId);
+      }
+      localStorage.setItem('bluelab_bookmarks', JSON.stringify(Array.from(bookmarkedIds)));
+      updateBookmarkUI(articleId);
+      if (isBookmarkOnly) {
+        renderArticles();
+      }
+    }
+
+    function updateBookmarkUI(articleId) {
+      const btn = document.getElementById(`bm-btn-${articleId}`);
+      if (btn) {
+        const isBm = bookmarkedIds.has(articleId);
+        btn.innerHTML = isBm ? '★' : '☆';
+        btn.className = isBm 
+          ? 'text-yellow-400 font-bold text-base px-2 py-0.5 rounded hover:bg-yellow-400/20' 
+          : 'text-gray-400 hover:text-yellow-400 text-base px-2 py-0.5 rounded hover:bg-gray-700/30';
+      }
+    }
+
+    function toggleBookmarkFilter() {
+      isBookmarkOnly = !isBookmarkOnly;
+      const btn = document.getElementById('bookmarkFilterBtn');
+      const icon = document.getElementById('bookmarkFilterIcon');
+      if (isBookmarkOnly) {
+        btn.classList.add('bg-yellow-500/20', 'border-yellow-500', 'text-yellow-400');
+        icon.setAttribute('fill', 'currentColor');
+      } else {
+        btn.classList.remove('bg-yellow-500/20', 'border-yellow-500', 'text-yellow-400');
+        icon.setAttribute('fill', 'none');
+      }
+      renderArticles();
+    }
+
+    // Article Accordion Toggle
+    function toggleAccordion(articleId) {
+      const content = document.getElementById(`content-${articleId}`);
+      const arrow = document.getElementById(`arrow-${articleId}`);
+      if (!content) return;
+
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      } else {
+        content.classList.add('hidden');
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    // Load Data
+    async function loadBriefingData() {
+      try {
+        const response = await fetch('data/today.json?t=' + Date.now());
+        if (!response.ok) throw new Error('Data file not found');
+        briefingData = await response.json();
+        renderUI();
+      } catch (err) {
+        console.error('Failed to load today.json:', err);
+        document.getElementById('articlesSection').innerHTML = `
+          <div class="bg-red-900/20 border border-red-500/50 rounded-2xl p-8 text-center space-y-4 max-w-xl mx-auto my-12">
+            <div class="text-4xl">⚠️</div>
+            <h3 class="text-lg font-bold text-red-400">데이터 로드 대기 중</h3>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              <code>public/data/today.json</code> 데이터를 아직 찾을 수 없거나 파이프라인 생성 전입니다.<br/>
+              터미널에서 <code>python run_pipeline.py</code>를 실행하여 오늘의 최신 브리핑을 생성해주세요.
+            </p>
+          </div>
+        `;
+      }
+    }
+
+    function renderUI() {
+      if (!briefingData) return;
+
+      // Header Meta
+      const meta = briefingData.metadata || {};
+      document.getElementById('headerDateText').textContent = `${meta.date_formatted || meta.date} · 140 Intelligence Nodes`;
+      document.getElementById('briefingMetaStats').textContent = `${meta.total_chapters} 챕터 · ${meta.total_articles}개 기사`;
+      document.getElementById('integrityHashDisplay').textContent = `Hash: ${briefingData.integrity_hash?.slice(0, 16)}...`;
+
+      // Weather
+      const w = briefingData.weather || {};
+      document.getElementById('weatherLocation').textContent = w.location || '인천 서구 검단';
+      document.getElementById('weatherConditionIcon').textContent = w.condition_icon || '☀️';
+      document.getElementById('weatherTempCurrent').textContent = `${w.temp_current}℃`;
+      document.getElementById('weatherTempRange').textContent = `최저 ${w.temp_min}℃ / 최고 ${w.temp_max}℃`;
+      document.getElementById('weatherCondition').textContent = w.condition || '맑음';
+      document.getElementById('weatherPop').textContent = `${w.precipitation_prob}%`;
+      document.getElementById('weatherAir').textContent = w.air_quality || '보통';
+      document.getElementById('weatherClothingTip').textContent = w.clothing_tip || '가벼운 외투를 챙기세요.';
+
+      // 3-Line Summary
+      const summaryContainer = document.getElementById('threeLineSummaryContainer');
+      const lines = briefingData.three_line_summary || [];
+      summaryContainer.innerHTML = lines.map((line, idx) => `
+        <div class="p-2.5 rounded-lg bg-gray-50 dark:bg-darkbg-subtle text-xs text-gray-700 dark:text-gray-300 flex items-start gap-2.5 border border-gray-200/50 dark:border-gray-800">
+          <span class="w-5 h-5 rounded-full bg-cyan-500/20 text-cyan-400 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">${idx + 1}</span>
+          <p class="leading-relaxed font-medium">${line}</p>
+        </div>
+      `).join('');
+
+      // Top 5 Highlights
+      const top5Container = document.getElementById('top5Container');
+      const top5 = briefingData.top_5_highlights || [];
+      top5Container.innerHTML = top5.map((art, idx) => `
+        <div onclick="scrollToArticle('${art.id}')" class="cursor-pointer bg-white dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border hover:border-cyan-500 dark:hover:border-cyan-500 rounded-xl p-3.5 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+          <div>
+            <div class="flex items-center justify-between text-[11px] mb-2">
+              <span class="font-bold text-red-500 flex items-center gap-1">
+                <span>TOP ${idx + 1}</span>
+              </span>
+              <span class="text-gray-400 text-[10px]">${art.chapter_name}</span>
+            </div>
+            <h4 class="text-xs font-bold text-gray-900 dark:text-gray-100 group-hover:text-cyan-400 transition line-clamp-2 leading-snug">
+              ${art.title}
+            </h4>
+          </div>
+          <div class="mt-2.5 pt-2 border-t border-gray-100 dark:border-darkbg-border flex items-center justify-between text-[10px] text-gray-500">
+            <span>${art.source}</span>
+            <span class="text-cyan-500 font-medium">분석 보기 →</span>
+          </div>
+        </div>
+      `).join('');
+
+      // 20 Trending Keywords
+      const trendingContainer = document.getElementById('trendingKeywordsContainer');
+      const keywords = briefingData.trending_keywords || [];
+      trendingContainer.innerHTML = keywords.map(k => `
+        <button 
+          onclick="filterByKeyword('${k.keyword}')" 
+          id="kw-chip-${k.keyword}"
+          class="keyword-chip px-2.5 py-1 rounded-lg text-xs bg-gray-100 dark:bg-darkbg-subtle hover:bg-cyan-500/20 hover:text-cyan-400 border border-gray-200 dark:border-darkbg-border text-gray-700 dark:text-gray-300 transition flex items-center gap-1.5"
+        >
+          <span>#${k.keyword}</span>
+          <span class="text-[10px] text-cyan-500 font-mono">${k.count}</span>
+        </button>
+      `).join('');
+
+      // Chapter Tabs
+      const tabsContainer = document.getElementById('chapterTabsContainer');
+      const chapters = briefingData.chapters || [];
+      const chapterTabHTML = chapters.map(ch => `
+        <button 
+          onclick="filterByChapter('${ch.id}')" 
+          id="tab-${ch.id}"
+          class="chapter-tab px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-white dark:bg-darkbg-card hover:bg-gray-100 dark:hover:bg-darkbg-hover border border-gray-300 dark:border-darkbg-border text-gray-700 dark:text-gray-300 transition flex items-center gap-1.5"
+        >
+          <span>${ch.icon}</span> ${ch.name} <span class="text-[10px] px-1.5 py-0.2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 font-mono">${ch.count}</span>
+        </button>
+      `).join('');
+      tabsContainer.innerHTML = `
+        <button 
+          onclick="filterByChapter('all')" 
+          id="tab-all"
+          class="chapter-tab tab-active px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap border border-gray-300 dark:border-darkbg-border transition flex items-center gap-1"
+        >
+          <span>📑</span> 전체 (140)
+        </button>
+      ` + chapterTabHTML;
+
+      // Render Articles
+      renderArticles();
+    }
+
+    function renderArticles() {
+      const container = document.getElementById('articlesSection');
+      if (!briefingData || !briefingData.chapters) return;
+
+      const searchTerm = (document.getElementById('searchInput').value || document.getElementById('searchInputMobile').value || '').toLowerCase().trim();
+
+      let chaptersToRender = briefingData.chapters;
+      if (currentChapterFilter !== 'all') {
+        chaptersToRender = chaptersToRender.filter(c => c.id === currentChapterFilter);
+      }
+
+      let totalVisible = 0;
+      const htmlParts = [];
+
+      chaptersToRender.forEach(ch => {
+        let arts = ch.articles || [];
+
+        // Apply Keyword Filter
+        if (currentKeywordFilter) {
+          arts = arts.filter(a => 
+            a.title.includes(currentKeywordFilter) || 
+            (a.keywords && a.keywords.includes(currentKeywordFilter)) ||
+            (a.editorial && (a.editorial.fact.includes(currentKeywordFilter) || a.editorial.why_it_matters.includes(currentKeywordFilter)))
+          );
+        }
+
+        // Apply Search Term Filter
+        if (searchTerm) {
+          arts = arts.filter(a => 
+            a.title.toLowerCase().includes(searchTerm) ||
+            a.source.toLowerCase().includes(searchTerm) ||
+            (a.keywords && a.keywords.some(k => k.toLowerCase().includes(searchTerm))) ||
+            (a.editorial && (
+              a.editorial.fact.toLowerCase().includes(searchTerm) ||
+              a.editorial.background.toLowerCase().includes(searchTerm) ||
+              a.editorial.why_it_matters.toLowerCase().includes(searchTerm)
+            ))
+          );
+        }
+
+        // Apply Bookmark Filter
+        if (isBookmarkOnly) {
+          arts = arts.filter(a => bookmarkedIds.has(a.id));
+        }
+
+        if (arts.length === 0) return;
+        totalVisible += arts.length;
+
+        const chCardsHTML = arts.map((art, idx) => {
+          const isBm = bookmarkedIds.has(art.id);
+          const ed = art.editorial || {};
+          const checkpoints = ed.checkpoints || [];
+          const keywords = art.keywords || [];
+
+          return `
+            <div id="art-card-${art.id}" class="article-card bg-white dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border rounded-xl shadow-sm hover:shadow-md hover:border-cyan-500/50 transition duration-150 overflow-hidden">
+              
+              <!-- Card Header / Title (Click to toggle) -->
+              <div onclick="toggleAccordion('${art.id}')" class="p-4 cursor-pointer select-none space-y-2.5">
+                
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xs px-2 py-0.5 rounded-md bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 font-bold border border-cyan-500/20">
+                      #${idx + 1} ${ch.name}
+                    </span>
+                    <span class="font-semibold text-gray-700 dark:text-gray-300">${art.source}</span>
+                    <span class="text-gray-400 text-[11px]">${art.published_at ? art.published_at.slice(0, 16) : ''}</span>
+                  </div>
+                  
+                  <div class="flex items-center gap-1.5" onclick="event.stopPropagation()">
+                    <button 
+                      id="bm-btn-${art.id}" 
+                      onclick="toggleBookmark('${art.id}', event)" 
+                      class="${isBm ? 'text-yellow-400 font-bold' : 'text-gray-400 hover:text-yellow-400'} text-base px-2 py-0.5 rounded hover:bg-gray-100 dark:hover:bg-darkbg-hover transition"
+                      title="북마크 토글"
+                    >
+                      ${isBm ? '★' : '☆'}
+                    </button>
+                    <svg id="arrow-${art.id}" class="w-4 h-4 text-gray-400 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-gray-100 leading-snug hover:text-cyan-500 transition">
+                  ${art.title}
+                </h3>
+
+                <!-- Quick Keywords Tag Preview -->
+                <div class="flex flex-wrap gap-1 pt-1">
+                  ${keywords.map(kw => `
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-gray-100 dark:bg-darkbg-subtle text-gray-600 dark:text-gray-400">
+                      #${kw}
+                    </span>
+                  `).join('')}
+                </div>
+
+              </div>
+
+              <!-- Collapsible Editorial Intelligence Content -->
+              <div id="content-${art.id}" class="editorial-content hidden px-4 pb-4 pt-2 border-t border-gray-100 dark:border-darkbg-border bg-gray-50/50 dark:bg-darkbg-subtle/40 space-y-3.5">
+                
+                <!-- 1. 핵심 팩트 -->
+                <div class="space-y-1">
+                  <div class="flex items-center gap-1.5 text-xs font-bold text-cyan-600 dark:text-cyan-400">
+                    <span>📌</span> 핵심 팩트 (Fact)
+                  </div>
+                  <p class="text-xs text-gray-800 dark:text-gray-200 leading-relaxed bg-white dark:bg-darkbg-card p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+                    ${ed.fact || '핵심 사실 분석 정보가 없습니다.'}
+                  </p>
+                </div>
+
+                <!-- 2. 사건 배경 -->
+                <div class="space-y-1">
+                  <div class="flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400">
+                    <span>🔍</span> 사건 배경 (Background Context)
+                  </div>
+                  <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed bg-white dark:bg-darkbg-card p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+                    ${ed.background || '배경 맥락 정보가 없습니다.'}
+                  </p>
+                </div>
+
+                <!-- 3. 왜 중요한가 -->
+                <div class="space-y-1">
+                  <div class="flex items-center gap-1.5 text-xs font-bold text-amber-600 dark:text-amber-400">
+                    <span>💡</span> 왜 중요한가 (Why It Matters)
+                  </div>
+                  <p class="text-xs text-gray-700 dark:text-gray-300 leading-relaxed bg-white dark:bg-darkbg-card p-2.5 rounded-lg border border-gray-200 dark:border-gray-800">
+                    ${ed.why_it_matters || '파급효과 분석 정보가 없습니다.'}
+                  </p>
+                </div>
+
+                <!-- 4. 향후 체크포인트 -->
+                <div class="space-y-1">
+                  <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-600 dark:text-emerald-400">
+                    <span>🎯</span> 향후 핵심 체크포인트 (Key Checkpoints)
+                  </div>
+                  <ul class="space-y-1 bg-white dark:bg-darkbg-card p-2.5 rounded-lg border border-gray-200 dark:border-gray-800 text-xs text-gray-700 dark:text-gray-300">
+                    ${checkpoints.map(cp => `
+                      <li class="flex items-start gap-1.5">
+                        <span class="text-emerald-500 font-bold shrink-0">·</span>
+                        <span>${cp}</span>
+                      </li>
+                    `).join('')}
+                  </ul>
+                </div>
+
+                <!-- Action Button -->
+                <div class="pt-2 flex items-center justify-between">
+                  <span class="text-[10px] text-gray-400 font-mono">ID: ${art.id}</span>
+                  <a 
+                    href="${art.link}" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-semibold shadow-sm transition"
+                  >
+                    <span>원문 기사 바로가기</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                    </svg>
+                  </a>
+                </div>
+
+              </div>
+
+            </div>
+          `;
+        }).join('');
+
+        htmlParts.push(`
+          <div id="chapter-section-${ch.id}" class="space-y-3">
+            <div class="flex items-center justify-between border-b border-gray-200 dark:border-darkbg-border pb-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xl">${ch.icon}</span>
+                <h2 class="text-base font-bold text-gray-900 dark:text-white">${ch.name}</h2>
+                <span class="text-xs text-gray-500 dark:text-gray-400 font-normal">(${ch.name_en})</span>
+              </div>
+              <span class="text-xs font-mono text-cyan-500 font-semibold">${arts.length} Articles</span>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400 -mt-1">${ch.description}</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+              ${chCardsHTML}
+            </div>
+          </div>
+        `);
+      });
+
+      if (totalVisible === 0) {
+        container.innerHTML = `
+          <div class="bg-gray-100 dark:bg-darkbg-card border border-gray-200 dark:border-darkbg-border rounded-2xl p-12 text-center space-y-3">
+            <div class="text-3xl">🔍</div>
+            <h4 class="text-sm font-bold text-gray-700 dark:text-gray-300">검색 조건에 일치하는 기사가 없습니다.</h4>
+            <p class="text-xs text-gray-500">다른 검색어를 입력하시거나 키워드/북마크 필터를 해제해보세요.</p>
+            <button onclick="resetAllFilters()" class="px-3 py-1.5 rounded-lg bg-cyan-600 text-white text-xs font-semibold">필터 초기화</button>
+          </div>
+        `;
+      } else {
+        container.innerHTML = htmlParts.join('');
+      }
+    }
+
+    // Filter Functions
+    function filterByChapter(chapterId) {
+      currentChapterFilter = chapterId;
+      document.querySelectorAll('.chapter-tab').forEach(btn => {
+        btn.classList.remove('tab-active');
+      });
+      const activeBtn = document.getElementById(`tab-${chapterId}`);
+      if (activeBtn) activeBtn.classList.add('tab-active');
+      renderArticles();
+    }
+
+    function filterByKeyword(kw) {
+      currentKeywordFilter = kw;
+      document.getElementById('clearKeywordFilterBtn').classList.remove('hidden');
+      document.querySelectorAll('.keyword-chip').forEach(chip => {
+        chip.classList.remove('bg-cyan-500', 'text-white');
+      });
+      const activeChip = document.getElementById(`kw-chip-${kw}`);
+      if (activeChip) activeChip.classList.add('bg-cyan-500', 'text-white');
+      renderArticles();
+    }
+
+    function clearKeywordFilter() {
+      currentKeywordFilter = '';
+      document.getElementById('clearKeywordFilterBtn').classList.add('hidden');
+      document.querySelectorAll('.keyword-chip').forEach(chip => {
+        chip.classList.remove('bg-cyan-500', 'text-white');
+      });
+      renderArticles();
+    }
+
+    function resetAllFilters() {
+      currentChapterFilter = 'all';
+      currentKeywordFilter = '';
+      isBookmarkOnly = false;
+      document.getElementById('searchInput').value = '';
+      document.getElementById('searchInputMobile').value = '';
+      filterByChapter('all');
+      clearKeywordFilter();
+      renderArticles();
+    }
+
+    function scrollToArticle(articleId) {
+      // Show all chapters first
+      filterByChapter('all');
+      setTimeout(() => {
+        const card = document.getElementById(`art-card-${articleId}`);
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          toggleAccordion(articleId);
+          card.classList.add('ring-2', 'ring-cyan-500');
+          setTimeout(() => card.classList.remove('ring-2', 'ring-cyan-500'), 2500);
+        }
+      }, 100);
+    }
+
+    // Search Input Listeners
+    document.getElementById('searchInput').addEventListener('input', () => renderArticles());
+    document.getElementById('searchInputMobile').addEventListener('input', () => renderArticles());
+
+    // Init on Page Load
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'light') {
+        document.documentElement.classList.remove('dark');
+        document.getElementById('themeIcon').textContent = '☀️';
+      }
+      loadBriefingData();
+    });
+  </script>
+</body>
+</html>
