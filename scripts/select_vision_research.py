@@ -24,6 +24,39 @@ EVIDENCE_SCORE = {
     "RESEARCH / ISSUE": 5,
 }
 
+# Topic labels from the acquisition query are discovery hints only.  A provider
+# can return unrelated records, so final selection must independently prove
+# ophthalmic/visual relevance from title + abstract.
+TOPIC_TERMS = {
+    "myopia": (
+        "myopia", "myopic", "axial length", "spherical equivalent", "orthokeratology",
+        "atropine", "defocus", "myopia control", "myopia progression",
+    ),
+    "binocular": (
+        "binocular", "strabismus", "amblyopia", "vergence", "convergence", "divergence",
+        "accommodation", "accommodative", "stereopsis", "stereoacuity", "heterophoria",
+        "phoria", "diplopia", "ocular alignment", "fusional", "suppression",
+    ),
+    "contact_cornea": (
+        "contact lens", "contact lenses", "cornea", "corneal", "keratitis", "keratoconus",
+        "tear film", "dry eye", "ocular surface", "delefilcon", "senofilcon", "silicone hydrogel",
+    ),
+    "ophthalmology": (
+        "retina", "retinal", "macula", "macular", "glaucoma", "cataract", "ophthalm",
+        "optic nerve", "uveitis", "stargardt", "diabetic retinopathy", "retinal dystrophy",
+        "age-related macular", "ocular", "eye disease",
+    ),
+    "vision_science": (
+        "vision", "visual", "retina", "retinal", "ocular", "optical", "optics", "photoreceptor",
+        "contrast sensitivity", "visual acuity", "visual field", "color vision", "colour vision",
+        "eye movement", "oculomotor", "pupil", "pupillary",
+    ),
+    "optometry": (
+        "optometr", "refraction", "refractive", "visual acuity", "vision screening", "eye exam",
+        "ocular", "ophthalm", "contact lens", "binocular vision", "low vision", "spectacle",
+    ),
+}
+
 
 def norm_title(value: str) -> str:
     return re.sub(r"[^a-z0-9가-힣]+", " ", (value or "").lower()).strip()
@@ -32,9 +65,21 @@ def norm_title(value: str) -> str:
 def parse_date(value: str):
     if not value:
         return None
-    m = re.search(r"(20\d{2})[- /]?([01]?\d)?[- /]?([0-3]?\d)?", str(value))
+    text = str(value)
+    m = re.search(r"(20\d{2})[- /]?([01]?\d)?[- /]?([0-3]?\d)?", text)
     if not m:
-        return None
+        # Handle PubMed-style values such as "2026-Sep".
+        y = re.search(r"\b(20\d{2})\b", text)
+        if not y:
+            return None
+        month_names = {name.lower(): i for i, name in enumerate(
+            ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"], 1)}
+        mm = 1
+        lower = text.lower()
+        for name, i in month_names.items():
+            if name in lower:
+                mm = i; break
+        return dt.date(int(y.group(1)), mm, 1)
     y = int(m.group(1)); mo = int(m.group(2) or 1); d = int(m.group(3) or 1)
     try:
         return dt.date(y, mo, d)
@@ -47,11 +92,26 @@ def domain(url: str) -> str:
     return h[4:] if h.startswith("www.") else h
 
 
+def topic_relevant(item: dict) -> bool:
+    topic = item.get("topic_id") or ""
+    terms = TOPIC_TERMS.get(topic, ())
+    if not terms:
+        return False
+    text = " " + norm_title((item.get("title") or "") + " " + (item.get("abstract") or "")) + " "
+    for term in terms:
+        t = norm_title(term)
+        if t and (" " + t + " ") in text:
+            return True
+    return False
+
+
 def quality_score(item: dict, today: dt.date) -> int:
     score = EVIDENCE_SCORE.get(item.get("evidence_type"), 5)
     pd = parse_date(item.get("publication_date", ""))
     if pd:
-        age = max(0, (today - pd).days)
+        age = (today - pd).days
+        if age < 0:
+            return -10_000
         score += 20 if age <= 3 else 16 if age <= 7 else 10 if age <= 14 else 5 if age <= 30 else 0
     if item.get("doi"): score += 8
     if item.get("pmid"): score += 7
@@ -67,11 +127,20 @@ def quality_score(item: dict, today: dt.date) -> int:
 def select(items: list[dict], target: int, max_topic_share: float, today: dt.date):
     enriched=[]
     seen=set()
+    reject_counts=Counter()
     for item in items:
         key = item.get("doi") or item.get("pmid") or item.get("nct_id") or norm_title(item.get("title", ""))
         if not key or key in seen:
+            reject_counts["duplicate_or_empty"] += 1
             continue
         seen.add(key)
+        if not topic_relevant(item):
+            reject_counts["topic_irrelevant"] += 1
+            continue
+        pd = parse_date(item.get("publication_date", ""))
+        if pd and pd > today:
+            reject_counts["future_publication"] += 1
+            continue
         x=dict(item)
         x["selection_score"]=quality_score(x,today)
         enriched.append(x)
@@ -79,7 +148,6 @@ def select(items: list[dict], target: int, max_topic_share: float, today: dt.dat
 
     max_per_topic=max(1, int(target*max_topic_share))
     chosen=[]; topic_counts=Counter(); source_counts=Counter()
-    # Pass 1: guarantee broad topical coverage when candidates exist.
     topic_best={}
     for x in enriched:
         topic_best.setdefault(x.get("topic_id") or "unknown", x)
@@ -88,7 +156,6 @@ def select(items: list[dict], target: int, max_topic_share: float, today: dt.dat
         chosen.append(x); topic_counts[x.get("topic_id") or "unknown"]+=1; source_counts[x.get("collector_source") or "unknown"]+=1
     chosen_keys={x.get("doi") or x.get("pmid") or x.get("nct_id") or norm_title(x.get("title", "")) for x in chosen}
 
-    # Pass 2: highest quality while enforcing topic concentration ceiling.
     for x in enriched:
         if len(chosen)>=target: break
         key=x.get("doi") or x.get("pmid") or x.get("nct_id") or norm_title(x.get("title", ""))
@@ -97,20 +164,32 @@ def select(items: list[dict], target: int, max_topic_share: float, today: dt.dat
         if topic_counts[topic]>=max_per_topic: continue
         chosen.append(x); chosen_keys.add(key); topic_counts[topic]+=1; source_counts[x.get("collector_source") or "unknown"]+=1
 
-    return chosen, topic_counts, source_counts
+    return chosen, topic_counts, source_counts, reject_counts, len(enriched)
 
 
 def self_test():
-    today=dt.date(2026,9,2)
-    rows=[]
-    for i,topic in enumerate(["myopia","binocular","contact_cornea","ophthalmology","vision_science","optometry"]*3):
-        rows.append({"title":f"paper {i}","topic_id":topic,"publication_date":"2026-09-01","evidence_type":"RCT" if i%2==0 else "OBSERVATIONAL","doi":f"10.1/{i}","abstract":"x","journal":"J","authors":["A"],"url":"https://doi.org/x","collector_source":"crossref"})
-    chosen,tc,_=select(rows,10,.4,today)
-    assert len(chosen)==10
-    assert len(tc)>=6
-    assert max(tc.values())<=4
-    assert chosen[0]["selection_score"]>=chosen[-1]["selection_score"]
-    print("PASS: vision research selector self-test")
+    today=dt.date(2026,9,3)
+    good=[
+        {"title":"Low-dose atropine for childhood myopia progression","abstract":"axial length","topic_id":"myopia","publication_date":"2026-09-02","evidence_type":"RCT","doi":"10.1/a","url":"https://doi.org/10.1/a","collector_source":"crossref"},
+        {"title":"Vergence and accommodation in intermittent exotropia","abstract":"binocular vision","topic_id":"binocular","publication_date":"2026-09-02","evidence_type":"OBSERVATIONAL","doi":"10.1/b","url":"https://doi.org/10.1/b","collector_source":"crossref"},
+        {"title":"Daily disposable toric contact lens comfort","abstract":"senofilcon contact lens","topic_id":"contact_cornea","publication_date":"2026-09-02","evidence_type":"RCT","doi":"10.1/c","url":"https://doi.org/10.1/c","collector_source":"crossref"},
+        {"title":"ABCA4 retinal dystrophy gene therapy","abstract":"Stargardt retinal disease","topic_id":"ophthalmology","publication_date":"2026-09-02","evidence_type":"CLINICAL TRIAL","doi":"10.1/d","url":"https://doi.org/10.1/d","collector_source":"crossref"},
+        {"title":"Visual acuity and contrast sensitivity after adaptation","abstract":"vision science","topic_id":"vision_science","publication_date":"2026-09-02","evidence_type":"RESEARCH / ISSUE","doi":"10.1/e","url":"https://doi.org/10.1/e","collector_source":"crossref"},
+        {"title":"Optometry refraction screening outcomes","abstract":"eye exam","topic_id":"optometry","publication_date":"2026-09-02","evidence_type":"OBSERVATIONAL","doi":"10.1/f","url":"https://doi.org/10.1/f","collector_source":"crossref"},
+    ]
+    bad=[
+        {"title":"Ecosystem services pricing in wetlands","abstract":"economics","topic_id":"vision_science","publication_date":"2026-09-02","doi":"10.1/x"},
+        {"title":"Body armor 3D scanning","abstract":"female torso armor","topic_id":"binocular","publication_date":"2026-09-02","doi":"10.1/y"},
+        {"title":"Future myopia trial","abstract":"myopia axial length","topic_id":"myopia","publication_date":"2027-01-01","doi":"10.1/z"},
+    ]
+    chosen,tc,_,rc,eligible=select(good+bad,10,.4,today)
+    assert len(chosen)==6
+    assert eligible==6
+    assert len(tc)==6
+    assert rc["topic_irrelevant"]==2
+    assert rc["future_publication"]==1
+    assert all(topic_relevant(x) for x in chosen)
+    print("PASS: vision research selector relevance self-test")
 
 
 def main():
@@ -126,22 +205,24 @@ def main():
     payload=json.loads((ROOT/args.input).read_text(encoding="utf-8"))
     items=payload.get("candidates",[])
     target=args.target or int(policy.get("target_items",10))
-    chosen,tc,sc=select(items,target,float(policy.get("max_single_topic_share",.4)),dt.date.today())
+    chosen,tc,sc,rc,eligible=select(items,target,float(policy.get("max_single_topic_share",.4)),dt.date.today())
     out={
-        "schema_version":"vision-research-selected-v1",
+        "schema_version":"vision-research-selected-v2",
         "generated_at":dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat(),
         "candidate_count":len(items),
+        "eligible_count":eligible,
         "selected_count":len(chosen),
         "target_count":target,
         "coverage_status":"PASS" if len(chosen)>=target else "LIMITED",
         "topic_counts":dict(tc),
         "collector_source_counts":dict(sc),
+        "reject_counts":dict(rc),
         "provider_errors":payload.get("errors",[]),
         "selected":chosen,
     }
     p=ROOT/args.output; p.parent.mkdir(parents=True,exist_ok=True)
     p.write_text(json.dumps(out,ensure_ascii=False,indent=2),encoding="utf-8")
-    print(f"WROTE {p}: selected {len(chosen)}/{target} from {len(items)} candidates; topics={dict(tc)}")
+    print(f"WROTE {p}: selected {len(chosen)}/{target} from {eligible} relevant candidates; topics={dict(tc)} rejects={dict(rc)}")
     if len(chosen)<target:
         raise SystemExit(2)
 
