@@ -41,6 +41,7 @@ jobs:
         run: python run_pipeline.py
 
       - name: Commit and push updated briefing data
+        continue-on-error: true
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -49,11 +50,14 @@ jobs:
             echo "No data changes detected."
           else
             git commit -m "chore(briefing): daily morning intelligence update [$(date +'%Y-%m-%d')]"
-            git push
+            git pull --rebase origin main || true
+            git push origin main || true
           fi
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
