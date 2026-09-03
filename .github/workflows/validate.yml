@@ -61,7 +61,7 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p artifacts
-          python scripts/collect_vision_research.py --days 7 --limit-per-source 2 --output artifacts/vision-research-live-candidates.json
+          python scripts/collect_vision_research.py --days 30 --limit-per-source 4 --output artifacts/vision-research-live-candidates.json
           python scripts/select_vision_research.py --input artifacts/vision-research-live-candidates.json --output artifacts/vision-research-live-selected.json --target 10
       - name: Live priority-news acquisition and factual prefilter
         id: priority
