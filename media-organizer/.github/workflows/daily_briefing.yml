@@ -1,0 +1,74 @@
+name: Daily Morning Intelligence Briefing
+
+on:
+  schedule:
+    # 매일 아침 05:30 KST = 전날 20:30 UTC
+    - cron: '30 20 * * *'
+  workflow_dispatch: # 깃허브 웹에서 수동 즉시 실행 가능
+
+permissions:
+  contents: write # public/data/today.json 깃 커밋 및 푸시 권한
+  pages: write    # GitHub Pages 배포 권한
+  id-token: write # Pages OIDC 인증 권한
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
+
+jobs:
+  build-and-briefing:
+    name: Run Intelligence Pipeline & Commit Data
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Master Pipeline
+        run: python run_pipeline.py
+
+      - name: Commit and push updated briefing data
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add public/data/
+          if git diff --staged --quiet; then
+            echo "No data changes detected."
+          else
+            git commit -m "chore(briefing): daily morning intelligence update [$(date +'%Y-%m-%d')]"
+            git push
+          fi
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './public'
+
+  deploy-pages:
+    name: Deploy to GitHub Pages
+    needs: build-and-briefing
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
