@@ -52,7 +52,7 @@ def test_bundle_quality_gate_passes_after_polish():
         why_it_matters="이 사안은 대통령, 시민사회, 초청와 직접 연결돼 있어 후속 판단에 영향을 줄 수 있습니다.",
         checkpoints=["공식 발표 확인"],
     )
-    article = SimpleNamespace(editorial=editorial)
+    article = SimpleNamespace(source="원문 매체", title="테스트 제목", editorial=editorial)
     bundle = SimpleNamespace(
         three_line_summary=[
             "[헤드라인] 첫째 줄",
@@ -95,3 +95,41 @@ def test_quality_gate_rejects_unpolished_quoted_reporting_particle():
         assert "quoted-headline reporting" in str(exc)
     else:
         raise AssertionError("quality gate must fail closed")
+
+
+def test_production_regression_ellipsis_fact_fails_closed_to_full_headline():
+    title = "비트코인, 美 금리 인상 우려 완화에 급등... 3개월 만에 8만1000달러 돌파"
+    editorial = SimpleNamespace(
+        fact="조선일보 보도에 따르면, 비트코인, 美 금리 인상 우려 완화에 급등...",
+        background="배경 설명입니다.", why_it_matters="중요성 설명입니다.", checkpoints=["후속 확인"],
+    )
+    article = SimpleNamespace(source="조선일보", title=title, editorial=editorial)
+    polish_editorial_articles([article])
+    assert editorial.fact == (
+        "조선일보 보도에 따르면, ‘비트코인, 美 금리 인상 우려 완화에 급등... 3개월 만에 8만1000달러 돌파’"
+        "라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다."
+    )
+    assert not editorial.fact.endswith("급등...")
+
+
+def test_quality_gate_rejects_unpolished_ellipsis_fact_fragment():
+    editorial = SimpleNamespace(
+        fact="조선일보 보도에 따르면, 비트코인, 美 금리 인상 우려 완화에 급등...",
+        background="배경", why_it_matters="중요성", checkpoints=[],
+    )
+    article = SimpleNamespace(source="조선일보", title="비트코인 전체 제목", editorial=editorial)
+    bundle = SimpleNamespace(three_line_summary=["a", "b", "c"], chapters=[SimpleNamespace(articles=[article])])
+    try:
+        validate_korean_quality(bundle)
+    except ValueError as exc:
+        assert "incomplete fact clause ending in ellipsis" in str(exc)
+    else:
+        raise AssertionError("quality gate must reject incomplete ellipsis Fact")
+
+
+def test_valid_grounded_fact_is_unchanged():
+    fact = "연합뉴스 원문에 따르면, 코스피는 1.6% 상승해 거래를 마쳤습니다."
+    editorial = SimpleNamespace(fact=fact, background="배경", why_it_matters="중요성", checkpoints=[])
+    article = SimpleNamespace(source="연합뉴스", title="코스피 상승 마감", editorial=editorial)
+    polish_editorial_articles([article])
+    assert editorial.fact == fact
