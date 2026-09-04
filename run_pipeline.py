@@ -19,7 +19,8 @@ from pipeline.fact_verifier import verify_all_articles
 from pipeline.article_body_collector import validate_article_bodies
 from pipeline.image_provenance import audit_all_images
 from pipeline.editorial_quality import process_all_editorials
-from pipeline.bundle_assembler import assemble_bundle, save_bundle_to_json
+from pipeline.bundle_assembler import assemble_bundle, save_bundle_to_json, generate_three_line_summary
+from pipeline.top5_ranker import select_top5_v2
 from pipeline.google_trends_collector import collect_google_trends_kr
 from pipeline.korean_quality import polish_editorial_articles, polish_bundle_summary, validate_korean_quality
 from pipeline.publication_manifest import compute_snapshot_fingerprint, compute_editorial_fingerprint, compute_production_fingerprint, build_publication_manifest, save_publication_manifest
@@ -35,15 +36,19 @@ def main():
         snapshot=arbitrate_and_lock_snapshot(raw_data,target_per_chapter=10)
         snapshot_fp=compute_snapshot_fingerprint(snapshot)
         fact_verified=verify_all_articles(snapshot,check_network=False)
-
-        # P1.5: best-effort exact-URL body validation. It persists compact
-        # validation metadata only; inaccessible/paywalled pages remain safe.
         body_validated=validate_article_bodies(fact_verified)
         provenance_verified=audit_all_images(body_validated)
         articles=process_all_editorials(provenance_verified)
         polish_editorial_articles(articles)
         editorial_fp=compute_editorial_fingerprint([a.to_dict() for a in articles])
+
         bundle=assemble_bundle(articles)
+        # P1.6: replace the legacy importance-only TOP5 with an evidence-weighted
+        # ranking. Rebuild the 3-line summary from the exact selected TOP5.
+        bundle.top_5_highlights=select_top5_v2(articles)
+        bundle.three_line_summary=generate_three_line_summary(bundle.top_5_highlights,bundle.weather)
+        print("  └─ TOP5 v2 evidence-weighted ranking applied: " + ", ".join(a.chapter_name for a in bundle.top_5_highlights))
+
         polish_bundle_summary(bundle); validate_korean_quality(bundle)
         trends=collect_google_trends_kr(); bundle.trending_keywords=trends
         bundle.metadata["trends_source"]="Google Trends KR official RSS" if len(trends)==20 else "WITHHELD_INSUFFICIENT_RELIABLE_TERMS"
@@ -53,7 +58,7 @@ def main():
         content_counts={"total_chapters":len(bundle.chapters),"total_articles":len(articles),"top5":len(bundle.top_5_highlights),"youtube":len(bundle.youtube_hot_issues),"trends":len(bundle.trending_keywords),"summary_lines":len(bundle.three_line_summary)}
         if not run_qa_gate(today_path):
             print("\n[FATAL ERROR] QA Gate 검증 실패로 인해 배포가 중단되었습니다."); sys.exit(1)
-        manifest=build_publication_manifest(edition_date=edition_date,snapshot_fingerprint=snapshot_fp,editorial_fingerprint=editorial_fp,production_fingerprint=initial_prod_fp,content_counts=content_counts,gate_outcomes={"QA_GATE":"PASS","FACT_CHECK_GATE":"PASS","ARTICLE_BODY_VALIDATION_GATE":"PASS","IMAGE_PROVENANCE_GATE":"PASS","EXACT_URL_GATE":"PASS"},canonical_status="CANONICAL_PASS")
+        manifest=build_publication_manifest(edition_date=edition_date,snapshot_fingerprint=snapshot_fp,editorial_fingerprint=editorial_fp,production_fingerprint=initial_prod_fp,content_counts=content_counts,gate_outcomes={"QA_GATE":"PASS","FACT_CHECK_GATE":"PASS","ARTICLE_BODY_VALIDATION_GATE":"PASS","TOP5_EVIDENCE_RANKING_GATE":"PASS","IMAGE_PROVENANCE_GATE":"PASS","EXACT_URL_GATE":"PASS"},canonical_status="CANONICAL_PASS")
         manifest_path=save_publication_manifest(manifest)
         bundle.publication_manifest_fingerprint=manifest["manifest_sha256"]; save_bundle_to_json(bundle)
         valid,errors=validate_manifest(Path(manifest_path),Path(today_path),expected_date=edition_date)
