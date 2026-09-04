@@ -7,7 +7,7 @@ P1 goals:
 - make Background / Why it matters / Checkpoints article-specific while retaining
   chapter context as a secondary frame;
 - fail closed to the selected headline when a summary clause cannot be tied to the
-  same event with informative-token overlap;
+  same event with strong informative-token coverage;
 - reject any candidate Fact clause that still contains another publisher marker.
 """
 from __future__ import annotations
@@ -36,11 +36,6 @@ def _normalize(text: str) -> str:
 
 
 def _editorial_source(source: str) -> str:
-    """Return a safe display source for editorial prose.
-
-    Aggregator labels are not treated as publishers. The underlying article link
-    remains unchanged elsewhere in the production payload.
-    """
     source = _normalize(source) or "주요 언론"
     low = source.lower()
     if any(label in low for label in _AGGREGATOR_SOURCE_LABELS):
@@ -66,20 +61,26 @@ def _looks_like_noise(fragment: str, title: str, source: str) -> bool:
 
 
 def _same_event_clause(fragment: str, title: str) -> bool:
+    """Require strong lexical coverage before a summary clause becomes Fact.
+
+    Sharing two generic event tokens is not enough: neighboring headlines in an
+    aggregator can refer to different sub-events. We require at least two shared
+    informative tokens and >=50% overlap against the smaller token set, with a
+    modest Jaccard floor. Short titles receive the same fail-closed treatment.
+    """
     title_tokens = informative_title_tokens(title)
     frag_tokens = informative_title_tokens(fragment)
     if not title_tokens or not frag_tokens:
         return False
     shared = title_tokens & frag_tokens
-    if len(shared) >= 2:
-        return True
-    if len(title_tokens) <= 3 and len(shared) == 1:
-        return len(shared) / max(1, min(len(title_tokens), len(frag_tokens))) >= 0.5
-    return False
+    if len(shared) < 2:
+        return False
+    overlap = len(shared) / max(1, min(len(title_tokens), len(frag_tokens)))
+    jaccard = len(shared) / max(1, len(title_tokens | frag_tokens))
+    return overlap >= 0.50 and jaccard >= 0.25
 
 
 def _publisher_hits(fragment: str, selected_source: str) -> List[str]:
-    """Return publisher markers other than the selected source itself."""
     low = fragment.lower()
     selected = _normalize(selected_source).lower()
     hits: List[str] = []
@@ -91,11 +92,9 @@ def _publisher_hits(fragment: str, selected_source: str) -> List[str]:
 
 
 def _summary_candidates(summary: str, title: str, source: str) -> List[str]:
-    """Extract same-event factual clauses from noisy aggregator/RSS summary text."""
     text = _normalize(summary)
     if not text:
         return []
-
     pieces = re.split(
         r"\s{2,}|\s+[|/]\s+|(?<=[.!?])\s+|\s+(?=\[[^\]]{1,30}\])",
         text,
@@ -114,8 +113,6 @@ def _summary_candidates(summary: str, title: str, source: str) -> List[str]:
         low = piece.lower()
         if any(domain in low for domain in _NOISE_DOMAINS):
             continue
-        # Any other publisher marker is evidence that this is an aggregator cluster,
-        # even if the clustered headlines describe the same event.
         if _publisher_hits(piece, source):
             continue
         if not _same_event_clause(piece, title):
