@@ -9,6 +9,9 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/daily_briefing.yml'
+      - 'pipeline/**'
+      - 'scripts/**'
+      - 'config/**'
 
 permissions:
   contents: write
@@ -43,8 +46,47 @@ jobs:
       - name: Run Master Pipeline
         run: python run_pipeline.py
 
+      - name: PRE-SEND hard gates
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+          from urllib.parse import urlparse
+          from zoneinfo import ZoneInfo
+
+          data=json.loads(Path('public/data/today.json').read_text(encoding='utf-8'))
+          errors=[]
+          expected=datetime.now(ZoneInfo('Asia/Seoul')).strftime('%Y-%m-%d')
+          if data.get('metadata',{}).get('date') != expected:
+              errors.append(f"edition date mismatch: {data.get('metadata',{}).get('date')} != {expected}")
+          top5=data.get('top_5_highlights',[])
+          if len(top5) != 5:
+              errors.append(f'TOP5 count={len(top5)} != 5')
+          videos=data.get('youtube_hot_issues',[])
+          channels={v.get('channel') for v in videos if v.get('channel')}
+          if len(videos) < 10:
+              errors.append(f'YouTube count={len(videos)} < 10')
+          if len(channels) < 4:
+              errors.append(f'YouTube unique channels={len(channels)} < 4')
+          articles=[a for ch in data.get('chapters',[]) for a in ch.get('articles',[])]
+          urls=[a.get('link','') for a in articles] + [a.get('link','') for a in top5]
+          google_news=[u for u in urls if urlparse(u).netloc.lower().endswith('news.google.com')]
+          if google_news:
+              errors.append(f'exact article URL gate: {len(google_news)} Google News relay URLs remain')
+          trends=data.get('trending_keywords',[])
+          if len(trends) not in (0,20):
+              errors.append(f'trending keyword count must be 0 or 20; found {len(trends)}')
+          if len(data.get('three_line_summary',[])) != 3:
+              errors.append('final summary must contain exactly 3 lines')
+          if errors:
+              print('PRE_SEND_QA=FAIL')
+              for e in errors: print(' -',e)
+              raise SystemExit(2)
+          print('PRE_SEND_QA=PASS')
+          PY
+
       - name: Commit and push updated briefing data
-        continue-on-error: true
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -53,8 +95,8 @@ jobs:
             echo "No data changes detected."
           else
             git commit -m "chore(briefing): daily morning intelligence update [$(date +'%Y-%m-%d')]"
-            git pull --rebase origin main || true
-            git push origin main || true
+            git pull --rebase origin main
+            git push origin main
           fi
 
       - name: Setup GitHub Pages
