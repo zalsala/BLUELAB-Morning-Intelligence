@@ -27,15 +27,20 @@ MAX_EVIDENCE_SPAN_CHARS = 240
 _EVIDENCE_NOISE = (
     "[사진=", "[사진 =", "[이미지=", "[이미지 =", "대표 이미지", "자료사진",
     "기자]", "기자 ]", "무단전재", "재배포 금지", "copyright", "구독", "로그인",
+    "읽어주기 기능", "브라우저에서만 사용", "기사제보", "제보하기",
 )
 _EVIDENCE_COMMENTARY = (
-    "거예요", "것 같", "기회가 될", "좋을 것", "주목해볼", "살펴볼", "기대해",
+    "거예요", "것 같", "기회가 될", "좋을 것", "주목해볼", "살펴볼", "기대해", "주목받",
     "😊", "😀", "🙂", "👍", "❤", "✨",
 )
 
 
 def _norm(text: str) -> str:
     return re.sub(r"\s+", " ", text or "").strip()
+
+
+def _strip_leading_tags(text: str) -> str:
+    return _norm(re.sub(r"^\s*(?:\[[^\]]{1,30}\]\s*)+", "", text or ""))
 
 
 def _iter_jsonld(node: Any) -> Iterable[Dict[str, Any]]:
@@ -107,15 +112,28 @@ def _safe_evidence_sentence(sentence: str, title: str) -> bool:
         return False
     if any(marker.lower() in low for marker in _EVIDENCE_COMMENTARY):
         return False
-    # Reject headline/caption echoes: a factual body sentence should add
-    # material beyond the displayed title rather than merely repeat it.
-    clean_title = _norm(re.sub(r"^\s*(?:\[[^\]]{1,30}\]\s*)+", "", title or ""))
-    if clean_title and sentence.startswith(clean_title):
-        remainder = _norm(sentence[len(clean_title):])
-        if len(remainder) < 35:
-            return False
     if re.search(r"\[[^\]]*(?:사진|이미지|자료|기자)[^\]]*\]", sentence, re.I):
         return False
+
+    # Reject headline/caption echoes. Compare after removing labels such as
+    # [일문일답]/[단독] from both title and candidate so tagged titles cannot
+    # bypass this gate. A candidate that is essentially the headline plus a
+    # short noun fragment is metadata, not article-body evidence.
+    clean_title = _strip_leading_tags(title)
+    clean_sentence = _strip_leading_tags(sentence)
+    if clean_title and clean_sentence.startswith(clean_title):
+        remainder = _norm(clean_sentence[len(clean_title):])
+        if len(remainder) < 60:
+            return False
+
+    title_tokens = informative_title_tokens(clean_title)
+    sentence_tokens = informative_title_tokens(clean_sentence)
+    if title_tokens and sentence_tokens:
+        shared = title_tokens & sentence_tokens
+        headline_coverage = len(shared) / max(1, len(title_tokens))
+        extra_tokens = sentence_tokens - title_tokens
+        if headline_coverage >= 0.90 and len(extra_tokens) < 3:
+            return False
     return True
 
 
@@ -124,8 +142,6 @@ def _extract_evidence_span(title: str, body: str) -> Optional[str]:
     title_tokens = informative_title_tokens(title)
     if not title_tokens:
         return None
-    # Deliberately split only on explicit terminal punctuation. Splitting on
-    # Hangul '다/요' characters can cut ordinary words (e.g. '주요') mid-span.
     candidates = re.split(r"(?<=[.!?])\s+", _norm(body))
     ranked: List[Tuple[float, int, str]] = []
     for sentence in candidates:
