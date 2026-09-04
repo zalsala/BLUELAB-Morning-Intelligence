@@ -1,14 +1,15 @@
 """Deterministic evidence-weighted TOP5 ranking.
 
-TOP5 is a prominence surface, so it should not be driven by the legacy
-importance score alone. Ranking combines editorial importance, chapter-level
-public impact, verification quality, exact-body validation and recency, with a
-soft diversity constraint and a penalty for weak single-source evidence.
+TOP5 is a prominence surface for factual news, not an opinion section. Ranking
+combines editorial importance, chapter-level public impact, verification
+quality, exact-body validation and recency, while excluding clearly labelled
+editorials/columns and keeping chapter diversity.
 """
 from __future__ import annotations
 
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
+import re
 from typing import Iterable, List, Tuple
 
 from pipeline.schema import Article
@@ -48,6 +49,22 @@ _BODY_WEIGHT = {
     "HTTP_404": -0.2,
     "TIMEOUT": 0.0,
 }
+
+# Explicit opinion labels are disqualified from the factual TOP5 surface. This
+# is intentionally conservative: an article can still remain in its chapter,
+# but it cannot displace a factual news report in the headline ranking.
+_OPINION_PREFIX_RE = re.compile(
+    r"^\s*(?:\[(?:사설|칼럼|기고|시론|논설|오피니언|데스크칼럼|취재수첩|기자수첩)\]|"
+    r"(?:사설|칼럼|기고|시론|논설|오피니언)\s*[:：])",
+    re.IGNORECASE,
+)
+
+
+def is_top5_eligible(article: Article) -> bool:
+    title = (article.title or "").strip()
+    if not title:
+        return False
+    return _OPINION_PREFIX_RE.search(title) is None
 
 
 def _recency_points(published_at: str, now: datetime | None = None) -> float:
@@ -90,20 +107,24 @@ def score_top5_candidate(article: Article, now: datetime | None = None) -> Tuple
         "recency": recency,
         "fact_status": status,
         "body_status": body_status,
+        "top5_eligible": is_top5_eligible(article),
     }
 
 
 def select_top5_v2(articles: Iterable[Article], now: datetime | None = None) -> List[Article]:
-    """Select five high-impact articles with evidence and chapter diversity.
+    """Select five factual, high-impact articles with evidence and diversity.
 
     Rules:
-    - score all articles deterministically;
+    - explicitly labelled opinion/editorial pieces are ineligible for TOP5;
+    - score eligible articles deterministically;
     - first pass allows at most one item per chapter;
     - PARTIAL articles remain eligible but pay an evidence penalty;
     - if fewer than five chapters are available, fill by score.
     """
     scored = []
     for art in articles:
+        if not is_top5_eligible(art):
+            continue
         score, detail = score_top5_candidate(art, now)
         scored.append((score, art.importance_score, art.id, art, detail))
     scored.sort(key=lambda row: (-row[0], -float(row[1] or 0), row[2]))
