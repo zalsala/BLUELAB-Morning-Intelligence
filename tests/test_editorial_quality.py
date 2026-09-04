@@ -56,6 +56,31 @@ def test_fact_requires_same_event_overlap_not_just_long_fragment():
     assert "세부 내용은 원문과 추가 근거에서 확인해야 합니다" in editorial.fact
 
 
+def test_fact_rejects_same_event_multi_publisher_cluster():
+    editorial = build_editorial_for_article_v2(_article(
+        title="월러 연준 이사 발언에 코스피 상승",
+        source="MBC 뉴스",
+        summary_raw=(
+            "월러 연준 이사 발언에 코스피 상승 MBC 뉴스 "
+            "월러 연준 이사 금리 인하 가능성 언급 뉴시스 "
+            "코스피 장중 상승폭 확대 아시아경제"
+        ),
+    ))
+    assert "뉴시스" not in editorial.fact
+    assert "아시아경제" not in editorial.fact
+    assert "세부 내용은 원문과 추가 근거에서 확인해야 합니다" in editorial.fact
+
+
+def test_aggregator_source_label_is_not_exposed_in_editorial_prose():
+    editorial = build_editorial_for_article_v2(_article(
+        source="v.daum.net",
+        summary_raw="국가 바이오헬스 플랫폼 도약을 위해 장기적 지원이 필요하다는 의견이 제시됐다.",
+    ))
+    combined = " ".join([editorial.fact, editorial.background, editorial.why_it_matters, *editorial.checkpoints])
+    assert "v.daum.net" not in combined
+    assert "원문 매체" in combined
+
+
 def test_checkpoints_reflect_evidence_strength():
     multi = build_editorial_for_article_v2(_article())
     assert "a.example" in multi.checkpoints[1]
