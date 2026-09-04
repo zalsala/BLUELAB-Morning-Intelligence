@@ -9,7 +9,8 @@ P1 goals:
 - fail closed to the selected headline when a summary clause cannot be tied to the
   same event with strong informative-token coverage;
 - reject any candidate Fact clause that still contains another publisher marker;
-- render human-readable publisher labels rather than relay/domain hostnames.
+- render human-readable publisher labels rather than relay/domain hostnames;
+- never force a headline-like noun fragment into an invented Korean sentence ending.
 """
 from __future__ import annotations
 
@@ -147,6 +148,10 @@ def _summary_candidates(summary: str, title: str, source: str) -> List[str]:
     return candidates
 
 
+def _fallback_fact(source: str, title: str) -> str:
+    return f"{source}는 ‘{title}’라고 보도했습니다. 세부 내용은 원문과 추가 근거에서 확인해야 합니다."
+
+
 def _fact_text(raw: Dict[str, Any]) -> str:
     title = _normalize(raw.get("title", ""))
     raw_source = _normalize(raw.get("source", "")) or "주요 언론"
@@ -154,10 +159,13 @@ def _fact_text(raw: Dict[str, Any]) -> str:
     candidates = _summary_candidates(raw.get("summary_raw", ""), title, raw_source)
     if candidates:
         clause = candidates[0]
+        # Only reuse a summary clause when it already behaves like a complete
+        # declarative sentence. A noun/headline fragment such as "최저치 경신"
+        # must not become the ungrammatical fabricated ending "경신로 전해졌습니다".
         if clause.endswith(("다", "요", ".", "!", "?")):
             return f"{source} 보도에 따르면, {clause}"
-        return f"{source} 보도에 따르면, {clause}로 전해졌습니다."
-    return f"{source}는 ‘{title}’라고 보도했습니다. 세부 내용은 원문과 추가 근거에서 확인해야 합니다."
+        return _fallback_fact(source, title)
+    return _fallback_fact(source, title)
 
 
 def _event_focus(title: str, keywords: List[str]) -> str:
