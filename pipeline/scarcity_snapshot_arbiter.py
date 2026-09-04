@@ -1,10 +1,4 @@
-"""
-Scarcity-first cross-chapter allocation wrapper.
-
-Keeps all existing freshness, publisher-diversity, event-similarity and exact-URL
-quality gates from snapshot_arbiter, but removes canonical display-order bias by
-allocating chapters with the fewest fresh unique candidate titles first.
-"""
+"""Scarcity-first cross-chapter allocation wrapper with topical relevance."""
 from __future__ import annotations
 
 import urllib.parse
@@ -24,10 +18,17 @@ EXTRA_FRESHNESS_QUERIES = {
 }
 
 
+def _stamp_chapter(rows: List[Dict[str, Any]], chapter: Dict[str, Any]) -> List[Dict[str, Any]]:
+    out = []
+    for row in rows:
+        item = dict(row)
+        item["chapter_id"] = chapter["id"]
+        item["chapter_name"] = chapter["name"]
+        out.append(item)
+    return out
+
+
 def _freshness_queries(chapter: Dict[str, Any]) -> List[str]:
-    # Reuse the canonical chapter queries, but force Google's freshness window.
-    # Extra queries only broaden topical coverage; the downstream 3-day gate,
-    # publisher cap and exact-URL gate remain unchanged.
     base_queries = list(chapter.get("queries", []))
     base_queries.extend(EXTRA_FRESHNESS_QUERIES.get(chapter["id"], []))
     seen = set()
@@ -64,7 +65,7 @@ def _freshness_rescue(chapter: Dict[str, Any]) -> List[Dict[str, Any]]:
 
 
 def _prepared_raw(chapter: Dict[str, Any], raw_data: Dict[str, List[Dict[str, Any]]], target_count: int = 10) -> List[Dict[str, Any]]:
-    raw = list(raw_data.get(chapter["id"], []))
+    raw = _stamp_chapter(list(raw_data.get(chapter["id"], [])), chapter)
     if len(base._fresh_articles(raw)) < target_count:
         raw.extend(_freshness_rescue(chapter))
     return raw
@@ -80,7 +81,7 @@ def _scarcity_key(chapter: Dict[str, Any], prepared: Dict[str, List[Dict[str, An
 
 def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], target_per_chapter: int = 10) -> List[Dict[str, Any]]:
     print("=" * 70)
-    print(f" [Step 2] scarcity-first 최신성·중복·출처 다양성 적용: 14개 챕터 × {target_per_chapter}개")
+    print(f" [Step 2] scarcity-first 최신성·관련성·중복·출처 다양성 적용: 14개 챕터 × {target_per_chapter}개")
     print("=" * 70)
 
     prepared = {c["id"]: _prepared_raw(c, raw_data, target_per_chapter) for c in CHAPTER_DEFINITIONS}
@@ -98,8 +99,8 @@ def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], targe
         retry_count = 0
         while len(selected) < target_per_chapter and retry_count < 3:
             retry_count += 1
-            print(f"    └─ [{c_name}] 최신·다양성 후보 보충 #{retry_count}...")
-            raw_list.extend(fetch_chapter_candidates(chapter))
+            print(f"    └─ [{c_name}] 최신·관련성·다양성 후보 보충 #{retry_count}...")
+            raw_list.extend(_stamp_chapter(fetch_chapter_candidates(chapter), chapter))
             raw_list.extend(_freshness_rescue(chapter))
             selected = base.deduplicate_and_rank_chapter(raw_list, global_seen_titles, target_per_chapter)
 
@@ -107,9 +108,11 @@ def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], targe
             fresh = base._fresh_articles(raw_list)
             fresh_count = len(fresh)
             unique_fresh = len({a.get('title','').strip() for a in fresh if a.get('title')})
+            relevant_fresh = sum(1 for a in fresh if base.chapter_relevance(a, c_id)["passed"])
             raise ValueError(
-                f"{c_name}: freshness/diversity 기준을 만족하는 기사 {target_per_chapter}개 확보 실패 "
-                f"({len(selected)}개; fresh={fresh_count}; unique_fresh={unique_fresh}; globally_reserved={len(global_seen_titles)})"
+                f"{c_name}: freshness/relevance/diversity 기준을 만족하는 기사 {target_per_chapter}개 확보 실패 "
+                f"({len(selected)}개; fresh={fresh_count}; relevant_fresh={relevant_fresh}; "
+                f"unique_fresh={unique_fresh}; globally_reserved={len(global_seen_titles)})"
             )
 
         pubs = Counter((a.get("source") or "미상").strip() for a in selected)
@@ -145,5 +148,5 @@ def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], targe
         seen_urls.add(art["link"])
         art["id"] = base.calculate_article_hash(art["chapter_id"], art["title"], art["link"])
 
-    print(f" [Step 2 완료] {len(final_snapshot)}/{expected}건 scarcity/freshness/diversity/exact-url 잠금 PASS")
+    print(f" [Step 2 완료] {len(final_snapshot)}/{expected}건 scarcity/freshness/relevance/diversity/exact-url 잠금 PASS")
     return final_snapshot
