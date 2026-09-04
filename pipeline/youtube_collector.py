@@ -14,12 +14,14 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 import feedparser
+import requests
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_PATH = ROOT / "config" / "youtube-signals.json"
+REQUEST_TIMEOUT = 5
 
 
 def clean_text(text: str) -> str:
@@ -59,10 +61,15 @@ def collect_youtube_hot_issues(limit_per_channel: int | None = None) -> List[Dic
     print("  └─ 검증된 공식 YouTube 채널 RSS 수집 중...")
     candidates: List[Dict[str, Any]] = []
 
+    session = requests.Session()
+    session.headers.update({"User-Agent": "BLUELAB-Morning-Intelligence/1.0"})
+
     for ch in channels:
         feed_url = f"https://www.youtube.com/feeds/videos.xml?channel_id={ch['channel_id']}"
         try:
-            feed = feedparser.parse(feed_url)
+            response = session.get(feed_url, timeout=REQUEST_TIMEOUT)
+            response.raise_for_status()
+            feed = feedparser.parse(response.content)
             accepted = 0
             for entry in feed.entries:
                 if accepted >= per_channel:
@@ -102,9 +109,8 @@ def collect_youtube_hot_issues(limit_per_channel: int | None = None) -> List[Dic
                 })
                 accepted += 1
         except Exception as exc:
-            print(f"    [!] YouTube 채널({ch.get('name')}) 수집 실패: {exc}")
+            print(f"    [!] YouTube 채널({ch.get('name')}) 수집 실패: {type(exc).__name__}: {exc}")
 
-    # ID 중복 제거 후 최신순 정렬
     dedup: Dict[str, Dict[str, Any]] = {}
     for item in candidates:
         dedup.setdefault(item["id"], item)
