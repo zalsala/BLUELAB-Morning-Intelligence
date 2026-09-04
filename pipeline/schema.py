@@ -154,20 +154,59 @@ class EditorialContent:
         return asdict(self)
 
 
+# 기계 판독 가능한 팩트체크 상태 열거형 정의
+FACT_CHECK_STATES = {
+    "VERIFIED_OFFICIAL",       # 공공기관, 정부, 공식 규제기관 직접 공시
+    "VERIFIED_PRIMARY",        # 기업 공식 보도자료, 원본 논문, 1차 출처
+    "VERIFIED_MULTI_SOURCE",   # 주요 언론 2개 이상 교차 확인
+    "PARTIAL",                 # 일부 사실 확인, 일부 추정/해설 혼재
+    "UNVERIFIED",              # 단일 출처 보도 또는 추가 검증 필요
+    "CONFLICT",                # 당사자 간 주장 대립 또는 정정보도
+    "ACCESS_BLOCKED",          # 일시적 네트워크/접근 차단 (허위로 간주하지 않음)
+}
+
+
+@dataclass
+class FactCheckResult:
+    """독립 팩트 검증 결과 모델"""
+    status: str                         # FACT_CHECK_STATES 중 하나
+    evidence_type: str                  # official, primary, multi_source, secondary
+    verified_sources: List[str]         # 검증에 사용된 출처/도메인 목록
+    notes: str                          # 검증 코멘트
+    checked_at: str                     # ISO 8601 검증 일시
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class ImageProvenance:
+    """기사 이미지 출처 및 검증 데이터 모델"""
+    url: Optional[str]                  # 검증된 이미지 URL (없을 시 None)
+    source_domain: Optional[str]        # 이미지 제공 도메인
+    status: str                         # VERIFIED_PROVENANCE 또는 EXPLICIT_NULL
+    verified_at: Optional[str] = None   # ISO 8601 검증 일시
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
 @dataclass
 class Article:
     """개별 뉴스 기사 데이터 모델"""
-    id: str                       # 기사 고유 해시 (SHA-256 / MD5 기반)
-    chapter_id: str               # 소속 챕터 ID
-    chapter_name: str             # 소속 챕터 한글명
-    title: str                    # 기사 제목
-    link: str                     # 원문 URL
-    source: str                   # 언론사 / 매체명
-    published_at: str             # 발행 일시 (ISO 형식 또는 읽기 쉬운 형식)
-    summary_raw: str              # 원문 요약 또는 발췌문
-    editorial: EditorialContent   # 심층 에디토리얼 분석
-    keywords: List[str] = field(default_factory=list) # 핵심 키워드 (3~5개)
-    importance_score: float = 5.0 # 중요도 점수 (1.0 ~ 10.0)
+    id: str                                            # 기사 고유 해시 (SHA-256 / MD5 기반)
+    chapter_id: str                                    # 소속 챕터 ID
+    chapter_name: str                                  # 소속 챕터 한글명
+    title: str                                         # 기사 제목
+    link: str                                          # 원문 URL (exact article URL)
+    source: str                                        # 언론사 / 매체명
+    published_at: str                                  # 발행 일시 (ISO 형식)
+    summary_raw: str                                   # 원문 요약 또는 발췌문
+    editorial: EditorialContent                        # 심층 에디토리얼 분석
+    keywords: List[str] = field(default_factory=list)  # 핵심 키워드 (3~5개)
+    importance_score: float = 5.0                      # 중요도 점수 (1.0 ~ 10.0)
+    fact_check: Optional[Dict[str, Any]] = None        # 독립 팩트 검증 데이터
+    image: Optional[Dict[str, Any]] = None             # 검증된 이미지 출처 (또는 explicit null)
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
@@ -228,6 +267,34 @@ class TrendingKeyword:
 
 
 @dataclass
+class MarketBlock:
+    """금융 시장 핵심 지표 블록"""
+    kospi: Dict[str, Any]
+    kosdaq: Dict[str, Any]
+    usd_krw: Dict[str, Any]
+    sp500: Dict[str, Any]
+    nasdaq: Dict[str, Any]
+    bitcoin: Dict[str, Any]
+    updated_at: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
+class NextSignal:
+    """앞으로 주목해야 할 주요 일정 및 신호"""
+    title: str
+    scheduled_date: str
+    category: str
+    impact: str
+    key_watchpoint: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class BriefingBundle:
     """최종 브리핑 종합 번들 (today.json)"""
     metadata: Dict[str, Any]
@@ -237,6 +304,9 @@ class BriefingBundle:
     trending_keywords: List[TrendingKeyword]
     chapters: List[ChapterBundle]
     youtube_hot_issues: List[Dict[str, Any]] = field(default_factory=list)
+    market: Optional[Dict[str, Any]] = None
+    next_signals: List[Dict[str, Any]] = field(default_factory=list)
+    publication_manifest_fingerprint: str = ""
     integrity_hash: str = ""
 
     def to_dict(self) -> Dict[str, Any]:
@@ -248,6 +318,9 @@ class BriefingBundle:
             "trending_keywords": [k.to_dict() if isinstance(k, TrendingKeyword) else k for k in self.trending_keywords],
             "chapters": [c.to_dict() if isinstance(c, ChapterBundle) else c for c in self.chapters],
             "youtube_hot_issues": self.youtube_hot_issues,
+            "market": self.market,
+            "next_signals": self.next_signals,
+            "publication_manifest_fingerprint": self.publication_manifest_fingerprint,
             "integrity_hash": self.integrity_hash
         }
 

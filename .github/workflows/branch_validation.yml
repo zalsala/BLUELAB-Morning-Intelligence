@@ -2,13 +2,16 @@ name: Branch Live Validation
 
 on:
   push:
-    branches: [agent/daily-20260904-scarcity-arbitration]
+    branches:
+      - 'agent/**'
+      - 'remediation/**'
     paths:
       - '.github/workflows/branch_validation.yml'
       - 'pipeline/**'
       - 'run_pipeline.py'
       - 'scripts/**'
       - 'config/**'
+      - 'tests/**'
 
 permissions:
   contents: read
@@ -26,8 +29,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      - name: Run Deterministic Regression Tests
+        run: pytest -v tests/
       - name: Run master pipeline without publishing
         run: python run_pipeline.py
+      - name: Validate Publication Manifest
+        run: python scripts/validate_publication_manifest.py
       - name: PRE-SEND hard gates
         run: |
           python - <<'PY'

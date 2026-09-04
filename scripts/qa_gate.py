@@ -4,7 +4,15 @@ from __future__ import annotations
 import json
 import os
 import sys
+from pathlib import Path
 from typing import List
+from urllib.parse import urlparse
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from pipeline.schema import FACT_CHECK_STATES
 
 EXPECTED_CHAPTER_COUNT = 14
 EXPECTED_ARTICLES_PER_CHAPTER = 10
@@ -50,6 +58,11 @@ def run_qa_gate(json_path: str = "public/data/today.json") -> bool:
         if len(values) != len(set(values)):
             failures.append(f"duplicate article {label}")
 
+    # Exact Article URL Gate
+    google_news_relay = [u for u in urls if urlparse(u).netloc.lower().endswith("news.google.com")]
+    if google_news_relay:
+        failures.append(f"exact article URL gate: {len(google_news_relay)} Google News relay URLs remain")
+
     for art in all_articles:
         ed = art.get("editorial", {})
         if len((ed.get("fact") or "").strip()) < 10:
@@ -61,11 +74,49 @@ def run_qa_gate(json_path: str = "public/data/today.json") -> bool:
         if len(ed.get("checkpoints") or []) < 2:
             failures.append(f"editorial checkpoints incomplete: {art.get('title','')[:30]}")
 
+        # Fact Check Gate
+        fc = art.get("fact_check")
+        if not fc or not isinstance(fc, dict):
+            failures.append(f"missing fact_check data: {art.get('title','')[:30]}")
+        else:
+            fc_status = fc.get("status")
+            if fc_status not in FACT_CHECK_STATES:
+                failures.append(f"invalid fact_check status {fc_status!r}: {art.get('title','')[:30]}")
+
+        # Image Provenance Gate
+        img = art.get("image")
+        if not img or not isinstance(img, dict):
+            failures.append(f"missing image provenance structure: {art.get('title','')[:30]}")
+        else:
+            img_status = img.get("status")
+            if img_status not in ("VERIFIED_PROVENANCE", "EXPLICIT_NULL"):
+                failures.append(f"invalid image provenance status {img_status!r}: {art.get('title','')[:30]}")
+            if img_status == "EXPLICIT_NULL" and img.get("url") is not None:
+                failures.append(f"EXPLICIT_NULL must have url=None: {art.get('title','')[:30]}")
+            if img_status == "VERIFIED_PROVENANCE" and not img.get("url"):
+                failures.append(f"VERIFIED_PROVENANCE missing url: {art.get('title','')[:30]}")
+
     weather = data.get("weather") or {}
     if "인천 서구 검단" not in weather.get("location", "") or "temp_current" not in weather:
         failures.append("Geomdan weather missing/incomplete")
-    if len(data.get("top_5_highlights", [])) != EXPECTED_TOP5_COUNT:
+
+    top5 = data.get("top_5_highlights", [])
+    if len(top5) != EXPECTED_TOP5_COUNT:
         failures.append("TOP5 must contain exactly 5 items")
+    top5_urls = [a.get("link", "") for a in top5]
+    top5_google_news = [u for u in top5_urls if urlparse(u).netloc.lower().endswith("news.google.com")]
+    if top5_google_news:
+        failures.append(f"TOP5 exact URL gate: {len(top5_google_news)} Google News relay URLs in TOP5")
+
+    # Financial Market Block Gate
+    market = data.get("market") or {}
+    if not market or "kospi" not in market or "usd_krw" not in market:
+        failures.append("financial market block missing/incomplete")
+
+    # NEXT SIGNALS Gate
+    next_signals = data.get("next_signals") or []
+    if len(next_signals) < 3:
+        failures.append(f"NEXT SIGNALS count={len(next_signals)} < 3")
 
     # Official Google Trends KR is fail-closed: publish exactly 20 reliable terms,
     # or publish none. Never synthesize/fill missing positions.
@@ -94,7 +145,7 @@ def run_qa_gate(json_path: str = "public/data/today.json") -> bool:
         return False
 
     print(" [QA GATE PASSED]")
-    print(f"  chapters=14 articles=140 top5=5 youtube={len(data.get('youtube_hot_issues', []))} trends={len(trends)} summary_lines=3")
+    print(f"  chapters=14 articles=140 top5=5 youtube={len(data.get('youtube_hot_issues', []))} trends={len(trends)} summary_lines=3 market=PASS signals={len(next_signals)}")
     return True
 
 

@@ -190,7 +190,9 @@ def process_all_editorials(snapshot_articles: List[Dict[str, Any]]) -> List[Arti
             summary_raw=art_dict.get("summary_raw", ""),
             editorial=editorial,
             keywords=keywords,
-            importance_score=art_dict.get("importance_score", 5.0)
+            importance_score=art_dict.get("importance_score", 5.0),
+            fact_check=art_dict.get("fact_check"),
+            image=art_dict.get("image")
         )
         final_articles.append(article_obj)
         

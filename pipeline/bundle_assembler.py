@@ -12,8 +12,11 @@ import json
 import os
 import hashlib
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from typing import List, Dict, Any, Tuple
 import requests
+
+KST = ZoneInfo("Asia/Seoul")
 
 from pipeline.schema import (
     CHAPTER_DEFINITIONS,
@@ -25,6 +28,8 @@ from pipeline.schema import (
     BriefingBundle,
 )
 from pipeline.youtube_collector import collect_youtube_hot_issues
+from pipeline.market_collector import fetch_market_block
+from pipeline.next_signals_collector import generate_next_signals
 
 
 def fetch_geomdan_weather() -> WeatherData:
@@ -249,7 +254,11 @@ def assemble_bundle(articles: List[Article]) -> BriefingBundle:
             articles=ch_articles
         ))
 
-    now = datetime.now()
+    print("  └─ 금융 시장 핵심 지표 및 NEXT SIGNALS 생성 중...")
+    market = fetch_market_block()
+    next_signals = generate_next_signals()
+
+    now = datetime.now(KST)
     metadata = {
         "title": "BLUELAB Morning Intelligence",
         "date": now.strftime("%Y-%m-%d"),
@@ -273,6 +282,8 @@ def assemble_bundle(articles: List[Article]) -> BriefingBundle:
         trending_keywords=trending_kw,
         chapters=chapters,
         youtube_hot_issues=youtube_hot,
+        market=market,
+        next_signals=next_signals,
         integrity_hash=integrity_hash
     )
 

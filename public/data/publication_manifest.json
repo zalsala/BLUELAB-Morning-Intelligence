@@ -1,0 +1,30 @@
+{
+  "schema_version": "publication-manifest-v1",
+  "edition": "daily-2026-09-04",
+  "edition_date": "2026-09-04",
+  "timezone": "Asia/Seoul",
+  "source_main_sha": "44d568f03028ce4b35deda7660f69deeb92d3e70",
+  "release_sha": "874fc0226c0d7b0804abd93df374e3fcc6dfb8d3",
+  "fingerprints": {
+    "snapshot_fingerprint_sha256": "90937dc7235ec7f318e8e4c49be4b1c276410a1682574f482ef0b48f724d560c",
+    "editorial_fingerprint_sha256": "fcb3f11ec7511aa106b9975fdb4f84fcd10a8940593ad9bacd5a484435004347",
+    "production_fingerprint_sha256": "6573516dd7b96c84f254849668c2ee4f8a4c4c706ed456a2d4216c18a8aaf5b5"
+  },
+  "content_counts": {
+    "total_chapters": 14,
+    "total_articles": 140,
+    "top5": 5,
+    "youtube": 10,
+    "trends": 0,
+    "summary_lines": 3
+  },
+  "individual_gate_outcomes": {
+    "QA_GATE": "PASS",
+    "FACT_CHECK_GATE": "PASS",
+    "IMAGE_PROVENANCE_GATE": "PASS",
+    "EXACT_URL_GATE": "PASS"
+  },
+  "canonical_status": "CANONICAL_PASS",
+  "created_at": "2026-09-04T11:46:29.835821+09:00",
+  "manifest_sha256": "506c45f4e2f057f97c8fdedab007c585a8f5add19b5e57150feb2c33c9bb9993"
+}

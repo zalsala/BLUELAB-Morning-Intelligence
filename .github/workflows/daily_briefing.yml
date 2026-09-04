@@ -43,8 +43,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Run Deterministic Regression Tests
+        run: pytest -v tests/
+
       - name: Run Master Pipeline
         run: python run_pipeline.py
+
+      - name: Validate Publication Manifest
+        run: python scripts/validate_publication_manifest.py
 
       - name: PRE-SEND hard gates
         run: |
