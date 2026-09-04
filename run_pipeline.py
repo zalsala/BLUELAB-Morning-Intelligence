@@ -22,7 +22,7 @@ from pipeline.fetch_and_filter import fetch_all_chapters_raw
 from pipeline.scarcity_snapshot_arbiter import arbitrate_and_lock_snapshot
 from pipeline.fact_verifier import verify_all_articles
 from pipeline.image_provenance import audit_all_images
-from pipeline.editorial_builder import process_all_editorials
+from pipeline.editorial_quality import process_all_editorials
 from pipeline.bundle_assembler import assemble_bundle, save_bundle_to_json
 from pipeline.google_trends_collector import collect_google_trends_kr
 from pipeline.publication_manifest import (
@@ -48,27 +48,20 @@ def main():
     print("=" * 80 + "\n")
 
     try:
-        # 1. 수집
         raw_data = fetch_all_chapters_raw()
-
-        # 2. 희소성 우선 교차 챕터 배분, 중복 제거, Exact URL 잠금
         snapshot = arbitrate_and_lock_snapshot(raw_data, target_per_chapter=10)
         snapshot_fp = compute_snapshot_fingerprint(snapshot)
 
-        # 2.5 독립 팩트 검증 관문
         fact_verified = verify_all_articles(snapshot, check_network=False)
-
-        # 2.6 이미지 출처 검증 관문 (검증 도메인 또는 explicit null)
         provenance_verified = audit_all_images(fact_verified)
 
-        # 3. 4대 에디토리얼 심층 분석 결합
+        # P1: evidence-aware editorial generation. This stage must not invent
+        # unsupported facts or leak aggregator/relay fragments into Fact text.
         articles = process_all_editorials(provenance_verified)
         editorial_fp = compute_editorial_fingerprint([a.to_dict() for a in articles])
 
-        # 4. 생산 번들 조립 (인천 검단 날씨, 금융 시장, NEXT SIGNALS, 유튜브 >= 10, 3줄 요약)
         bundle = assemble_bundle(articles)
 
-        # 5. 공식 Google Trends KR (정확히 20개일 때만 공개, 부족 시 WITHHELD)
         trends = collect_google_trends_kr()
         bundle.trending_keywords = trends
         bundle.metadata["trends_source"] = (
@@ -79,7 +72,6 @@ def main():
 
         today_path, archive_path = save_bundle_to_json(bundle)
 
-        # 6. 발간 매니페스트 및 핑거프린트 결속
         initial_prod_fp = compute_production_fingerprint(bundle.to_dict())
         content_counts = {
             "total_chapters": len(bundle.chapters),
@@ -90,7 +82,6 @@ def main():
             "summary_lines": len(bundle.three_line_summary)
         }
 
-        # 사전 QA 실행
         qa_passed = run_qa_gate(today_path)
         if not qa_passed:
             print("\n[FATAL ERROR] QA Gate 검증 실패로 인해 배포가 중단되었습니다.")
@@ -112,11 +103,9 @@ def main():
         )
         manifest_path = save_publication_manifest(manifest)
 
-        # today.json에 매니페스트 해시 결속 후 재저장
         bundle.publication_manifest_fingerprint = manifest["manifest_sha256"]
         save_bundle_to_json(bundle)
 
-        # 매니페스트 일관성 최종 검증
         manifest_valid, manifest_errors = validate_manifest(
             Path(manifest_path),
             Path(today_path),
