@@ -4,12 +4,16 @@ on:
   schedule:
     # 매일 아침 05:30 KST = 전날 20:30 UTC
     - cron: '30 20 * * *'
-  workflow_dispatch: # 깃허브 웹에서 수동 즉시 실행 가능
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/daily_briefing.yml'
 
 permissions:
-  contents: write # public/data/today.json 깃 커밋 및 푸시 권한
-  pages: write    # GitHub Pages 배포 권한
-  id-token: write # Pages OIDC 인증 권한
+  contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: 'pages'
