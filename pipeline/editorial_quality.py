@@ -130,10 +130,29 @@ def _fallback_fact(source: str, title: str, raw_source: str) -> str:
     return f"{source} 보도에 따르면, ‘{clean_title}’이라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다."
 
 
+def _validated_body_fact(raw: Dict[str, Any], source: str, title: str) -> str | None:
+    validation = ((raw.get("fact_check") or {}).get("body_validation") or {})
+    span = _normalize(raw.get("_body_evidence_span", ""))
+    if validation.get("status") != "VALIDATED" or not span:
+        return None
+    if len(span) < 30 or len(span) > 240 or not _same_event_clause(span, title):
+        return None
+    if _looks_like_noise(span, title, raw.get("source", "")) or _publisher_hits(span, raw.get("source", "")):
+        return None
+    if any(domain in span.lower() for domain in _NOISE_DOMAINS):
+        return None
+    if not span.endswith(("다", "요", ".", "!", "?")):
+        return None
+    return f"{source} 원문에 따르면, {span}"
+
+
 def _fact_text(raw: Dict[str, Any]) -> str:
     title = _normalize(raw.get("title", ""))
     raw_source = _normalize(raw.get("source", "")) or "주요 언론"
     source = _editorial_source(raw_source)
+    grounded = _validated_body_fact(raw, source, title)
+    if grounded:
+        return grounded
     candidates = _summary_candidates(raw.get("summary_raw", ""), title, raw_source)
     if candidates and candidates[0].endswith(("다", "요", ".", "!", "?")):
         return f"{source} 보도에 따르면, {candidates[0]}"
@@ -201,15 +220,18 @@ def build_editorial_for_article_v2(raw: Dict[str, Any]) -> EditorialContent:
 
 def process_all_editorials(snapshot_articles: List[Dict[str, Any]]) -> List[Article]:
     print("=" * 70)
-    print(" [Step 3] Evidence-aware Editorial Builder v3: Korean semantic quality gate")
+    print(" [Step 3] Evidence-aware Editorial Builder v4: validated body grounding")
     print("=" * 70)
     final_articles: List[Article] = []
+    grounded_count = 0
     for idx, art in enumerate(snapshot_articles, 1):
         keywords = _clean_keywords(art["title"], art.get("summary_raw", ""), art["chapter_id"])
         editorial = build_editorial_for_article_v2(art)
+        if art.get("_body_evidence_span") and editorial.fact.startswith(f"{_editorial_source(art.get('source',''))} 원문에 따르면"):
+            grounded_count += 1
         final_articles.append(Article(id=art["id"], chapter_id=art["chapter_id"], chapter_name=art["chapter_name"], title=art["title"], link=art["link"], source=art["source"], published_at=art.get("published_at", ""), summary_raw=art.get("summary_raw", ""), editorial=editorial, keywords=keywords, importance_score=art.get("importance_score", 5.0), fact_check=art.get("fact_check"), image=art.get("image")))
         if idx % 20 == 0 or idx == len(snapshot_articles):
-            print(f"  └─ v3 에디토리얼 진행률: {idx}/{len(snapshot_articles)}")
-    print(f" [Step 3 완료] {len(final_articles)}개 기사 Korean semantic gate PASS")
+            print(f"  └─ v4 에디토리얼 진행률: {idx}/{len(snapshot_articles)}")
+    print(f" [Step 3 완료] {len(final_articles)}개 기사 semantic gate PASS | body-grounded facts={grounded_count}")
     print("=" * 70)
     return final_articles
