@@ -2,6 +2,13 @@
 pipeline/youtube_collector.py
 검증된 공식 YouTube 채널 RSS를 이용한 최신 영상 수집 모듈.
 config/youtube-signals.json을 단일 정책 소스로 사용한다.
+
+Reliability policy:
+- live official YouTube RSS is always preferred;
+- when RSS is unavailable, only previously published BLUELAB records that still
+  satisfy the same official-channel and freshness policy may fill the gap;
+- cached records never relax target/diversity/freshness gates. If the combined
+  live+cache set is insufficient, callers still fail closed through QA.
 """
 from __future__ import annotations
 
@@ -22,6 +29,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_PATH = ROOT / "config" / "youtube-signals.json"
+DEFAULT_CACHE_PATH = ROOT / "public" / "data" / "today.json"
 REQUEST_TIMEOUT = 5
 RSS_RETRY_COUNT = 2
 RSS_RETRY_BACKOFF_SECONDS = 1.0
@@ -50,20 +58,29 @@ def _entry_datetime(entry) -> dt.datetime | None:
     return None
 
 
-def _feed_urls(channel_id: str) -> List[str]:
-    """Return official YouTube RSS variants for the same verified channel.
+def _parse_cached_datetime(raw: str) -> dt.datetime | None:
+    value = (raw or "").strip()
+    if not value:
+        return None
+    try:
+        parsed = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=dt.timezone.utc)
+        return parsed.astimezone(dt.timezone.utc)
+    except Exception:
+        try:
+            day = dt.date.fromisoformat(value[:10])
+            return dt.datetime.combine(day, dt.time.min, tzinfo=dt.timezone.utc)
+        except Exception:
+            return None
 
-    YouTube's channel_id feed has shown intermittent 404/500 failures. The
-    uploads playlist is the canonical per-channel uploads playlist obtained by
-    replacing the leading ``UC`` with ``UU`` and provides the same official
-    source without relaxing source provenance.
-    """
+
+def _feed_urls(channel_id: str) -> List[str]:
+    """Return official YouTube RSS variants for the same verified channel."""
     urls = [f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"]
     if channel_id.startswith("UC") and len(channel_id) > 2:
         uploads_playlist_id = "UU" + channel_id[2:]
-        urls.append(
-            f"https://www.youtube.com/feeds/videos.xml?playlist_id={uploads_playlist_id}"
-        )
+        urls.append(f"https://www.youtube.com/feeds/videos.xml?playlist_id={uploads_playlist_id}")
     return urls
 
 
@@ -88,8 +105,97 @@ def _fetch_channel_feed(session: requests.Session, channel_id: str) -> bytes:
     raise RuntimeError(" | ".join(errors))
 
 
-def collect_youtube_hot_issues(limit_per_channel: int | None = None) -> List[Dict[str, Any]]:
-    """정책에 등록된 공식 채널에서 최신 영상을 수집하고 diversity/freshness를 적용한다."""
+def _is_valid_video_id(video_id: str) -> bool:
+    return bool(re.fullmatch(r"[A-Za-z0-9_-]{6,}", video_id or ""))
+
+
+def _cached_verified_candidates(
+    policy: dict,
+    now: dt.datetime,
+    cache_path: Path = DEFAULT_CACHE_PATH,
+) -> List[Dict[str, Any]]:
+    """Read only previously published, still-fresh records from trusted policy channels."""
+    if not cache_path.exists():
+        return []
+    try:
+        data = json.loads(cache_path.read_text(encoding="utf-8"))
+    except Exception:
+        return []
+
+    max_age_days = int(policy.get("max_age_days", 3))
+    configured = {
+        (ch.get("id"), ch.get("name")): ch
+        for ch in policy.get("channels", [])
+        if ch.get("id") and ch.get("name")
+    }
+    by_source_id = {ch.get("id"): ch for ch in policy.get("channels", []) if ch.get("id")}
+    out: List[Dict[str, Any]] = []
+
+    for raw in data.get("youtube_hot_issues", []):
+        if not isinstance(raw, dict):
+            continue
+        source_id = raw.get("source_id")
+        channel = raw.get("channel")
+        policy_ch = configured.get((source_id, channel)) or by_source_id.get(source_id)
+        if not policy_ch or policy_ch.get("name") != channel:
+            continue
+
+        video_id = raw.get("id", "")
+        if not _is_valid_video_id(video_id):
+            continue
+        expected_url = f"https://www.youtube.com/watch?v={video_id}"
+        if raw.get("video_url") != expected_url:
+            continue
+
+        published_dt = _parse_cached_datetime(raw.get("published_at", ""))
+        if not published_dt:
+            continue
+        age_days = (now - published_dt).total_seconds() / 86400
+        if age_days < -0.25 or age_days > max_age_days:
+            continue
+
+        item = dict(raw)
+        item["source_tier"] = policy_ch.get("tier")
+        item["source_id"] = policy_ch.get("id")
+        item["retrieval_mode"] = "cached_verified"
+        out.append(item)
+
+    return out
+
+
+def _select_videos(
+    candidates: List[Dict[str, Any]],
+    target: int,
+    max_per_channel: int,
+) -> List[Dict[str, Any]]:
+    dedup: Dict[str, Dict[str, Any]] = {}
+    for item in candidates:
+        video_id = item.get("id", "")
+        if not _is_valid_video_id(video_id):
+            continue
+        # Live RSS wins if both sources provide the same video.
+        if video_id not in dedup or item.get("retrieval_mode") == "live_rss":
+            dedup[video_id] = item
+
+    ordered = sorted(dedup.values(), key=lambda x: x.get("published_at", ""), reverse=True)
+    selected: List[Dict[str, Any]] = []
+    channel_counts: Dict[str, int] = {}
+    for item in ordered:
+        channel = item.get("channel", "")
+        if not channel or channel_counts.get(channel, 0) >= max_per_channel:
+            continue
+        selected.append(item)
+        channel_counts[channel] = channel_counts.get(channel, 0) + 1
+        if len(selected) >= target:
+            break
+    return selected
+
+
+def collect_youtube_hot_issues(
+    limit_per_channel: int | None = None,
+    cache_path: Path | None = None,
+) -> List[Dict[str, Any]]:
+    """Collect live official videos, then fill only policy-valid gaps from cache."""
     policy = load_policy()
     channels = policy.get("channels", [])
     target = int(policy.get("target", 10))
@@ -129,7 +235,7 @@ def collect_youtube_hot_issues(limit_per_channel: int | None = None) -> List[Dic
                     m = re.search(r"(?:v=|youtu\.be/)([A-Za-z0-9_-]{6,})", link)
                     if m:
                         vid_id = m.group(1)
-                if not vid_id:
+                if not _is_valid_video_id(vid_id):
                     continue
 
                 title = clean_text(getattr(entry, "title", ""))
@@ -148,32 +254,31 @@ def collect_youtube_hot_issues(limit_per_channel: int | None = None) -> List[Dic
                     "summary": summary or f"{ch['name']} 공식 채널의 최신 영상입니다.",
                     "source_tier": ch.get("tier"),
                     "source_id": ch.get("id"),
+                    "retrieval_mode": "live_rss",
                 })
                 accepted += 1
         except Exception as exc:
             print(f"    [!] YouTube 채널({ch.get('name')}) 수집 실패: {type(exc).__name__}: {exc}")
 
-    dedup: Dict[str, Dict[str, Any]] = {}
-    for item in candidates:
-        dedup.setdefault(item["id"], item)
-    ordered = sorted(dedup.values(), key=lambda x: x["published_at"], reverse=True)
-
-    selected: List[Dict[str, Any]] = []
-    channel_counts: Dict[str, int] = {}
-    for item in ordered:
-        channel = item["channel"]
-        if channel_counts.get(channel, 0) >= max_per_channel:
-            continue
-        selected.append(item)
-        channel_counts[channel] = channel_counts.get(channel, 0) + 1
-        if len(selected) >= target:
-            break
+    selected = _select_videos(candidates, target, max_per_channel)
+    live_unique_channels = len({x["channel"] for x in selected})
+    if len(selected) < target or live_unique_channels < minimum_unique_channels:
+        fallback_path = cache_path or DEFAULT_CACHE_PATH
+        cached = _cached_verified_candidates(policy, now, fallback_path)
+        if cached:
+            print(
+                f"  └─ YouTube RSS 부족: 검증 캐시 후보 {len(cached)}개를 "
+                f"동일 freshness/diversity 정책으로 재검증"
+            )
+            selected = _select_videos(candidates + cached, target, max_per_channel)
 
     unique_channels = len({x["channel"] for x in selected})
+    cache_used = sum(1 for x in selected if x.get("retrieval_mode") == "cached_verified")
     status = "PASS" if len(selected) >= target and unique_channels >= minimum_unique_channels else "FAIL"
     print(
         f"  └─ YouTube 정책 검증: selected={len(selected)}/{target}, "
-        f"unique_channels={unique_channels}/{minimum_unique_channels}, status={status}"
+        f"unique_channels={unique_channels}/{minimum_unique_channels}, "
+        f"cached={cache_used}, status={status}"
     )
     return selected
 
