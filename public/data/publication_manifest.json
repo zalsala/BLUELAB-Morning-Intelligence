@@ -1,14 +1,14 @@
 {
   "schema_version": "publication-manifest-v1",
-  "edition": "daily-2026-09-04",
-  "edition_date": "2026-09-04",
+  "edition": "daily-2026-09-05",
+  "edition_date": "2026-09-05",
   "timezone": "Asia/Seoul",
   "source_main_sha": "44d568f03028ce4b35deda7660f69deeb92d3e70",
-  "release_sha": "d734bb88c7030bc7a4a816f4a3d169ee01fa3d2e",
+  "release_sha": "35b9e4a61f7a01b3b5e215ca337eefd598df232d",
   "fingerprints": {
-    "snapshot_fingerprint_sha256": "40314ca993f79def7ee5817842781c83ac3da409005c5200bd38dfbbf99a2b5c",
-    "editorial_fingerprint_sha256": "f72aadb71dcb6401fcc5b2e691a99d11f481877ae2e8cb91ab4c446c573ee79c",
-    "production_fingerprint_sha256": "818843f4fde80f8a025d82e2e114454fa7eb6fbd814a9c47007e1ea6f3c8bc3b"
+    "snapshot_fingerprint_sha256": "8743b64e3f503a5718720eca3357dbcfc20313816721aeb55bb136d103deda67",
+    "editorial_fingerprint_sha256": "a19aed397210e0f1782e87610f4a2e55f42f0644ff54859cd32f0a717c217705",
+    "production_fingerprint_sha256": "43154c746c7d2fb9bcc62f5c9ee7ff8fdf53ce5a18d08eff92a1498010ba23ed"
   },
   "content_counts": {
     "total_chapters": 14,
@@ -28,6 +28,6 @@
     "EXACT_URL_GATE": "PASS"
   },
   "canonical_status": "CANONICAL_PASS",
-  "created_at": "2026-09-04T19:44:27.796226+09:00",
-  "manifest_sha256": "80c3e9d197193dddc65bd50f3f831ff88266f55f8a173b5487e5161f220335e6"
+  "created_at": "2026-09-05T00:21:35.189500+09:00",
+  "manifest_sha256": "b931712776311b6542ee7c2453a157bf06874f4d6679b872dabc96c476cd9216"
 }
