@@ -3,6 +3,8 @@
 The collector never invents content and never makes body access a publication
 requirement: inaccessible/paywalled pages retain the safe headline fallback.
 Only compact validation metadata is persisted; full article text is not stored.
+A short validated evidence span may be carried transiently under a private key
+for downstream editorial generation and is intentionally omitted from Article.
 """
 from __future__ import annotations
 
@@ -21,6 +23,7 @@ MAX_DOWNLOAD_BYTES = 1_500_000
 MIN_BODY_CHARS = 220
 TIMEOUT_SECONDS = 5
 MAX_WORKERS = 12
+MAX_EVIDENCE_SPAN_CHARS = 240
 
 
 def _norm(text: str) -> str:
@@ -85,6 +88,31 @@ def _event_overlap(title: str, body: str) -> Tuple[bool, float, List[str]]:
     return len(shared) >= 2 and ratio >= 0.40, round(ratio, 3), shared[:8]
 
 
+def _extract_evidence_span(title: str, body: str) -> Optional[str]:
+    """Return one short, title-grounded sentence for transient editorial use."""
+    title_tokens = informative_title_tokens(title)
+    if not title_tokens:
+        return None
+    candidates = re.split(r"(?<=[.!?다요])\s+", _norm(body))
+    ranked: List[Tuple[float, int, str]] = []
+    for sentence in candidates:
+        sentence = _norm(sentence)
+        if len(sentence) < 30 or len(sentence) > MAX_EVIDENCE_SPAN_CHARS:
+            continue
+        tokens = informative_title_tokens(sentence)
+        shared = title_tokens & tokens
+        if len(shared) < 2:
+            continue
+        coverage = len(shared) / max(1, len(title_tokens))
+        if coverage < 0.40:
+            continue
+        ranked.append((coverage, len(shared), sentence))
+    if not ranked:
+        return None
+    ranked.sort(key=lambda item: (-item[0], -item[1], len(item[2])))
+    return ranked[0][2]
+
+
 def _fetch_one(article: Dict[str, Any]) -> Dict[str, Any]:
     out = dict(article)
     fact = dict(out.get("fact_check") or {})
@@ -146,6 +174,10 @@ def _fetch_one(article: Dict[str, Any]) -> Dict[str, Any]:
                 "title_overlap": ratio,
                 "shared_title_tokens": shared,
             })
+            if passed:
+                evidence_span = _extract_evidence_span(out.get("title", ""), body)
+                if evidence_span:
+                    out["_body_evidence_span"] = evidence_span
     except requests.Timeout:
         status["status"] = "TIMEOUT"
     except requests.RequestException as exc:
@@ -178,9 +210,13 @@ def validate_article_bodies(articles: List[Dict[str, Any]], max_workers: int = M
                 results[idx] = fallback
     final = [x for x in results if x is not None]
     counts: Dict[str, int] = {}
+    grounded = 0
     for art in final:
         status = ((art.get("fact_check") or {}).get("body_validation") or {}).get("status", "UNKNOWN")
         counts[status] = counts.get(status, 0) + 1
+        if art.get("_body_evidence_span"):
+            grounded += 1
     print("  [Body validation] " + " | ".join(f"{k}={v}" for k, v in sorted(counts.items())))
+    print(f"  [Grounding candidates] transient evidence_span={grounded}/{len(final)}")
     print("=" * 70)
     return final
