@@ -7,7 +7,8 @@ P1 goals:
 - make Background / Why it matters / Checkpoints article-specific while retaining
   chapter context as a secondary frame;
 - fail closed to the selected headline when a summary clause cannot be tied to the
-  same event with informative-token overlap.
+  same event with informative-token overlap;
+- reject any candidate Fact clause that still contains another publisher marker.
 """
 from __future__ import annotations
 
@@ -20,10 +21,13 @@ from pipeline.editorial_builder import CHAPTER_INSIGHTS, extract_keywords
 from pipeline.schema import Article, EditorialContent
 
 _NOISE_DOMAINS = ("news.google.com", "v.daum.net", "news.nate.com")
+_AGGREGATOR_SOURCE_LABELS = ("v.daum.net", "news.nate.com", "news.google.com", "네이트", "다음", "daum")
 _PUBLISHER_MARKERS = (
-    "연합뉴스", "연합뉴스tv", "뉴시스", "뉴스1", "한국경제", "머니투데이", "한겨레",
-    "경향신문", "전자신문", "조선일보", "중앙일보", "동아일보", "mbc 뉴스", "sbs 뉴스",
-    "kbs 뉴스", "매일경제", "서울경제", "이데일리", "지디넷코리아",
+    "연합뉴스", "연합뉴스tv", "연합인포맥스", "뉴시스", "뉴스1", "한국경제", "머니투데이", "한겨레",
+    "경향신문", "전자신문", "조선일보", "조선비즈", "chosunbiz", "중앙일보", "동아일보", "한국일보",
+    "문화일보", "아시아경제", "서울경제", "서울신문", "매일경제", "이데일리", "헤럴드경제", "파이낸셜뉴스",
+    "지디넷코리아", "etnews", "jtbc", "ytn", "mbc", "sbs", "kbs", "마켓인", "뉴스핌", "데일리안",
+    "국민일보", "세계일보", "노컷뉴스", "오마이뉴스", "프레시안", "시사저널", "블로터",
 )
 
 
@@ -31,9 +35,21 @@ def _normalize(text: str) -> str:
     return re.sub(r"\s+", " ", (text or "")).strip(" -·|,")
 
 
-def _source_with_particle(source: str) -> str:
+def _editorial_source(source: str) -> str:
+    """Return a safe display source for editorial prose.
+
+    Aggregator labels are not treated as publishers. The underlying article link
+    remains unchanged elsewhere in the production payload.
+    """
     source = _normalize(source) or "주요 언론"
-    return f"{source} 등 주요 매체"
+    low = source.lower()
+    if any(label in low for label in _AGGREGATOR_SOURCE_LABELS):
+        return "원문 매체"
+    return source
+
+
+def _source_with_particle(source: str) -> str:
+    return f"{_editorial_source(source)} 등 주요 매체"
 
 
 def _looks_like_noise(fragment: str, title: str, source: str) -> bool:
@@ -50,13 +66,6 @@ def _looks_like_noise(fragment: str, title: str, source: str) -> bool:
 
 
 def _same_event_clause(fragment: str, title: str) -> bool:
-    """Require conservative semantic anchoring between summary clause and title.
-
-    RSS/aggregator summaries can concatenate unrelated headlines. A clause is used
-    as Fact only when it shares at least two informative headline tokens, or when
-    a short headline has one highly informative shared token and strong lexical
-    coverage. False negatives intentionally fall back to the selected headline.
-    """
     title_tokens = informative_title_tokens(title)
     frag_tokens = informative_title_tokens(fragment)
     if not title_tokens or not frag_tokens:
@@ -69,14 +78,24 @@ def _same_event_clause(fragment: str, title: str) -> bool:
     return False
 
 
+def _publisher_hits(fragment: str, selected_source: str) -> List[str]:
+    """Return publisher markers other than the selected source itself."""
+    low = fragment.lower()
+    selected = _normalize(selected_source).lower()
+    hits: List[str] = []
+    for marker in _PUBLISHER_MARKERS:
+        m = marker.lower()
+        if m in low and m not in selected and marker not in hits:
+            hits.append(marker)
+    return hits
+
+
 def _summary_candidates(summary: str, title: str, source: str) -> List[str]:
     """Extract same-event factual clauses from noisy aggregator/RSS summary text."""
     text = _normalize(summary)
     if not text:
         return []
 
-    # Keep the original text for event-overlap testing; removing the entire title
-    # can erase the only anchor and expose an unrelated concatenated headline.
     pieces = re.split(
         r"\s{2,}|\s+[|/]\s+|(?<=[.!?])\s+|\s+(?=\[[^\]]{1,30}\])",
         text,
@@ -86,7 +105,6 @@ def _summary_candidates(summary: str, title: str, source: str) -> List[str]:
         piece = _normalize(re.sub(r"\[[^\]]{1,30}\]", " ", piece))
         if not piece:
             continue
-        # Remove exact leading title/source repetition only after segmentation.
         if piece.startswith(title):
             piece = _normalize(piece[len(title):])
         if piece.startswith(source):
@@ -96,9 +114,9 @@ def _summary_candidates(summary: str, title: str, source: str) -> List[str]:
         low = piece.lower()
         if any(domain in low for domain in _NOISE_DOMAINS):
             continue
-        # Multiple publisher markers strongly indicate a concatenated result list.
-        publisher_hits = sum(1 for marker in _PUBLISHER_MARKERS if marker.lower() in low)
-        if publisher_hits >= 2:
+        # Any other publisher marker is evidence that this is an aggregator cluster,
+        # even if the clustered headlines describe the same event.
+        if _publisher_hits(piece, source):
             continue
         if not _same_event_clause(piece, title):
             continue
@@ -108,8 +126,9 @@ def _summary_candidates(summary: str, title: str, source: str) -> List[str]:
 
 def _fact_text(raw: Dict[str, Any]) -> str:
     title = _normalize(raw.get("title", ""))
-    source = _normalize(raw.get("source", "")) or "주요 언론"
-    candidates = _summary_candidates(raw.get("summary_raw", ""), title, source)
+    raw_source = _normalize(raw.get("source", "")) or "주요 언론"
+    source = _editorial_source(raw_source)
+    candidates = _summary_candidates(raw.get("summary_raw", ""), title, raw_source)
     if candidates:
         clause = candidates[0]
         if clause.endswith(("다", "요", ".", "!", "?")):
@@ -126,7 +145,6 @@ def _event_focus(title: str, keywords: List[str]) -> str:
 
 
 def _clean_keywords(title: str, summary: str, chapter_id: str) -> List[str]:
-    """Prefer title-derived keywords so noisy summaries cannot dominate Why text."""
     title_keywords = extract_keywords(title, "", chapter_id)
     useful = [k for k in title_keywords if k not in {"산업전망", "시장동향", "정책분석"}]
     if len(useful) >= 3:
@@ -142,7 +160,8 @@ def _clean_keywords(title: str, summary: str, chapter_id: str) -> List[str]:
 def build_editorial_for_article_v2(raw: Dict[str, Any]) -> EditorialContent:
     chapter_id = raw.get("chapter_id", "top-headlines")
     title = _normalize(raw.get("title", ""))
-    source = _normalize(raw.get("source", "")) or "주요 언론"
+    raw_source = _normalize(raw.get("source", "")) or "주요 언론"
+    source = _editorial_source(raw_source)
     summary = _normalize(raw.get("summary_raw", ""))
     insight = CHAPTER_INSIGHTS.get(chapter_id, CHAPTER_INSIGHTS["top-headlines"])
     keywords = _clean_keywords(title, summary, chapter_id)
