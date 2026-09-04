@@ -93,6 +93,25 @@ def test_aggregator_source_label_is_not_exposed_in_editorial_prose():
     assert "원문 매체" in combined
 
 
+def test_known_domain_source_is_rendered_as_publisher_name():
+    editorial = build_editorial_for_article_v2(_article(
+        source="yna.co.kr",
+        title="7월 경상수지 420.8억달러 흑자…역대 두 번째 규모",
+        summary_raw="",
+    ))
+    assert editorial.fact.startswith("연합뉴스는")
+    assert "yna.co.kr" not in editorial.fact
+
+
+def test_headline_echo_with_breaking_tag_and_source_falls_back():
+    editorial = build_editorial_for_article_v2(_article(
+        title="[속보] 7월 경상수지 421억달러 흑자…반도체 호황에 동월 역대 최대",
+        summary_raw="[속보] 7월 경상수지 421억달러 흑자…반도체 호황에 동월 역대 최대 한국경제",
+    ))
+    assert "한국경제로 전해졌습니다" not in editorial.fact
+    assert "세부 내용은 원문과 추가 근거에서 확인해야 합니다" in editorial.fact
+
+
 def test_checkpoints_reflect_evidence_strength():
     multi = build_editorial_for_article_v2(_article())
     assert "a.example" in multi.checkpoints[1]
