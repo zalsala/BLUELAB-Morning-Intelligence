@@ -1,80 +1,134 @@
 """
 pipeline/youtube_collector.py
-주요 방송사 및 경제/시사/테크 유튜브 채널 실시간 핫이슈 영상 수집 모듈
+검증된 공식 YouTube 채널 RSS를 이용한 최신 영상 수집 모듈.
+config/youtube-signals.json을 단일 정책 소스로 사용한다.
 """
 from __future__ import annotations
 
+import datetime as dt
+import html
+import json
+import re
 import sys
+from pathlib import Path
+from typing import Any, Dict, List
+
+import feedparser
+
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
-import re
-import html
-import datetime
-import feedparser
-from typing import List, Dict, Any
+ROOT = Path(__file__).resolve().parents[1]
+POLICY_PATH = ROOT / "config" / "youtube-signals.json"
 
-YOUTUBE_CHANNELS = [
-    {"name": "KBS News", "channel_id": "UCcQTRi69dsVYHN3exePtZ1A", "category": "종합뉴스"},
-    {"name": "MBC News", "channel_id": "UCF4WxDo3inmxP-Y59wXDsFw", "category": "종합뉴스"},
-    {"name": "SBS News", "channel_id": "UCkinYTS9IHqOEwR1Sze2JTw", "category": "종합뉴스"},
-    {"name": "YTN", "channel_id": "UChlgI3UHCOnwUGzWzbJ3H5w", "category": "24시간속보"},
-    {"name": "JTBC News", "channel_id": "UCsU-I-vHLiaMfV_ceaYz5rQ", "category": "심층보도"},
-    {"name": "연합뉴스TV", "channel_id": "UCw9d52i_U-qB4r7K4jM5Qbg", "category": "속보/경제"},
-    {"name": "한국경제TV", "channel_id": "UCWskgJvUoxft3GcwR_LzYwQ", "category": "경제/증시"},
-    {"name": "삼프로TV", "channel_id": "UCO8t3Pz83_k2Q9w8JqP4z7A", "category": "경제/금융"},
-    {"name": "슈카월드", "channel_id": "UCbSgKzS1D977e2E_j0R5K4w", "category": "시사/이슈"},
-    {"name": "BBC News 코리아", "channel_id": "UCU_vFqZf1r1zD3bXjW6m2cA", "category": "국제정세"},
-]
 
 def clean_text(text: str) -> str:
     text = html.unescape(text or "")
     text = re.sub(r"<[^>]+>", "", text)
-    return text.strip()
+    return re.sub(r"\s+", " ", text).strip()
 
-def collect_youtube_hot_issues(limit_per_channel: int = 2) -> List[Dict[str, Any]]:
-    """유튜브 실시간 핫이슈 영상 수집"""
-    print("  └─ 유튜브 실시간 주요 방송/경제 채널 핫이슈 피드 수집 중...")
-    results = []
 
-    for ch in YOUTUBE_CHANNELS:
+def load_policy() -> dict:
+    return json.loads(POLICY_PATH.read_text(encoding="utf-8"))
+
+
+def _entry_datetime(entry) -> dt.datetime | None:
+    parsed = getattr(entry, "published_parsed", None)
+    if parsed:
+        return dt.datetime(*parsed[:6], tzinfo=dt.timezone.utc)
+    raw = getattr(entry, "published", "") or getattr(entry, "updated", "")
+    if raw:
+        try:
+            return dt.datetime.fromisoformat(raw.replace("Z", "+00:00")).astimezone(dt.timezone.utc)
+        except Exception:
+            return None
+    return None
+
+
+def collect_youtube_hot_issues(limit_per_channel: int | None = None) -> List[Dict[str, Any]]:
+    """정책에 등록된 공식 채널에서 최신 영상을 수집하고 diversity/freshness를 적용한다."""
+    policy = load_policy()
+    channels = policy.get("channels", [])
+    target = int(policy.get("target", 10))
+    max_age_days = int(policy.get("max_age_days", 3))
+    max_per_channel = int(policy.get("max_per_channel", 3))
+    minimum_unique_channels = int(policy.get("minimum_unique_channels", 4))
+    per_channel = limit_per_channel or max_per_channel
+    now = dt.datetime.now(dt.timezone.utc)
+
+    print("  └─ 검증된 공식 YouTube 채널 RSS 수집 중...")
+    candidates: List[Dict[str, Any]] = []
+
+    for ch in channels:
         feed_url = f"https://www.youtube.com/feeds/videos.xml?channel_id={ch['channel_id']}"
         try:
-            d = feedparser.parse(feed_url)
-            for entry in d.entries[:limit_per_channel]:
+            feed = feedparser.parse(feed_url)
+            accepted = 0
+            for entry in feed.entries:
+                if accepted >= per_channel:
+                    break
+                published_dt = _entry_datetime(entry)
+                if not published_dt:
+                    continue
+                age_days = (now - published_dt).total_seconds() / 86400
+                if age_days < -0.25 or age_days > max_age_days:
+                    continue
+
                 vid_id = getattr(entry, "yt_videoid", "")
-                if not vid_id and hasattr(entry, "link"):
-                    m = re.search(r"v=([a-zA-Z0-9_-]+)", entry.link)
+                if not vid_id:
+                    link = getattr(entry, "link", "")
+                    m = re.search(r"(?:v=|youtu\.be/)([A-Za-z0-9_-]{6,})", link)
                     if m:
                         vid_id = m.group(1)
-                
                 if not vid_id:
                     continue
 
                 title = clean_text(getattr(entry, "title", ""))
-                published = getattr(entry, "published", "")
-                summary = clean_text(getattr(entry, "summary", ""))[:120]
-
-                # 고화질 썸네일 URL
-                thumbnail_url = f"https://img.youtube.com/vi/{vid_id}/hqdefault.jpg"
-
-                results.append({
+                if not title:
+                    continue
+                summary = clean_text(getattr(entry, "summary", ""))[:180]
+                candidates.append({
                     "id": vid_id,
                     "title": title,
                     "channel": ch["name"],
-                    "category": ch["category"],
+                    "category": "공식 뉴스/연구 채널",
                     "video_url": f"https://www.youtube.com/watch?v={vid_id}",
                     "embed_url": f"https://www.youtube.com/embed/{vid_id}",
-                    "thumbnail": thumbnail_url,
-                    "published_at": published[:10] if published else datetime.date.today().isoformat(),
-                    "summary": summary or f"{ch['name']} 실시간 주요 뉴스 및 분석 영상입니다."
+                    "thumbnail": f"https://img.youtube.com/vi/{vid_id}/hqdefault.jpg",
+                    "published_at": published_dt.date().isoformat(),
+                    "summary": summary or f"{ch['name']} 공식 채널의 최신 영상입니다.",
+                    "source_tier": ch.get("tier"),
+                    "source_id": ch.get("id"),
                 })
-        except Exception as e:
-            print(f"    [!] 유튜브 채널({ch['name']}) 수집 건너뜀: {e}")
+                accepted += 1
+        except Exception as exc:
+            print(f"    [!] YouTube 채널({ch.get('name')}) 수집 실패: {exc}")
 
-    # 최신순 및 다양성 정렬
-    print(f"  └─ 유튜브 핫이슈 총 {len(results)}개 영상 큐레이션 완료")
-    return results[:18]
+    # ID 중복 제거 후 최신순 정렬
+    dedup: Dict[str, Dict[str, Any]] = {}
+    for item in candidates:
+        dedup.setdefault(item["id"], item)
+    ordered = sorted(dedup.values(), key=lambda x: x["published_at"], reverse=True)
+
+    selected: List[Dict[str, Any]] = []
+    channel_counts: Dict[str, int] = {}
+    for item in ordered:
+        channel = item["channel"]
+        if channel_counts.get(channel, 0) >= max_per_channel:
+            continue
+        selected.append(item)
+        channel_counts[channel] = channel_counts.get(channel, 0) + 1
+        if len(selected) >= target:
+            break
+
+    unique_channels = len({x["channel"] for x in selected})
+    status = "PASS" if len(selected) >= target and unique_channels >= minimum_unique_channels else "FAIL"
+    print(
+        f"  └─ YouTube 정책 검증: selected={len(selected)}/{target}, "
+        f"unique_channels={unique_channels}/{minimum_unique_channels}, status={status}"
+    )
+    return selected
+
 
 if __name__ == "__main__":
     vids = collect_youtube_hot_issues()
