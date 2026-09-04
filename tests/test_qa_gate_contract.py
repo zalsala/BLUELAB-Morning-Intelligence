@@ -41,15 +41,13 @@ def _article(chapter_id, index):
 
 def _valid_bundle():
     chapters = []
-    all_articles = []
     for chapter_id in CHAPTER_IDS:
         articles = [_article(chapter_id, i) for i in range(10)]
         chapters.append({"id": chapter_id, "name": chapter_id, "articles": articles})
-        all_articles.extend(articles)
 
     top5 = [copy.deepcopy(chapters[i]["articles"][0]) for i in range(5)]
     return {
-        "metadata": {"trends_source": "WITHHELD_INSUFFICIENT_RELIABLE_TERMS"},
+        "metadata": {"version": "1.1.0", "trends_source": "WITHHELD_INSUFFICIENT_RELIABLE_TERMS"},
         "chapters": chapters,
         "top_5_highlights": top5,
         "weather": {"location": "인천 서구 검단", "temp_current": 22.0},
@@ -57,9 +55,7 @@ def _valid_bundle():
         "next_signals": [{}, {}, {}],
         "trending_keywords": [],
         "three_line_summary": ["1", "2", "3"],
-        "youtube_hot_issues": [
-            {"channel": f"channel-{i % 4}"} for i in range(10)
-        ],
+        "youtube_hot_issues": [{"channel": f"channel-{i % 4}"} for i in range(10)],
         "integrity_hash": "a" * 64,
     }
 
