@@ -60,11 +60,16 @@ _OPINION_PREFIX_RE = re.compile(
 )
 
 
-def is_top5_eligible(article: Article) -> bool:
-    title = (article.title or "").strip()
-    if not title:
+def is_top5_title_eligible(title: str) -> bool:
+    """Return whether a raw title is eligible for the factual TOP5 surface."""
+    normalized = (title or "").strip()
+    if not normalized:
         return False
-    return _OPINION_PREFIX_RE.search(title) is None
+    return _OPINION_PREFIX_RE.search(normalized) is None
+
+
+def is_top5_eligible(article: Article) -> bool:
+    return is_top5_title_eligible(article.title)
 
 
 def _recency_points(published_at: str, now: datetime | None = None) -> float:
