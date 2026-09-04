@@ -3,6 +3,7 @@ from pipeline.editorial_quality import build_editorial_for_article_v2, process_a
 
 
 GROUNDED = "비트코인 8만1000달러 돌파와 금리 우려 완화가 시장에서 확인됐다."
+TITLE = "비트코인 8만1000달러 돌파, 금리 우려 완화"
 
 
 def _raw(status="VALIDATED", span=None):
@@ -10,7 +11,7 @@ def _raw(status="VALIDATED", span=None):
         "id": "a1",
         "chapter_id": "macro-finance",
         "chapter_name": "거시 경제 & 금융",
-        "title": "비트코인 8만1000달러 돌파, 금리 우려 완화",
+        "title": TITLE,
         "link": "https://example.com/a1",
         "source": "연합뉴스",
         "published_at": "Fri, 04 Sep 2026 00:00:00 GMT",
@@ -26,7 +27,7 @@ def _raw(status="VALIDATED", span=None):
 
 def test_extract_evidence_span_prefers_title_grounded_sentence():
     body = "서울 날씨는 맑고 시민들이 공원을 찾았다. " + GROUNDED + " 시장에서는 향후 정책 방향을 주시하고 있다."
-    span = _extract_evidence_span("비트코인 8만1000달러 돌파, 금리 우려 완화", body)
+    span = _extract_evidence_span(TITLE, body)
     assert span is not None
     assert "비트코인" in span and "8만1000달러" in span
     assert len(span) <= 240
@@ -54,3 +55,22 @@ def test_private_evidence_span_is_not_persisted_in_article_output():
     exported = article.to_dict()
     assert "_body_evidence_span" not in exported
     assert "_body_evidence_span" not in str(exported)
+
+
+def test_grounding_rejects_emoji_and_promotional_commentary():
+    body = "😊 비트코인 8만1000달러 돌파는 투자자에게 좋은 기회가 될 거예요. " + GROUNDED
+    span = _extract_evidence_span(TITLE, body)
+    assert span == GROUNDED
+
+
+def test_grounding_rejects_headline_caption_echo():
+    body = (
+        TITLE + " [사진=연합뉴스] 대표 이미지. "
+        + GROUNDED
+    )
+    assert _extract_evidence_span(TITLE, body) == GROUNDED
+
+
+def test_grounding_never_accepts_mid_sentence_truncation():
+    body = "비트코인 8만1000달러 돌파와 금리 우려 완화가 주요 시장 변수로 작용하며 추가 분석이 필요한 주요"
+    assert _extract_evidence_span(TITLE, body) is None
