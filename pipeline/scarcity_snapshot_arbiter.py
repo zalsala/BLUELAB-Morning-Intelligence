@@ -1,12 +1,22 @@
-"""Scarcity-first cross-chapter allocation wrapper with topical relevance."""
+"""Scarcity-first cross-chapter allocation wrapper with topical relevance.
+
+The selected 140 stories are also conservatively matched against the already
+collected candidate pool. When another publisher clearly covers the same event,
+its exact article URL is attached as corroborating evidence. Corroboration is
+best-effort: decoding failures never fabricate evidence and simply leave the
+story PARTIAL.
+"""
 from __future__ import annotations
 
 import urllib.parse
 from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any, Dict, List
+from urllib.parse import urlparse
 
 from pipeline.schema import CHAPTER_DEFINITIONS
 from pipeline.fetch_and_filter import fetch_chapter_candidates, fetch_rss_feed
+from pipeline.content_quality import title_event_similarity
 from pipeline import snapshot_arbiter as base
 
 
@@ -16,6 +26,8 @@ EXTRA_FRESHNESS_QUERIES = {
         "재건축 재개발", "아파트 분양 청약", "부동산 PF 건설", "국토교통부 주택",
     ]
 }
+CORROBORATION_CANDIDATES_PER_ARTICLE = 3
+CORROBORATION_URLS_PER_ARTICLE = 2
 
 
 def _stamp_chapter(rows: List[Dict[str, Any]], chapter: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -79,6 +91,104 @@ def _scarcity_key(chapter: Dict[str, Any], prepared: Dict[str, List[Dict[str, An
     return (len(unique_titles), canonical_index)
 
 
+def _domain(url: str) -> str:
+    return urlparse(url or "").netloc.lower().removeprefix("www.")
+
+
+def _build_corroboration_candidates(
+    selected_articles: List[Dict[str, Any]],
+    prepared: Dict[str, List[Dict[str, Any]]],
+) -> Dict[str, List[Dict[str, Any]]]:
+    """Find conservative same-event candidates from already collected RSS rows."""
+    pool: List[Dict[str, Any]] = []
+    seen_pool = set()
+    for rows in prepared.values():
+        for row in rows:
+            key = (row.get("link"), row.get("source"), row.get("title"))
+            if not row.get("link") or not row.get("title") or key in seen_pool:
+                continue
+            seen_pool.add(key)
+            pool.append(row)
+
+    matches: Dict[str, List[Dict[str, Any]]] = {}
+    for art in selected_articles:
+        ranked = []
+        source = (art.get("source") or "").strip()
+        discovery = art.get("discovery_link") or art.get("link")
+        for candidate in pool:
+            if candidate.get("link") == discovery:
+                continue
+            if source and (candidate.get("source") or "").strip() == source:
+                continue
+            sim = title_event_similarity(art.get("title", ""), candidate.get("title", ""))
+            if not sim["passed"]:
+                continue
+            score = sim["jaccard"] * 2.0 + sim["overlap"] + 0.05 * len(sim["shared"])
+            ranked.append((score, candidate))
+        ranked.sort(key=lambda x: x[0], reverse=True)
+        matches[art["id"]] = [dict(c) for _, c in ranked[:CORROBORATION_CANDIDATES_PER_ARTICLE]]
+    return matches
+
+
+def _decode_optional_candidates(matches: Dict[str, List[Dict[str, Any]]]) -> Dict[str, str]:
+    """Decode candidate discovery URLs without making corroboration a hard gate."""
+    unique: Dict[str, Dict[str, Any]] = {}
+    for candidates in matches.values():
+        for candidate in candidates:
+            link = candidate.get("link")
+            if link and link not in unique:
+                unique[link] = candidate
+
+    decoded: Dict[str, str] = {}
+    if not unique:
+        return decoded
+
+    with ThreadPoolExecutor(max_workers=base.DECODE_WORKERS) as pool:
+        futures = {pool.submit(base._decode_one, item): original for original, item in unique.items()}
+        for future in as_completed(futures):
+            original = futures[future]
+            try:
+                item, error = future.result()
+            except Exception:
+                continue
+            if error:
+                continue
+            exact = (item.get("link") or "").strip()
+            if exact and _domain(exact) and not _domain(exact).endswith("news.google.com"):
+                decoded[original] = exact
+    return decoded
+
+
+def _attach_corroborating_urls(
+    selected_articles: List[Dict[str, Any]],
+    prepared: Dict[str, List[Dict[str, Any]]],
+) -> None:
+    matches = _build_corroboration_candidates(selected_articles, prepared)
+    decoded = _decode_optional_candidates(matches)
+    enriched = 0
+    evidence_urls = 0
+
+    for art in selected_articles:
+        primary_domain = _domain(art.get("link", ""))
+        urls: List[str] = []
+        seen_domains = {primary_domain} if primary_domain else set()
+        for candidate in matches.get(art["id"], []):
+            exact = decoded.get(candidate.get("link", ""))
+            domain = _domain(exact or "")
+            if not exact or not domain or domain in seen_domains:
+                continue
+            seen_domains.add(domain)
+            urls.append(exact)
+            if len(urls) >= CORROBORATION_URLS_PER_ARTICLE:
+                break
+        art["corroborating_urls"] = urls
+        if urls:
+            enriched += 1
+            evidence_urls += len(urls)
+
+    print(f" [Corroboration] enriched={enriched}/{len(selected_articles)} evidence_urls={evidence_urls}")
+
+
 def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], target_per_chapter: int = 10) -> List[Dict[str, Any]]:
     print("=" * 70)
     print(f" [Step 2] scarcity-first 최신성·관련성·중복·출처 다양성 적용: 14개 챕터 × {target_per_chapter}개")
@@ -115,6 +225,7 @@ def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], targe
                 f"unique_fresh={unique_fresh}; globally_reserved={len(global_seen_titles)})"
             )
 
+        prepared[c_id] = raw_list
         pubs = Counter((a.get("source") or "미상").strip() for a in selected)
         if len(pubs) < base.MIN_UNIQUE_PUBLISHERS or max(pubs.values()) > base.MAX_PER_PUBLISHER:
             raise ValueError(f"{c_name}: publisher diversity gate failed ({dict(pubs)})")
@@ -147,6 +258,8 @@ def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], targe
             raise ValueError(f"exact URL cross-chapter duplicate: {art['link']}")
         seen_urls.add(art["link"])
         art["id"] = base.calculate_article_hash(art["chapter_id"], art["title"], art["link"])
+
+    _attach_corroborating_urls(final_snapshot, prepared)
 
     print(f" [Step 2 완료] {len(final_snapshot)}/{expected}건 scarcity/freshness/relevance/diversity/exact-url 잠금 PASS")
     return final_snapshot
