@@ -1,0 +1,82 @@
+from types import SimpleNamespace
+
+from pipeline.korean_quality import (
+    polish_bundle_summary,
+    polish_editorial_articles,
+    polish_summary_line,
+    polish_why_text,
+    validate_korean_quality,
+)
+from pipeline.korean_text import has_final_consonant, object_particle
+
+
+def test_object_particle_uses_hangul_jongseong():
+    assert has_final_consonant("최대") is False
+    assert has_final_consonant("혁신") is True
+    assert object_particle("최대") == "를"
+    assert object_particle("혁신") == "을"
+
+
+def test_summary_regression_from_production_uses_reul_after_maximum():
+    line = "[산업·경제 인텔리전스] '[속보] 7월 경상수지 421억달러 흑자…반도체 호황에 동월 역대 최대'을 비롯한 AI 경쟁"
+    fixed = polish_summary_line(line)
+    assert "역대 최대'를 비롯한" in fixed
+    assert "역대 최대'을 비롯한" not in fixed
+
+
+def test_summary_keeps_eul_when_headline_has_final_consonant():
+    line = "[산업·경제 인텔리전스] 'AI 공급망 혁신'를 비롯한 반도체 경쟁"
+    fixed = polish_summary_line(line)
+    assert "AI 공급망 혁신'을 비롯한" in fixed
+
+
+def test_why_regression_uses_particle_neutral_wording():
+    text = "이 사안은 대통령, 시민사회, 초청와 직접 연결돼 있어 후속 판단에 영향을 줄 수 있습니다."
+    fixed = polish_why_text(text)
+    assert "초청에 직접 연결돼 있어" in fixed
+    assert "초청와" not in fixed
+
+
+def test_bundle_quality_gate_passes_after_polish():
+    editorial = SimpleNamespace(
+        fact="원문 매체는 사실을 보도했습니다.",
+        background="배경 설명입니다.",
+        why_it_matters="이 사안은 대통령, 시민사회, 초청와 직접 연결돼 있어 후속 판단에 영향을 줄 수 있습니다.",
+        checkpoints=["공식 발표 확인"],
+    )
+    article = SimpleNamespace(editorial=editorial)
+    bundle = SimpleNamespace(
+        three_line_summary=[
+            "[헤드라인] 첫째 줄",
+            "[산업] '7월 경상수지 역대 최대'을 비롯한 시장 이슈",
+            "[로컬] 셋째 줄",
+        ],
+        chapters=[SimpleNamespace(articles=[article])],
+    )
+
+    polish_editorial_articles([article])
+    polish_bundle_summary(bundle)
+    validate_korean_quality(bundle)
+
+    assert "최대'를 비롯한" in bundle.three_line_summary[1]
+    assert "초청에 직접" in article.editorial.why_it_matters
+
+
+def test_quality_gate_rejects_ambiguous_placeholder():
+    editorial = SimpleNamespace(
+        fact="한국경제을(를) 확인했습니다.",
+        background="배경",
+        why_it_matters="중요성",
+        checkpoints=[],
+    )
+    bundle = SimpleNamespace(
+        three_line_summary=["a", "b", "c"],
+        chapters=[SimpleNamespace(articles=[SimpleNamespace(editorial=editorial)])],
+    )
+
+    try:
+        validate_korean_quality(bundle)
+    except ValueError as exc:
+        assert "ambiguous particle placeholder" in str(exc)
+    else:
+        raise AssertionError("quality gate must fail closed")
