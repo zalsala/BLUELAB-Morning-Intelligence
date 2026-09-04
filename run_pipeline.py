@@ -14,7 +14,7 @@ if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 from pipeline.fetch_and_filter import fetch_all_chapters_raw
-from pipeline.snapshot_arbiter import arbitrate_and_lock_snapshot
+from pipeline.scarcity_snapshot_arbiter import arbitrate_and_lock_snapshot
 from pipeline.editorial_builder import process_all_editorials
 from pipeline.bundle_assembler import assemble_bundle, save_bundle_to_json
 from pipeline.google_trends_collector import collect_google_trends_kr
@@ -36,8 +36,9 @@ def main():
         bundle=assemble_bundle(articles)
 
         # 합성 기사 키워드는 발행하지 않는다. 공식 Google Trends KR RSS가 정확히 20개일 때만 표시한다.
-        bundle["trending_keywords"]=collect_google_trends_kr()
-        bundle.setdefault("metadata",{})["trends_source"]=("Google Trends KR official RSS" if len(bundle["trending_keywords"])==20 else "WITHHELD_INSUFFICIENT_RELIABLE_TERMS")
+        trends=collect_google_trends_kr()
+        bundle.trending_keywords=trends
+        bundle.metadata["trends_source"]=("Google Trends KR official RSS" if len(trends)==20 else "WITHHELD_INSUFFICIENT_RELIABLE_TERMS")
 
         today_path,archive_path=save_bundle_to_json(bundle)
         qa_passed=run_qa_gate(today_path)
@@ -48,7 +49,7 @@ def main():
         elapsed=time.time()-start_time
         print("\n"+"*"*80)
         print("  PIPELINE QA PASS — PRE-SEND/DEPLOY GATES STILL REQUIRED")
-        print(f"  총 14개 챕터 / 140개 기사 / YouTube {len(bundle.get('youtube_hot_issues',[]))} / Trends {len(bundle.get('trending_keywords',[]))}")
+        print(f"  총 14개 챕터 / 140개 기사 / YouTube {len(bundle.youtube_hot_issues)} / Trends {len(bundle.trending_keywords)}")
         print(f"  소요 시간: {elapsed:.2f}초 | 저장 위치: {today_path}")
         print("*"*80+"\n")
     except Exception as e:
