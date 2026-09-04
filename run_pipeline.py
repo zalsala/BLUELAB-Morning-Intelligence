@@ -25,6 +25,11 @@ from pipeline.image_provenance import audit_all_images
 from pipeline.editorial_quality import process_all_editorials
 from pipeline.bundle_assembler import assemble_bundle, save_bundle_to_json
 from pipeline.google_trends_collector import collect_google_trends_kr
+from pipeline.korean_quality import (
+    polish_editorial_articles,
+    polish_bundle_summary,
+    validate_korean_quality,
+)
 from pipeline.publication_manifest import (
     compute_snapshot_fingerprint,
     compute_editorial_fingerprint,
@@ -58,9 +63,15 @@ def main():
         # P1: evidence-aware editorial generation. This stage must not invent
         # unsupported facts or leak aggregator/relay fragments into Fact text.
         articles = process_all_editorials(provenance_verified)
+
+        # P1.1: deterministic Korean-language cleanup. Keep this before the
+        # editorial fingerprint so the manifest represents the text that ships.
+        polish_editorial_articles(articles)
         editorial_fp = compute_editorial_fingerprint([a.to_dict() for a in articles])
 
         bundle = assemble_bundle(articles)
+        polish_bundle_summary(bundle)
+        validate_korean_quality(bundle)
 
         trends = collect_google_trends_kr()
         bundle.trending_keywords = trends
@@ -69,6 +80,10 @@ def main():
             if len(trends) == 20
             else "WITHHELD_INSUFFICIENT_RELIABLE_TERMS"
         )
+
+        # Re-run after all bundle mutations to ensure nothing introduced a known
+        # particle defect downstream of editorial generation.
+        validate_korean_quality(bundle)
 
         today_path, archive_path = save_bundle_to_json(bundle)
 
