@@ -24,6 +24,14 @@ MIN_BODY_CHARS = 220
 TIMEOUT_SECONDS = 5
 MAX_WORKERS = 12
 MAX_EVIDENCE_SPAN_CHARS = 240
+_EVIDENCE_NOISE = (
+    "[사진=", "[사진 =", "[이미지=", "[이미지 =", "대표 이미지", "자료사진",
+    "기자]", "기자 ]", "무단전재", "재배포 금지", "copyright", "구독", "로그인",
+)
+_EVIDENCE_COMMENTARY = (
+    "거예요", "것 같", "기회가 될", "좋을 것", "주목해볼", "살펴볼", "기대해",
+    "😊", "😀", "🙂", "👍", "❤", "✨",
+)
 
 
 def _norm(text: str) -> str:
@@ -88,16 +96,41 @@ def _event_overlap(title: str, body: str) -> Tuple[bool, float, List[str]]:
     return len(shared) >= 2 and ratio >= 0.40, round(ratio, 3), shared[:8]
 
 
+def _safe_evidence_sentence(sentence: str, title: str) -> bool:
+    sentence = _norm(sentence)
+    if len(sentence) < 30 or len(sentence) > MAX_EVIDENCE_SPAN_CHARS:
+        return False
+    if not sentence.endswith((".", "!", "?")):
+        return False
+    low = sentence.lower()
+    if any(marker.lower() in low for marker in _EVIDENCE_NOISE):
+        return False
+    if any(marker.lower() in low for marker in _EVIDENCE_COMMENTARY):
+        return False
+    # Reject headline/caption echoes: a factual body sentence should add
+    # material beyond the displayed title rather than merely repeat it.
+    clean_title = _norm(re.sub(r"^\s*(?:\[[^\]]{1,30}\]\s*)+", "", title or ""))
+    if clean_title and sentence.startswith(clean_title):
+        remainder = _norm(sentence[len(clean_title):])
+        if len(remainder) < 35:
+            return False
+    if re.search(r"\[[^\]]*(?:사진|이미지|자료|기자)[^\]]*\]", sentence, re.I):
+        return False
+    return True
+
+
 def _extract_evidence_span(title: str, body: str) -> Optional[str]:
-    """Return one short, title-grounded sentence for transient editorial use."""
+    """Return one short, factual, title-grounded sentence for transient use."""
     title_tokens = informative_title_tokens(title)
     if not title_tokens:
         return None
-    candidates = re.split(r"(?<=[.!?다요])\s+", _norm(body))
+    # Deliberately split only on explicit terminal punctuation. Splitting on
+    # Hangul '다/요' characters can cut ordinary words (e.g. '주요') mid-span.
+    candidates = re.split(r"(?<=[.!?])\s+", _norm(body))
     ranked: List[Tuple[float, int, str]] = []
     for sentence in candidates:
         sentence = _norm(sentence)
-        if len(sentence) < 30 or len(sentence) > MAX_EVIDENCE_SPAN_CHARS:
+        if not _safe_evidence_sentence(sentence, title):
             continue
         tokens = informative_title_tokens(sentence)
         shared = title_tokens & tokens
