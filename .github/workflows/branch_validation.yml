@@ -1,0 +1,85 @@
+name: Branch Live Validation
+
+on:
+  push:
+    branches: [agent/daily-20260904-scarcity-arbitration]
+    paths:
+      - '.github/workflows/branch_validation.yml'
+      - 'pipeline/**'
+      - 'run_pipeline.py'
+      - 'scripts/**'
+      - 'config/**'
+
+permissions:
+  contents: read
+
+jobs:
+  live-validation:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: 'pip'}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run master pipeline without publishing
+        run: python run_pipeline.py
+      - name: PRE-SEND hard gates
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+          from urllib.parse import urlparse
+          from zoneinfo import ZoneInfo
+
+          data=json.loads(Path('public/data/today.json').read_text(encoding='utf-8'))
+          errors=[]
+          expected=datetime.now(ZoneInfo('Asia/Seoul')).strftime('%Y-%m-%d')
+          if data.get('metadata',{}).get('date') != expected:
+              errors.append(f"edition date mismatch: {data.get('metadata',{}).get('date')} != {expected}")
+          chapters=data.get('chapters',[])
+          if len(chapters) != 14:
+              errors.append(f'chapter count={len(chapters)} != 14')
+          for ch in chapters:
+              if len(ch.get('articles',[])) < 10:
+                  errors.append(f"{ch.get('name')}: rendered items={len(ch.get('articles',[]))} < 10")
+          articles=[a for ch in chapters for a in ch.get('articles',[])]
+          article_urls=[a.get('link','') for a in articles]
+          if len(article_urls) != len(set(article_urls)):
+              errors.append('cross-chapter exact URL duplicates remain')
+          top5=data.get('top_5_highlights',[])
+          if len(top5) != 5:
+              errors.append(f'TOP5 count={len(top5)} != 5')
+          videos=data.get('youtube_hot_issues',[])
+          channels={v.get('channel') for v in videos if v.get('channel')}
+          if len(videos) < 10:
+              errors.append(f'YouTube count={len(videos)} < 10')
+          if len(channels) < 4:
+              errors.append(f'YouTube unique channels={len(channels)} < 4')
+          urls=article_urls+[a.get('link','') for a in top5]
+          google_news=[u for u in urls if urlparse(u).netloc.lower().endswith('news.google.com')]
+          if google_news:
+              errors.append(f'exact article URL gate: {len(google_news)} Google News relay URLs remain')
+          trends=data.get('trending_keywords',[])
+          if len(trends) not in (0,20):
+              errors.append(f'trending keyword count must be 0 or 20; found {len(trends)}')
+          if len(data.get('three_line_summary',[])) != 3:
+              errors.append('final summary must contain exactly 3 lines')
+          if errors:
+              print('PRE_SEND_QA=FAIL')
+              for e in errors: print(' -',e)
+              raise SystemExit(2)
+          print('PRE_SEND_QA=PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: branch-live-validation
+          path: public/data/*.json
+          if-no-files-found: ignore
+          retention-days: 2
