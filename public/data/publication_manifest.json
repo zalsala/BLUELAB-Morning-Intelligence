@@ -4,7 +4,7 @@
   "edition_date": "2026-09-04",
   "timezone": "Asia/Seoul",
   "source_main_sha": "44d568f03028ce4b35deda7660f69deeb92d3e70",
-  "release_sha": "874fc0226c0d7b0804abd93df374e3fcc6dfb8d3",
+  "release_sha": "c622d319d5bad405295da17cd0cdf44ce3c0bfa7",
   "fingerprints": {
     "snapshot_fingerprint_sha256": "90937dc7235ec7f318e8e4c49be4b1c276410a1682574f482ef0b48f724d560c",
     "editorial_fingerprint_sha256": "fcb3f11ec7511aa106b9975fdb4f84fcd10a8940593ad9bacd5a484435004347",
@@ -26,5 +26,5 @@
   },
   "canonical_status": "CANONICAL_PASS",
   "created_at": "2026-09-04T11:46:29.835821+09:00",
-  "manifest_sha256": "506c45f4e2f057f97c8fdedab007c585a8f5add19b5e57150feb2c33c9bb9993"
+  "manifest_sha256": "a689b4fc310dfa4fd3731ae546fdab8269ddea5401146cfbca10c15cb925ab98"
 }
