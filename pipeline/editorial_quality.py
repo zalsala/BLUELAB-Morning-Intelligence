@@ -2,10 +2,12 @@
 
 P1 goals:
 - keep Fact grounded in the selected article/evidence instead of generic filler;
-- strip Google News-style concatenated headline/source noise from summaries;
+- strip aggregator/RSS concatenated headline noise from summaries;
 - avoid Korean particle placeholders such as ``을(를)``;
 - make Background / Why it matters / Checkpoints article-specific while retaining
-  chapter context as a secondary frame.
+  chapter context as a secondary frame;
+- fail closed to the selected headline when a summary clause cannot be tied to the
+  same event with informative-token overlap.
 """
 from __future__ import annotations
 
@@ -13,11 +15,16 @@ import re
 from typing import Any, Dict, List
 from urllib.parse import urlparse
 
+from pipeline.content_quality import informative_title_tokens
 from pipeline.editorial_builder import CHAPTER_INSIGHTS, extract_keywords
 from pipeline.schema import Article, EditorialContent
 
-_NOISE_DOMAINS = ("news.google.com", "v.daum.net")
-_SENTENCE_END = re.compile(r"(?<=[.!?다요])\s+")
+_NOISE_DOMAINS = ("news.google.com", "v.daum.net", "news.nate.com")
+_PUBLISHER_MARKERS = (
+    "연합뉴스", "연합뉴스tv", "뉴시스", "뉴스1", "한국경제", "머니투데이", "한겨레",
+    "경향신문", "전자신문", "조선일보", "중앙일보", "동아일보", "mbc 뉴스", "sbs 뉴스",
+    "kbs 뉴스", "매일경제", "서울경제", "이데일리", "지디넷코리아",
+)
 
 
 def _normalize(text: str) -> str:
@@ -25,7 +32,6 @@ def _normalize(text: str) -> str:
 
 
 def _source_with_particle(source: str) -> str:
-    """Return a natural Korean source phrase without ambiguous 을(를)."""
     source = _normalize(source) or "주요 언론"
     return f"{source} 등 주요 매체"
 
@@ -36,27 +42,65 @@ def _looks_like_noise(fragment: str, title: str, source: str) -> bool:
         return True
     if any(domain in f for domain in _NOISE_DOMAINS):
         return True
-    if re.fullmatch(r"(?:연합뉴스|뉴스|종합|속보|단독|머니투데이|한국경제|경향신문|전자신문)", fragment):
+    if re.search(r"\b(?:https?://|www\.)", f) or re.search(r"\b[a-z0-9.-]+\.(?:com|co\.kr|kr|net|org)\b", f):
+        return True
+    if re.fullmatch(r"(?:연합뉴스|뉴스|종합|속보|단독|머니투데이|한국경제|경향신문|전자신문)", fragment, re.I):
         return True
     return False
 
 
+def _same_event_clause(fragment: str, title: str) -> bool:
+    """Require conservative semantic anchoring between summary clause and title.
+
+    RSS/aggregator summaries can concatenate unrelated headlines. A clause is used
+    as Fact only when it shares at least two informative headline tokens, or when
+    a short headline has one highly informative shared token and strong lexical
+    coverage. False negatives intentionally fall back to the selected headline.
+    """
+    title_tokens = informative_title_tokens(title)
+    frag_tokens = informative_title_tokens(fragment)
+    if not title_tokens or not frag_tokens:
+        return False
+    shared = title_tokens & frag_tokens
+    if len(shared) >= 2:
+        return True
+    if len(title_tokens) <= 3 and len(shared) == 1:
+        return len(shared) / max(1, min(len(title_tokens), len(frag_tokens))) >= 0.5
+    return False
+
+
 def _summary_candidates(summary: str, title: str, source: str) -> List[str]:
-    """Extract usable factual clauses from noisy aggregator/RSS summary text."""
+    """Extract same-event factual clauses from noisy aggregator/RSS summary text."""
     text = _normalize(summary)
     if not text:
         return []
-    text = text.replace(title, " ").replace(source, " ")
-    # Aggregated snippets frequently concatenate independent headlines. Prefer a
-    # bounded first clause and reject fragments containing relay-domain markers.
-    pieces = re.split(r"\s{2,}|\s+[|/]\s+|(?<=[.!?])\s+|\s+(?=\[[^\]]{1,30}\])", text)
+
+    # Keep the original text for event-overlap testing; removing the entire title
+    # can erase the only anchor and expose an unrelated concatenated headline.
+    pieces = re.split(
+        r"\s{2,}|\s+[|/]\s+|(?<=[.!?])\s+|\s+(?=\[[^\]]{1,30}\])",
+        text,
+    )
     candidates: List[str] = []
     for piece in pieces:
         piece = _normalize(re.sub(r"\[[^\]]{1,30}\]", " ", piece))
+        if not piece:
+            continue
+        # Remove exact leading title/source repetition only after segmentation.
+        if piece.startswith(title):
+            piece = _normalize(piece[len(title):])
+        if piece.startswith(source):
+            piece = _normalize(piece[len(source):])
         if len(piece) < 12 or _looks_like_noise(piece, title, source):
             continue
-        # A relay/domain marker anywhere makes the whole fragment unsafe as Fact.
-        if any(domain in piece.lower() for domain in _NOISE_DOMAINS):
+        low = piece.lower()
+        if any(domain in low for domain in _NOISE_DOMAINS):
+            continue
+        # Multiple publisher markers strongly indicate a concatenated result list.
+        publisher_hits = sum(1 for marker in _PUBLISHER_MARKERS if marker.lower() in low)
+        if publisher_hits >= 2:
+            continue
+        if not _same_event_clause(piece, title):
             continue
         candidates.append(piece[:240].rstrip(" ,;"))
     return candidates
@@ -71,9 +115,7 @@ def _fact_text(raw: Dict[str, Any]) -> str:
         if clause.endswith(("다", "요", ".", "!", "?")):
             return f"{source} 보도에 따르면, {clause}"
         return f"{source} 보도에 따르면, {clause}로 전해졌습니다."
-    # The headline itself is selected-source evidence. Do not invent facts that
-    # are absent from the available source payload.
-    return f"{source}는 ‘{title}’라고 보도했습니다. 세부 수치는 원문과 추가 근거에서 확인해야 합니다."
+    return f"{source}는 ‘{title}’라고 보도했습니다. 세부 내용은 원문과 추가 근거에서 확인해야 합니다."
 
 
 def _event_focus(title: str, keywords: List[str]) -> str:
@@ -83,13 +125,27 @@ def _event_focus(title: str, keywords: List[str]) -> str:
     return "·".join(keywords[:2]) or "해당 사안"
 
 
+def _clean_keywords(title: str, summary: str, chapter_id: str) -> List[str]:
+    """Prefer title-derived keywords so noisy summaries cannot dominate Why text."""
+    title_keywords = extract_keywords(title, "", chapter_id)
+    useful = [k for k in title_keywords if k not in {"산업전망", "시장동향", "정책분석"}]
+    if len(useful) >= 3:
+        return useful[:4]
+    combined = extract_keywords(title, summary, chapter_id)
+    merged: List[str] = []
+    for word in [*useful, *combined]:
+        if word not in merged:
+            merged.append(word)
+    return merged[:4]
+
+
 def build_editorial_for_article_v2(raw: Dict[str, Any]) -> EditorialContent:
     chapter_id = raw.get("chapter_id", "top-headlines")
     title = _normalize(raw.get("title", ""))
     source = _normalize(raw.get("source", "")) or "주요 언론"
     summary = _normalize(raw.get("summary_raw", ""))
     insight = CHAPTER_INSIGHTS.get(chapter_id, CHAPTER_INSIGHTS["top-headlines"])
-    keywords = extract_keywords(title, summary, chapter_id)
+    keywords = _clean_keywords(title, summary, chapter_id)
     focus = _event_focus(title, keywords)
 
     fact = _fact_text(raw)
@@ -97,17 +153,20 @@ def build_editorial_for_article_v2(raw: Dict[str, Any]) -> EditorialContent:
         f"‘{focus}’ 이슈는 {insight['bg']} "
         f"현재 {_source_with_particle(source)}의 보도를 통해 구체적인 전개가 확인되고 있습니다."
     )
+    focus_terms = ", ".join(keywords[:3]) or focus[:35]
     why = (
-        f"이 사안의 핵심은 {', '.join(keywords[:3])}의 변화가 후속 정책·산업 의사결정에 미칠 영향입니다. "
+        f"이 사안은 {focus_terms}와 직접 연결돼 있어 후속 정책·산업 판단에 영향을 줄 수 있습니다. "
         f"{insight['why']}"
     )
 
     fact_check = raw.get("fact_check") or {}
     evidence_urls = fact_check.get("evidence_urls") or []
-    evidence_domains = []
+    evidence_domains: List[str] = []
     for url in evidence_urls:
         domain = urlparse(url).netloc.lower().removeprefix("www.")
-        if domain and domain not in evidence_domains:
+        if not domain or any(noise == domain or domain.endswith("." + noise) for noise in _NOISE_DOMAINS):
+            continue
+        if domain not in evidence_domains:
             evidence_domains.append(domain)
     evidence_checkpoint = (
         f"독립 근거 도메인({', '.join(evidence_domains[:3])})의 후속 보도 일치 여부"
@@ -134,7 +193,7 @@ def process_all_editorials(snapshot_articles: List[Dict[str, Any]]) -> List[Arti
     final_articles: List[Article] = []
     for idx, art in enumerate(snapshot_articles, 1):
         editorial = build_editorial_for_article_v2(art)
-        keywords = extract_keywords(art["title"], art.get("summary_raw", ""), art["chapter_id"])
+        keywords = _clean_keywords(art["title"], art.get("summary_raw", ""), art["chapter_id"])
         final_articles.append(Article(
             id=art["id"], chapter_id=art["chapter_id"], chapter_name=art["chapter_name"],
             title=art["title"], link=art["link"], source=art["source"],
