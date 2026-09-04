@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pipeline.content_quality import chapter_relevance
+from pipeline.content_quality import chapter_relevance, independent_evidence_urls, title_event_similarity
 from pipeline.fact_verifier import evaluate_article_fact_check
 
 
@@ -99,3 +99,31 @@ def test_official_source_keeps_official_status_without_secondary_source():
     }
     result = evaluate_article_fact_check(art)
     assert result["status"] == "VERIFIED_OFFICIAL"
+
+
+def test_same_event_title_matching_requires_informative_overlap():
+    result = title_event_similarity(
+        "7월 경상수지 421억달러 흑자…반도체 호황에 역대 최대",
+        "반도체 수출 호조에 7월 경상수지 역대 최대 흑자",
+    )
+    assert result["passed"] is True
+    assert len(result["shared"]) >= 2
+
+
+def test_generic_market_words_do_not_create_false_corroboration():
+    result = title_event_similarity(
+        "미 국채 금리 진정에 기술주 반등…코스피 상승 출발",
+        "게임 신작 출시 기대감에 관련주 강세…시장 관심 확대",
+    )
+    assert result["passed"] is False
+
+
+def test_primary_article_counts_as_one_evidence_domain():
+    art = {
+        "link": "https://example.com/story/1",
+        "corroborating_urls": ["https://example.net/story/2"],
+    }
+    assert independent_evidence_urls(art) == [
+        "https://example.com/story/1",
+        "https://example.net/story/2",
+    ]
