@@ -10,6 +10,7 @@ import html
 import json
 import re
 import sys
+import time
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -22,6 +23,8 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT = Path(__file__).resolve().parents[1]
 POLICY_PATH = ROOT / "config" / "youtube-signals.json"
 REQUEST_TIMEOUT = 5
+RSS_RETRY_COUNT = 2
+RSS_RETRY_BACKOFF_SECONDS = 1.0
 
 
 def clean_text(text: str) -> str:
@@ -47,6 +50,44 @@ def _entry_datetime(entry) -> dt.datetime | None:
     return None
 
 
+def _feed_urls(channel_id: str) -> List[str]:
+    """Return official YouTube RSS variants for the same verified channel.
+
+    YouTube's channel_id feed has shown intermittent 404/500 failures. The
+    uploads playlist is the canonical per-channel uploads playlist obtained by
+    replacing the leading ``UC`` with ``UU`` and provides the same official
+    source without relaxing source provenance.
+    """
+    urls = [f"https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}"]
+    if channel_id.startswith("UC") and len(channel_id) > 2:
+        uploads_playlist_id = "UU" + channel_id[2:]
+        urls.append(
+            f"https://www.youtube.com/feeds/videos.xml?playlist_id={uploads_playlist_id}"
+        )
+    return urls
+
+
+def _fetch_channel_feed(session: requests.Session, channel_id: str) -> bytes:
+    """Fetch an official channel feed with bounded retry and uploads fallback."""
+    errors: List[str] = []
+    for feed_url in _feed_urls(channel_id):
+        for attempt in range(1, RSS_RETRY_COUNT + 1):
+            try:
+                response = session.get(feed_url, timeout=REQUEST_TIMEOUT)
+                response.raise_for_status()
+                if not response.content:
+                    raise ValueError("empty RSS response")
+                return response.content
+            except Exception as exc:
+                errors.append(
+                    f"{feed_url} attempt={attempt}/{RSS_RETRY_COUNT}: "
+                    f"{type(exc).__name__}: {exc}"
+                )
+                if attempt < RSS_RETRY_COUNT:
+                    time.sleep(RSS_RETRY_BACKOFF_SECONDS * attempt)
+    raise RuntimeError(" | ".join(errors))
+
+
 def collect_youtube_hot_issues(limit_per_channel: int | None = None) -> List[Dict[str, Any]]:
     """정책에 등록된 공식 채널에서 최신 영상을 수집하고 diversity/freshness를 적용한다."""
     policy = load_policy()
@@ -62,14 +103,15 @@ def collect_youtube_hot_issues(limit_per_channel: int | None = None) -> List[Dic
     candidates: List[Dict[str, Any]] = []
 
     session = requests.Session()
-    session.headers.update({"User-Agent": "BLUELAB-Morning-Intelligence/1.0"})
+    session.headers.update({
+        "User-Agent": "Mozilla/5.0 (compatible; BLUELAB-Morning-Intelligence/1.0; +https://github.com/zalsala/BLUELAB-Morning-Intelligence)",
+        "Accept": "application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8",
+    })
 
     for ch in channels:
-        feed_url = f"https://www.youtube.com/feeds/videos.xml?channel_id={ch['channel_id']}"
         try:
-            response = session.get(feed_url, timeout=REQUEST_TIMEOUT)
-            response.raise_for_status()
-            feed = feedparser.parse(response.content)
+            feed_content = _fetch_channel_feed(session, ch["channel_id"])
+            feed = feedparser.parse(feed_content)
             accepted = 0
             for entry in feed.entries:
                 if accepted >= per_channel:
