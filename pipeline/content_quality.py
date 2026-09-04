@@ -4,6 +4,8 @@ P0 policy:
 - Chapter relevance is title-first. Summary text is only supporting evidence.
 - Generic discovery snippets must not outweigh a clearly off-topic title.
 - VERIFIED_MULTI_SOURCE requires >=2 independent evidence domains.
+- Corroboration matching is conservative: shared informative title terms are
+  required before another article may be treated as evidence for the same event.
 """
 from __future__ import annotations
 
@@ -65,6 +67,12 @@ CHAPTER_RELEVANCE = {
         "positive": ["우주", "위성", "로켓", "누리호", "달탐사", "핵융합", "양자", "신소재", "과학", "연구", "천문", "물리", "생명과학", "연구진"],
         "negative": ["수입차 판매", "개인정보 유출", "아파트", "DLC", "아이돌"],
     },
+}
+
+EVENT_STOPWORDS = {
+    "속보", "종합", "단독", "오늘", "내일", "관련", "대한", "통해", "위해", "발표", "공개",
+    "기자", "뉴스", "한국", "국내", "글로벌", "주요", "최근", "정부", "시장", "업계", "이번",
+    "첫", "또", "전망", "논란", "확인", "결과", "가능", "이유", "이후", "현재",
 }
 
 
@@ -138,9 +146,46 @@ def chapter_relevance(article: Dict[str, Any], chapter_id: str) -> Dict[str, Any
     }
 
 
+def informative_title_tokens(title: str) -> Set[str]:
+    """Extract conservative event-matching tokens from a news headline."""
+    words = re.findall(r"[가-힣A-Za-z0-9]{2,}", title or "")
+    return {
+        w.lower()
+        for w in words
+        if w.lower() not in {x.lower() for x in EVENT_STOPWORDS} and not w.isdigit()
+    }
+
+
+def title_event_similarity(title_a: str, title_b: str) -> Dict[str, Any]:
+    """Conservatively decide whether two headlines likely describe the same event.
+
+    A match requires at least two shared informative tokens and either a Jaccard
+    score >=0.25 or an overlap coefficient >=0.50. This intentionally favors
+    false negatives over false corroboration.
+    """
+    a = informative_title_tokens(title_a)
+    b = informative_title_tokens(title_b)
+    if not a or not b:
+        return {"passed": False, "shared": [], "jaccard": 0.0, "overlap": 0.0}
+    shared = a & b
+    jaccard = len(shared) / len(a | b)
+    overlap = len(shared) / min(len(a), len(b))
+    passed = len(shared) >= 2 and (jaccard >= 0.25 or overlap >= 0.50)
+    return {
+        "passed": passed,
+        "shared": sorted(shared),
+        "jaccard": round(jaccard, 3),
+        "overlap": round(overlap, 3),
+    }
+
+
 def independent_evidence_urls(article: Dict[str, Any]) -> List[str]:
-    """Return unique http(s) evidence URLs supplied by verification stages."""
+    """Return one evidence URL per independent domain, including the source article."""
     raw: List[str] = []
+    primary = article.get("link")
+    if isinstance(primary, str) and primary.strip():
+        raw.append(primary)
+
     for key in ("verification_evidence", "corroborating_urls", "evidence_urls"):
         value = article.get(key)
         if isinstance(value, str):
