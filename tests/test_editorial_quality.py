@@ -112,6 +112,17 @@ def test_headline_echo_with_breaking_tag_and_source_falls_back():
     assert "세부 내용은 원문과 추가 근거에서 확인해야 합니다" in editorial.fact
 
 
+def test_headline_like_same_event_fragment_never_gets_forced_ro_ending():
+    editorial = build_editorial_for_article_v2(_article(
+        chapter_id="top-headlines",
+        title="[속보]이 대통령 지지율 40%, 2%P↓···최저치 경신[한국갤럽]",
+        source="경향신문",
+        summary_raw="이 대통령 지지율 40%, 2%P↓···최저치 경신",
+    ))
+    assert "경신로 전해졌습니다" not in editorial.fact
+    assert "세부 내용은 원문과 추가 근거에서 확인해야 합니다" in editorial.fact
+
+
 def test_checkpoints_reflect_evidence_strength():
     multi = build_editorial_for_article_v2(_article())
     assert "a.example" in multi.checkpoints[1]
