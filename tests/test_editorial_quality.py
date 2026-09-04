@@ -71,6 +71,18 @@ def test_fact_rejects_same_event_multi_publisher_cluster():
     assert "세부 내용은 원문과 추가 근거에서 확인해야 합니다" in editorial.fact
 
 
+def test_fact_rejects_neighboring_sub_event_with_partial_token_overlap():
+    editorial = build_editorial_for_article_v2(_article(
+        chapter_id="global-affairs",
+        title='이란, 쿠웨이트 미군기지 공격…"이란 국민 상대 범죄 대응"',
+        source="MBC 뉴스",
+        summary_raw='불바다 된 이란 “보복작전 명칭은 번개…UAE·바레인 미군 기지 드론 공격”',
+    ))
+    assert "UAE" not in editorial.fact
+    assert "바레인" not in editorial.fact
+    assert "세부 내용은 원문과 추가 근거에서 확인해야 합니다" in editorial.fact
+
+
 def test_aggregator_source_label_is_not_exposed_in_editorial_prose():
     editorial = build_editorial_for_article_v2(_article(
         source="v.daum.net",
