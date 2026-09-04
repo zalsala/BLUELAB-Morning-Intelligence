@@ -16,24 +16,35 @@ from pipeline.fetch_and_filter import fetch_chapter_candidates, fetch_rss_feed
 from pipeline import snapshot_arbiter as base
 
 
-FRESHNESS_RESCUE_QUERIES = {
+EXTRA_FRESHNESS_QUERIES = {
     "realestate-construction": [
-        "서울 아파트 when:3d",
-        "수도권 아파트 when:3d",
-        "부동산 정책 when:3d",
-        "주택 공급 when:3d",
-        "재건축 재개발 when:3d",
-        "아파트 분양 청약 when:3d",
-        "부동산 PF 건설 when:3d",
-        "국토교통부 주택 when:3d",
+        "서울 아파트", "수도권 아파트", "부동산 정책", "주택 공급",
+        "재건축 재개발", "아파트 분양 청약", "부동산 PF 건설", "국토교통부 주택",
     ]
 }
 
 
+def _freshness_queries(chapter: Dict[str, Any]) -> List[str]:
+    # Reuse the canonical chapter queries, but force Google's freshness window.
+    # Extra queries only broaden topical coverage; the downstream 3-day gate,
+    # publisher cap and exact-URL gate remain unchanged.
+    base_queries = list(chapter.get("queries", []))
+    base_queries.extend(EXTRA_FRESHNESS_QUERIES.get(chapter["id"], []))
+    seen = set()
+    out = []
+    for q in base_queries:
+        q = (q or "").strip()
+        if not q:
+            continue
+        fresh_q = q if "when:" in q else f"{q} when:3d"
+        if fresh_q not in seen:
+            seen.add(fresh_q)
+            out.append(fresh_q)
+    return out
+
+
 def _freshness_rescue(chapter: Dict[str, Any]) -> List[Dict[str, Any]]:
-    queries = FRESHNESS_RESCUE_QUERIES.get(chapter["id"], [])
-    if not queries:
-        return []
+    queries = _freshness_queries(chapter)
     out: List[Dict[str, Any]] = []
     seen = set()
     for query in queries:
