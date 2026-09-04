@@ -14,7 +14,7 @@ if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 from pipeline.fetch_and_filter import fetch_all_chapters_raw
-from pipeline.snapshot_arbiter import arbitrate_and_lock_snapshot
+from pipeline.scarcity_snapshot_arbiter import arbitrate_and_lock_snapshot
 from pipeline.editorial_builder import process_all_editorials
 from pipeline.bundle_assembler import assemble_bundle, save_bundle_to_json
 from pipeline.google_trends_collector import collect_google_trends_kr
