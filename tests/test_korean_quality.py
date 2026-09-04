@@ -3,6 +3,7 @@ from types import SimpleNamespace
 from pipeline.korean_quality import (
     polish_bundle_summary,
     polish_editorial_articles,
+    polish_fact_text,
     polish_summary_line,
     polish_why_text,
     validate_korean_quality,
@@ -37,9 +38,16 @@ def test_why_regression_uses_particle_neutral_wording():
     assert "초청와" not in fixed
 
 
+def test_fact_quoted_headline_uses_ra_neun_reporting_form():
+    text = "연합뉴스 보도에 따르면, ‘원/달러 환율 3거래일 연속 하락’이라는 내용이 전해졌습니다."
+    fixed = polish_fact_text(text)
+    assert "’라는 내용이 전해졌습니다" in fixed
+    assert "’이라는 내용이 전해졌습니다" not in fixed
+
+
 def test_bundle_quality_gate_passes_after_polish():
     editorial = SimpleNamespace(
-        fact="원문 매체는 사실을 보도했습니다.",
+        fact="원문 매체 보도에 따르면, ‘테스트 제목’이라는 내용이 전해졌습니다.",
         background="배경 설명입니다.",
         why_it_matters="이 사안은 대통령, 시민사회, 초청와 직접 연결돼 있어 후속 판단에 영향을 줄 수 있습니다.",
         checkpoints=["공식 발표 확인"],
@@ -60,23 +68,30 @@ def test_bundle_quality_gate_passes_after_polish():
 
     assert "최대'를 비롯한" in bundle.three_line_summary[1]
     assert "초청에 직접" in article.editorial.why_it_matters
+    assert "’라는 내용이 전해졌습니다" in article.editorial.fact
 
 
 def test_quality_gate_rejects_ambiguous_placeholder():
     editorial = SimpleNamespace(
-        fact="한국경제을(를) 확인했습니다.",
-        background="배경",
-        why_it_matters="중요성",
-        checkpoints=[],
+        fact="한국경제을(를) 확인했습니다.", background="배경", why_it_matters="중요성", checkpoints=[],
     )
-    bundle = SimpleNamespace(
-        three_line_summary=["a", "b", "c"],
-        chapters=[SimpleNamespace(articles=[SimpleNamespace(editorial=editorial)])],
-    )
-
+    bundle = SimpleNamespace(three_line_summary=["a", "b", "c"], chapters=[SimpleNamespace(articles=[SimpleNamespace(editorial=editorial)])])
     try:
         validate_korean_quality(bundle)
     except ValueError as exc:
         assert "ambiguous particle placeholder" in str(exc)
+    else:
+        raise AssertionError("quality gate must fail closed")
+
+
+def test_quality_gate_rejects_unpolished_quoted_reporting_particle():
+    editorial = SimpleNamespace(
+        fact="연합뉴스 보도에 따르면, ‘테스트’이라는 내용이 전해졌습니다.", background="배경", why_it_matters="중요성", checkpoints=[],
+    )
+    bundle = SimpleNamespace(three_line_summary=["a", "b", "c"], chapters=[SimpleNamespace(articles=[SimpleNamespace(editorial=editorial)])])
+    try:
+        validate_korean_quality(bundle)
+    except ValueError as exc:
+        assert "quoted-headline reporting" in str(exc)
     else:
         raise AssertionError("quality gate must fail closed")
