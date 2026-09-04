@@ -1,12 +1,12 @@
 from datetime import datetime, timezone
 
 from pipeline.schema import Article, EditorialContent
-from pipeline.top5_ranker import score_top5_candidate, select_top5_v2
+from pipeline.top5_ranker import is_top5_eligible, score_top5_candidate, select_top5_v2
 
 
-def _article(id_, chapter, score=10.0, status="PARTIAL", body="NO_QUALIFIED_BODY", published="Fri, 04 Sep 2026 09:00:00 GMT"):
+def _article(id_, chapter, score=10.0, status="PARTIAL", body="NO_QUALIFIED_BODY", published="Fri, 04 Sep 2026 09:00:00 GMT", title=None):
     return Article(
-        id=id_, chapter_id=chapter, chapter_name=chapter, title=f"기사 {id_}",
+        id=id_, chapter_id=chapter, chapter_name=chapter, title=title or f"기사 {id_}",
         link=f"https://example.com/{id_}", source="테스트", published_at=published,
         summary_raw="", editorial=EditorialContent("f","b","w",["c"]),
         importance_score=score,
@@ -49,3 +49,24 @@ def test_partial_article_can_remain_eligible_but_is_penalized():
     high_partial=_article("partial","macro-finance",20,"PARTIAL","NO_QUALIFIED_BODY")
     lower_verified=_article("verified","global-affairs",10,"VERIFIED_MULTI_SOURCE","VALIDATED")
     assert score_top5_candidate(high_partial,now)[0] > score_top5_candidate(lower_verified,now)[0]
+
+
+def test_explicit_editorial_and_column_labels_are_not_top5_eligible():
+    labels = ["[사설] 정책 평가", "[칼럼] 시장 전망", "기고: 규제 제언", "오피니언: 오늘의 시각"]
+    for idx, title in enumerate(labels):
+        assert not is_top5_eligible(_article(f"op{idx}", "top-headlines", 20, "VERIFIED_MULTI_SOURCE", "VALIDATED", title=title))
+
+
+def test_opinion_article_cannot_displace_factual_news_in_top5():
+    arts = [
+        _article("editorial", "top-headlines", 30, "VERIFIED_MULTI_SOURCE", "VALIDATED", title="[사설] 대통령 인사 비판"),
+        _article("news1", "top-headlines", 14, "VERIFIED_MULTI_SOURCE", "VALIDATED", title="정부, 새 정책 일정 발표"),
+        _article("news2", "macro-finance", 13, "VERIFIED_MULTI_SOURCE", "VALIDATED"),
+        _article("news3", "global-affairs", 12, "VERIFIED_MULTI_SOURCE", "VALIDATED"),
+        _article("news4", "politics-policy", 11, "VERIFIED_MULTI_SOURCE", "VALIDATED"),
+        _article("news5", "ai-deeptech", 10, "VERIFIED_PRIMARY", "VALIDATED"),
+    ]
+    selected=select_top5_v2(arts,datetime(2026,9,4,10,0,0,tzinfo=timezone.utc))
+    ids={a.id for a in selected}
+    assert "editorial" not in ids
+    assert ids == {"news1","news2","news3","news4","news5"}
