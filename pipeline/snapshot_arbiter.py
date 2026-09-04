@@ -103,7 +103,8 @@ def _fresh_articles(raw_articles: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     return [a for a in raw_articles if (age := article_age_days(a, now)) is not None and -0.25 <= age <= MAX_AGE_DAYS]
 
 
-def deduplicate_and_rank_chapter(raw_articles: List[Dict[str, Any]], global_seen_titles: Set[str], target_count: int = 10) -> List[Dict[str, Any]]:
+def deduplicate_and_rank_chapter(raw_articles: List[Dict[str, Any]], prior_global_titles: Set[str], target_count: int = 10) -> List[Dict[str, Any]]:
+    """선별 중에는 global state를 절대 변경하지 않는다. 완전한 10건 승인 후 caller가 commit한다."""
     ranked=[]
     for art in _fresh_articles(raw_articles):
         item=dict(art)
@@ -115,11 +116,11 @@ def deduplicate_and_rank_chapter(raw_articles: List[Dict[str, Any]], global_seen
     selected=[]; selected_tokens=[]; publisher_counts=Counter()
     for art in ranked:
         title=art["title"]; source=(art.get("source") or "미상").strip(); tokens=art["tokens"]
-        if title in global_seen_titles or publisher_counts[source] >= MAX_PER_PUBLISHER:
+        if title in prior_global_titles or publisher_counts[source] >= MAX_PER_PUBLISHER:
             continue
         if any(calculate_similarity(tokens,s)>=0.45 for s in selected_tokens):
             continue
-        selected.append(art); selected_tokens.append(tokens); publisher_counts[source]+=1; global_seen_titles.add(title)
+        selected.append(art); selected_tokens.append(tokens); publisher_counts[source]+=1
         if len(selected)==target_count:
             break
     if len(selected)==target_count and len(publisher_counts)<MIN_UNIQUE_PUBLISHERS:
@@ -128,8 +129,7 @@ def deduplicate_and_rank_chapter(raw_articles: List[Dict[str, Any]], global_seen
 
 
 def _decode_one(item: Dict[str, Any]) -> tuple[Dict[str, Any], str | None]:
-    out=dict(item)
-    link=out.get("link","")
+    out=dict(item); link=out.get("link","")
     if urlparse(link).netloc.lower() != "news.google.com":
         return out, None
     try:
@@ -137,8 +137,7 @@ def _decode_one(item: Dict[str, Any]) -> tuple[Dict[str, Any], str | None]:
         decoded=(result or {}).get("decoded_url") if (result or {}).get("status") else None
         if not decoded or urlparse(decoded).netloc.lower().endswith("news.google.com"):
             return out, (result or {}).get("message") or "decoder returned no exact URL"
-        out["discovery_link"]=link
-        out["link"]=decoded
+        out["discovery_link"]=link; out["link"]=decoded
         return out, None
     except Exception as exc:
         return out, f"{type(exc).__name__}: {exc}"
@@ -149,15 +148,11 @@ def resolve_exact_links(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     with ThreadPoolExecutor(max_workers=DECODE_WORKERS) as pool:
         futures={pool.submit(_decode_one,item):i for i,item in enumerate(items)}
         for future in as_completed(futures):
-            i=futures[future]
-            item,error=future.result()
-            resolved[i]=item
-            if error:
-                errors.append((item.get("chapter_name"),item.get("title"),error))
+            i=futures[future]; item,error=future.result(); resolved[i]=item
+            if error: errors.append((item.get("chapter_name"),item.get("title"),error))
     if errors:
         print(f" [Exact URL] FAIL unresolved={len(errors)}")
-        for chapter,title,error in errors[:10]:
-            print(f"   - [{chapter}] {title}: {error}")
+        for chapter,title,error in errors[:10]: print(f"   - [{chapter}] {title}: {error}")
         raise ValueError(f"Google News discovery URL {len(errors)}건을 exact article URL로 승격하지 못했습니다")
     print(f" [Exact URL] PASS resolved={sum(1 for x in resolved if x.get('discovery_link'))} / total={len(resolved)}")
     return resolved
@@ -177,11 +172,11 @@ def arbitrate_and_lock_snapshot(raw_data: Dict[str,List[Dict[str,Any]]], target_
             retry_count+=1
             print(f"    └─ [{c_name}] 최신·다양성 후보 보충 #{retry_count}...")
             raw_list.extend(fetch_chapter_candidates(chapter))
-            global_seen_titles={x["title"] for x in final_snapshot}
             selected=deduplicate_and_rank_chapter(raw_list,global_seen_titles,target_per_chapter)
         if len(selected)!=target_per_chapter:
             raise ValueError(f"{c_name}: freshness/diversity 기준을 만족하는 기사 10개 확보 실패 ({len(selected)}개)")
         pubs=Counter((a.get("source") or "미상").strip() for a in selected)
+        global_seen_titles.update(a["title"] for a in selected)
         for art in selected:
             art["chapter_id"]=c_id; art["chapter_name"]=c_name; art.pop("tokens",None)
             final_snapshot.append(art)
@@ -198,6 +193,5 @@ def arbitrate_and_lock_snapshot(raw_data: Dict[str,List[Dict[str,Any]]], target_
             raise ValueError(f"exact URL cross-chapter duplicate: {art['link']}")
         seen_urls.add(art["link"])
         art["id"]=calculate_article_hash(art["chapter_id"],art["title"],art["link"])
-
     print(f" [Step 2 완료] {len(final_snapshot)}/{expected}건 freshness/diversity/exact-url 잠금 PASS")
     return final_snapshot
