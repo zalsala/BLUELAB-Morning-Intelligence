@@ -4,11 +4,11 @@
   "edition_date": "2026-09-05",
   "timezone": "Asia/Seoul",
   "source_main_sha": "44d568f03028ce4b35deda7660f69deeb92d3e70",
-  "release_sha": "cb74aaf8e343ed9b77cb325a5fd5f7f249e62369",
+  "release_sha": "651aa1785fead6caf73631a07f1b397020ca14b1",
   "fingerprints": {
-    "snapshot_fingerprint_sha256": "3fab1cb475fb31cc553f3afbc6f32277c8d881d049418dc0ba4ad66d9702f9d5",
-    "editorial_fingerprint_sha256": "a29827950438bc0f337336db41e87bb4d2c498a0aa9bd40309e6024751734a42",
-    "production_fingerprint_sha256": "db4ca24cd1b72d9bc7c8f4b51e079708ba01c3c4e5de7463656f17cbadf2cc6f"
+    "snapshot_fingerprint_sha256": "6abeadb382b5f1ca01f26a32f8044fa8e2f501a257bfb10132812baab17cc93a",
+    "editorial_fingerprint_sha256": "459bef4861da20ff372a70d8de3d97f4a36f32ab8f35b597336f473ebc48c76e",
+    "production_fingerprint_sha256": "464fd1ea23738e5c9b0dfc25334e92ee59fe29361be733bc897b8b158be7f462"
   },
   "content_counts": {
     "total_chapters": 14,
@@ -28,6 +28,6 @@
     "EXACT_URL_GATE": "PASS"
   },
   "canonical_status": "CANONICAL_PASS",
-  "created_at": "2026-09-05T00:45:18.894863+09:00",
-  "manifest_sha256": "70acc9504f1ba21f07280909c1f3d4d78962440e3d791f205a74e6b0e204fca4"
+  "created_at": "2026-09-05T00:53:35.654523+09:00",
+  "manifest_sha256": "43f796cf35d6920ef08a531886708ce9dfc4e29b546f7efb7902f2edf5dd7607"
 }
