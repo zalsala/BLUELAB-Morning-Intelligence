@@ -13,11 +13,15 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from pipeline.schema import FACT_CHECK_STATES
+from pipeline.top5_ranker import is_top5_title_eligible
 
 EXPECTED_CHAPTER_COUNT = 14
 EXPECTED_ARTICLES_PER_CHAPTER = 10
 EXPECTED_TOTAL_ARTICLES = 140
 EXPECTED_TOP5_COUNT = 5
+ALLOWED_BODY_VALIDATION_STATES = {
+    "VALIDATED", "EVENT_MISMATCH", "NO_QUALIFIED_BODY", "HTTP_403", "HTTP_404", "TIMEOUT"
+}
 
 
 def run_qa_gate(json_path: str = "public/data/today.json") -> bool:
@@ -58,11 +62,15 @@ def run_qa_gate(json_path: str = "public/data/today.json") -> bool:
         if len(values) != len(set(values)):
             failures.append(f"duplicate article {label}")
 
+    article_ids = set(ids)
+    article_urls = set(urls)
+
     # Exact Article URL Gate
     google_news_relay = [u for u in urls if urlparse(u).netloc.lower().endswith("news.google.com")]
     if google_news_relay:
         failures.append(f"exact article URL gate: {len(google_news_relay)} Google News relay URLs remain")
 
+    verified_image_hashes = []
     for art in all_articles:
         ed = art.get("editorial", {})
         if len((ed.get("fact") or "").strip()) < 10:
@@ -74,7 +82,7 @@ def run_qa_gate(json_path: str = "public/data/today.json") -> bool:
         if len(ed.get("checkpoints") or []) < 2:
             failures.append(f"editorial checkpoints incomplete: {art.get('title','')[:30]}")
 
-        # Fact Check Gate
+        # Fact Check + Article Body Validation Gate
         fc = art.get("fact_check")
         if not fc or not isinstance(fc, dict):
             failures.append(f"missing fact_check data: {art.get('title','')[:30]}")
@@ -82,6 +90,13 @@ def run_qa_gate(json_path: str = "public/data/today.json") -> bool:
             fc_status = fc.get("status")
             if fc_status not in FACT_CHECK_STATES:
                 failures.append(f"invalid fact_check status {fc_status!r}: {art.get('title','')[:30]}")
+            body_validation = fc.get("body_validation")
+            if not isinstance(body_validation, dict):
+                failures.append(f"missing body_validation data: {art.get('title','')[:30]}")
+            else:
+                body_status = body_validation.get("status")
+                if body_status not in ALLOWED_BODY_VALIDATION_STATES:
+                    failures.append(f"invalid body_validation status {body_status!r}: {art.get('title','')[:30]}")
 
         # Image Provenance Gate
         img = art.get("image")
@@ -93,8 +108,20 @@ def run_qa_gate(json_path: str = "public/data/today.json") -> bool:
                 failures.append(f"invalid image provenance status {img_status!r}: {art.get('title','')[:30]}")
             if img_status == "EXPLICIT_NULL" and img.get("url") is not None:
                 failures.append(f"EXPLICIT_NULL must have url=None: {art.get('title','')[:30]}")
-            if img_status == "VERIFIED_PROVENANCE" and not img.get("url"):
-                failures.append(f"VERIFIED_PROVENANCE missing url: {art.get('title','')[:30]}")
+            if img_status == "VERIFIED_PROVENANCE":
+                if not img.get("url"):
+                    failures.append(f"VERIFIED_PROVENANCE missing url: {art.get('title','')[:30]}")
+                if not img.get("content_hash"):
+                    failures.append(f"VERIFIED_PROVENANCE missing content_hash: {art.get('title','')[:30]}")
+                else:
+                    verified_image_hashes.append(img.get("content_hash"))
+                if not img.get("declaration_method"):
+                    failures.append(f"VERIFIED_PROVENANCE missing declaration_method: {art.get('title','')[:30]}")
+                if not img.get("source_domain") or not img.get("article_domain"):
+                    failures.append(f"VERIFIED_PROVENANCE missing domain provenance: {art.get('title','')[:30]}")
+
+    if len(verified_image_hashes) != len(set(verified_image_hashes)):
+        failures.append("duplicate VERIFIED_PROVENANCE image content_hash remains")
 
     weather = data.get("weather") or {}
     if "인천 서구 검단" not in weather.get("location", "") or "temp_current" not in weather:
@@ -103,10 +130,23 @@ def run_qa_gate(json_path: str = "public/data/today.json") -> bool:
     top5 = data.get("top_5_highlights", [])
     if len(top5) != EXPECTED_TOP5_COUNT:
         failures.append("TOP5 must contain exactly 5 items")
+    top5_ids = [a.get("id", "") for a in top5]
     top5_urls = [a.get("link", "") for a in top5]
+    if any(not x for x in top5_ids) or len(top5_ids) != len(set(top5_ids)):
+        failures.append("TOP5 ids must be present and unique")
+    if any(article_id not in article_ids for article_id in top5_ids):
+        failures.append("TOP5 contains item not present in canonical 140-article snapshot")
+    if any(url not in article_urls for url in top5_urls):
+        failures.append("TOP5 contains URL not present in canonical 140-article snapshot")
     top5_google_news = [u for u in top5_urls if urlparse(u).netloc.lower().endswith("news.google.com")]
     if top5_google_news:
         failures.append(f"TOP5 exact URL gate: {len(top5_google_news)} Google News relay URLs in TOP5")
+    ineligible_top5 = [a.get("title", "") for a in top5 if not is_top5_title_eligible(a.get("title", ""))]
+    if ineligible_top5:
+        failures.append(f"TOP5 factual-news gate: {len(ineligible_top5)} opinion/editorial items remain")
+    top5_chapters = [a.get("chapter_id", "") for a in top5]
+    if len(top5) == EXPECTED_TOP5_COUNT and len(set(top5_chapters)) != EXPECTED_TOP5_COUNT:
+        failures.append("TOP5 chapter diversity gate: expected 5 distinct chapters")
 
     # Financial Market Block Gate
     market = data.get("market") or {}
