@@ -1,0 +1,74 @@
+name: Mobile Overflow Diagnostic
+
+on:
+  push:
+    branches:
+      - 'remediation/cloudflare-live-qa-20260905'
+    paths:
+      - '.github/workflows/mobile_overflow_diagnostic.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Apply already-tested switcher containment in working tree only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('public/index.html'); s=p.read_text(encoding='utf-8')
+          s=s.replace('''<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-2">\n      <div class="flex items-center gap-2">\n        <button \n          onclick="switchMainView('news')" \n          id="btn-view-news"\n          class="view-tab-active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs"''','''<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex min-w-0 items-center justify-between py-2">\n      <div class="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto no-scrollbar">\n        <button \n          onclick="switchMainView('news')" \n          id="btn-view-news"\n          class="view-tab-active shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs"''',1)
+          s=s.replace('''id="btn-view-youtube"\n          class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2"''','''id="btn-view-youtube"\n          class="shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2"''',1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Serve and diagnose
+        run: |
+          python -m http.server 8765 --directory public >/tmp/http.log 2>&1 &
+          sleep 1
+          cat > .diag.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const browser=await chromium.launch({headless:true});
+          const page=await browser.newPage({viewport:{width:390,height:844}});
+          await page.goto('http://127.0.0.1:8765',{waitUntil:'domcontentloaded'});
+          await page.waitForFunction(()=>document.querySelectorAll('.article-row').length>0,{timeout:60000});
+          const report=await page.evaluate(()=>{
+            const vw=document.documentElement.clientWidth;
+            const clippedByAncestor=(el)=>{
+              let p=el.parentElement;
+              while(p && p!==document.body){
+                const cs=getComputedStyle(p), r=p.getBoundingClientRect();
+                const clips=['hidden','clip','auto','scroll'].includes(cs.overflowX);
+                if(clips && r.left>=-2 && r.right<=vw+2) return true;
+                p=p.parentElement;
+              }
+              return false;
+            };
+            const items=Array.from(document.querySelectorAll('body *')).map(el=>{
+              const r=el.getBoundingClientRect(), cs=getComputedStyle(el);
+              return {tag:el.tagName.toLowerCase(),id:el.id||'',cls:String(el.className||'').slice(0,220),left:Math.round(r.left),right:Math.round(r.right),width:Math.round(r.width),overflowX:cs.overflowX,display:cs.display,position:cs.position,text:(el.textContent||'').trim().replace(/\s+/g,' ').slice(0,100),clipped:clippedByAncestor(el)};
+            }).filter(x=>(x.right>vw+2||x.left<-2)&&!x.clipped)
+              .sort((a,b)=>Math.max(b.right-vw,-b.left)-Math.max(a.right-vw,-a.left)).slice(0,30);
+            return {vw,scrollWidth:document.documentElement.scrollWidth,bodyScrollWidth:document.body.scrollWidth,items};
+          });
+          console.log('UNCLIPPED_OVERFLOW='+JSON.stringify(report));
+          await page.screenshot({path:'mobile-overflow-diagnostic.png',fullPage:false});
+          await browser.close();
+          if(report.scrollWidth>report.vw+2) process.exit(2);
+          JS
+          node .diag.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mobile-overflow-diagnostic
+          path: mobile-overflow-diagnostic.png
+          retention-days: 3
