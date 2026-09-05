@@ -74,6 +74,17 @@ def _valid_resolved_url(url: str) -> bool:
     return bool(host) and host not in DOI_DOMAINS and not any(x in host for x in BAD_DOMAIN_MARKERS)
 
 
+def _resolve_item_source_url(item: dict) -> str:
+    """Prefer publisher URL; if DOI remains unresolved, keep the exact scholarly record URL."""
+    resolved = _resolve_exact_url(_source_candidate_url(item))
+    if _valid_resolved_url(resolved):
+        return resolved
+    scholarly_record = str(item.get("url") or "").strip()
+    if _valid_resolved_url(scholarly_record):
+        return scholarly_record
+    return resolved
+
+
 def _collect(days: int, limit_per_source: int = 3) -> tuple[list[dict], list[dict]]:
     cfg = json.loads(QUERY_FILE.read_text(encoding="utf-8"))
     records: list[dict] = []
@@ -198,7 +209,7 @@ def _article(item: dict, checked_at: str) -> dict:
             "status": "VERIFIED_PRIMARY",
             "evidence_type": "primary",
             "verified_sources": [source_domain] if source_domain else [],
-            "notes": "DOI가 제공되면 실제 출판사 원문으로 해석하고, 그 외에는 학술 데이터베이스·임상시험 등록의 정확한 원문 링크를 사용했습니다. 연구 결과 해석은 원문 전문 확인이 필요합니다.",
+            "notes": "DOI가 제공되면 실제 출판사 원문으로 해석하고, 해석할 수 없으면 검증된 PubMed/Europe PMC 학술 레코드의 정확한 링크를 사용했습니다. 연구 결과 해석은 원문 전문 확인이 필요합니다.",
             "checked_at": checked_at,
             "body_validation": {"status": "NO_QUALIFIED_BODY"},
         },
@@ -241,7 +252,7 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
         resolved_reserve = []
         for item in reserve:
             item = dict(item)
-            item["exact_source_url"] = _resolve_exact_url(_source_candidate_url(item))
+            item["exact_source_url"] = _resolve_item_source_url(item)
             if _valid_resolved_url(item["exact_source_url"]):
                 resolved_reserve.append(item)
 
