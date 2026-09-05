@@ -1,106 +1,157 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, re, sys
-from collections import Counter, defaultdict
+
+import argparse
+import json
+import re
+import sys
+from datetime import datetime
 from pathlib import Path
 from urllib.parse import urlparse
+from zoneinfo import ZoneInfo
 
-ROOT=Path(__file__).resolve().parents[1]
-DATA=ROOT/"public"/"data"
-SOURCE_POLICY=ROOT/"config"/"source-policy.json"
-EXPECTED_FILES=[f"stories-{i}.json" for i in range(1,6)]
-PLACEHOLDER=re.compile(r"(^|\W)(undefined|null|tbd|todo|placeholder)(\W|$)",re.I)
+ROOT = Path(__file__).resolve().parents[1]
+DATA = ROOT / "public" / "data"
+EXPECTED_FILES = [f"stories-{i}.json" for i in range(1, 6)]
+PLACEHOLDER = re.compile(r"(^|\W)(undefined|null|tbd|todo|placeholder)(\W|$)", re.I)
+KST = ZoneInfo("Asia/Seoul")
 
-def fail(errors,msg):
-    errors.append(msg)
 
-def valid_http_url(v):
+def valid_http_url(value: str) -> bool:
     try:
-        u=urlparse(v or "")
-        return u.scheme in {"http","https"} and bool(u.netloc)
+        parsed = urlparse(value or "")
+        return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
     except Exception:
         return False
 
-def load():
-    today=json.loads((DATA/"today.json").read_text(encoding="utf-8"))
-    policy=json.loads(SOURCE_POLICY.read_text(encoding="utf-8"))
-    files=today.get("story_files",[])
-    stories=[]
-    if files==EXPECTED_FILES:
-        for name in files:
-            p=DATA/name
-            if p.exists():
-                chunk=json.loads(p.read_text(encoding="utf-8"))
-                if isinstance(chunk,list): stories.extend(chunk)
-    return today,policy,files,stories
 
-def audit(release=False):
-    today,policy,files,stories=load()
-    errors=[]
-    if files!=EXPECTED_FILES: fail(errors,f"story_files must equal {EXPECTED_FILES}")
-    if len(stories)<5: fail(errors,"story bundles contain fewer than 5 stories")
-    titles=[s.get("title","").strip() for s in stories]
-    if any(not t for t in titles): fail(errors,"one or more stories have blank title")
-    dup=[t for t,n in Counter(titles).items() if t and n>1]
-    if dup: fail(errors,f"duplicate story titles: {dup[:10]}")
-    top5=today.get("top5_titles",[])
-    if len(top5)!=5 or len(set(top5))!=5: fail(errors,"TOP5 must contain exactly five unique titles")
-    missing=[t for t in top5 if t not in set(titles)]
-    if missing: fail(errors,f"TOP5 titles missing from story bundles: {missing}")
-    if today.get("top_issue_title") not in set(titles): fail(errors,"top_issue_title missing from story bundles")
+def audit(release: bool = False, expected_date: str | None = None) -> int:
+    today = json.loads((DATA / "today.json").read_text(encoding="utf-8"))
+    manifest = json.loads((DATA / "publication_manifest.json").read_text(encoding="utf-8"))
+    errors: list[str] = []
 
-    grouped=defaultdict(list)
-    for s in stories: grouped[s.get("section","")].append(s)
-    top5set=set(top5)
-    chapter_counts={}
-    for chapter in policy.get("chapters",{}):
-        rendered=[s for s in grouped.get(chapter,[]) if s.get("title") not in top5set]
-        chapter_counts[chapter]=len(rendered)
-        if len(rendered)<10: fail(errors,f"{chapter}: rendered count {len(rendered)} < 10 after TOP5 exclusion")
+    metadata = today.get("metadata", {})
+    date = metadata.get("date")
+    expected = expected_date or datetime.now(KST).strftime("%Y-%m-%d")
+    if date != expected:
+        errors.append(f"edition date mismatch: {date} != {expected}")
 
-    summary=today.get("final_three_line_summary",[])
-    if not isinstance(summary,list) or len(summary)!=3 or any(not str(x).strip() for x in summary):
-        fail(errors,"final_three_line_summary must contain exactly 3 nonblank lines")
+    chapters = today.get("chapters", [])
+    if len(chapters) != 14:
+        errors.append(f"chapter count={len(chapters)} != 14")
+    articles = []
+    for chapter in chapters:
+        chapter_articles = chapter.get("articles", [])
+        if len(chapter_articles) < 10:
+            errors.append(f"{chapter.get('name')}: rendered items={len(chapter_articles)} < 10")
+        articles.extend(chapter_articles)
+    if len(articles) < 140:
+        errors.append(f"rendered article total={len(articles)} < 140")
+
+    urls = [a.get("link", "") for a in articles]
+    if len(urls) != len(set(urls)):
+        errors.append("cross-chapter duplicate article URLs remain")
+    for idx, url in enumerate(urls, 1):
+        if not valid_http_url(url):
+            errors.append(f"article {idx} missing valid exact URL")
+        elif urlparse(url).netloc.lower().endswith("news.google.com"):
+            errors.append(f"article {idx} still uses Google News relay URL")
+
+    top5 = today.get("top_5_highlights", [])
+    if len(top5) != 5 or len({x.get('id') for x in top5}) != 5:
+        errors.append("TOP5 must contain exactly five unique items")
+
+    story_files = metadata.get("story_files", [])
+    if story_files != EXPECTED_FILES:
+        errors.append(f"metadata.story_files must equal {EXPECTED_FILES}")
+    else:
+        bundled = []
+        for name in story_files:
+            chunk = json.loads((DATA / name).read_text(encoding="utf-8"))
+            if not isinstance(chunk, list):
+                errors.append(f"{name} must contain a JSON list")
+            else:
+                bundled.extend(chunk)
+        if len(bundled) != 140:
+            errors.append(f"story bundle total={len(bundled)} != 140")
+
+    trends = today.get("trending_keywords", [])
+    trends_source = metadata.get("trends_source")
+    if len(trends) == 20:
+        if trends_source != "Google Trends KR official RSS":
+            errors.append("20 Trends entries require official Google Trends KR RSS provenance")
+    elif len(trends) == 0:
+        if trends_source != "WITHHELD_INSUFFICIENT_RELIABLE_TERMS":
+            errors.append("withheld Trends requires explicit insufficiency status")
+    else:
+        errors.append(f"Trends must be exactly 20 reliable entries or 0 withheld; found {len(trends)}")
+
+    weather = today.get("weather") or {}
+    for key in ["location", "temp_current", "temp_min", "temp_max", "condition", "precipitation_prob"]:
+        if weather.get(key) is None or weather.get(key) == "":
+            errors.append(f"weather missing: {key}")
+
+    market = today.get("market") or {}
+    for key in ["kospi", "usd_krw"]:
+        if market.get(key) is None:
+            errors.append(f"market missing: {key}")
+
+    videos = today.get("youtube_hot_issues", [])
+    if len(videos) < 10:
+        errors.append(f"YouTube/Shorts count={len(videos)} < 10")
+    for idx, video in enumerate(videos, 1):
+        url = video.get("url") or video.get("video_url") or video.get("source_url")
+        if not valid_http_url(url):
+            errors.append(f"video {idx} missing valid URL")
+
+    if len(today.get("next_signals", [])) < 3:
+        errors.append("NEXT SIGNALS must contain at least 3 items")
+    if len(today.get("three_line_summary", [])) != 3:
+        errors.append("three_line_summary must contain exactly 3 lines")
+
+    if manifest.get("edition_date") != expected:
+        errors.append(f"manifest edition mismatch: {manifest.get('edition_date')} != {expected}")
+    if manifest.get("canonical_status") != "CANONICAL_PASS":
+        errors.append(f"manifest canonical_status={manifest.get('canonical_status')} != CANONICAL_PASS")
+    manifest_fp = today.get("publication_manifest_fingerprint")
+    if not manifest_fp or manifest_fp != manifest.get("manifest_sha256"):
+        errors.append("today.json publication manifest fingerprint mismatch")
 
     if release:
-        trends=today.get("trends",[])
-        if len(trends)!=20 or [x.get("rank") for x in trends] != list(range(1,21)):
-            fail(errors,"release requires exactly 20 ranked Trends entries")
-        weather=today.get("weather") or {}
-        for key in ["location_label","current_temp","condition","high","low","precip_probability","humidity","wind","alert","life_note","tomorrow_summary","weather_source","weather_updated_at"]:
-            if not str(weather.get(key,"")).strip(): fail(errors,f"weather missing: {key}")
-        metrics=today.get("metrics",[])
-        if not isinstance(metrics,list) or len(metrics)<5: fail(errors,"release requires at least 5 market metrics")
-        videos=today.get("videos",[])
-        if not isinstance(videos,list) or len(videos)<10:
-            fail(errors,f"release requires at least 10 YouTube/Shorts video records; found {len(videos) if isinstance(videos,list) else 0}")
-        else:
-            for i,v in enumerate(videos,1):
-                u=v.get("url") or v.get("video_url") or v.get("source_url")
-                if not valid_http_url(u): fail(errors,f"video {i} missing valid URL")
-        def walk(x,path="today"):
-            if isinstance(x,dict):
-                for k,v in x.items(): walk(v,f"{path}.{k}")
-            elif isinstance(x,list):
-                for i,v in enumerate(x): walk(v,f"{path}[{i}]")
-            elif isinstance(x,str) and PLACEHOLDER.search(x):
-                fail(errors,f"placeholder token in {path}: {x[:80]}")
+        def walk(value, path="today"):
+            if isinstance(value, dict):
+                for key, child in value.items():
+                    walk(child, f"{path}.{key}")
+            elif isinstance(value, list):
+                for idx, child in enumerate(value):
+                    walk(child, f"{path}[{idx}]")
+            elif isinstance(value, str) and PLACEHOLDER.search(value):
+                errors.append(f"placeholder token in {path}: {value[:80]}")
         walk(today)
 
-    mode="RELEASE" if release else "STRUCTURAL"
-    print(f"CONTRACT_{mode} edition={today.get('meta',{}).get('edition','unknown')}")
-    for ch,n in chapter_counts.items(): print(f"  {ch}: {n}")
+    mode = "RELEASE" if release else "STRUCTURAL"
+    print(f"CONTRACT_{mode} edition={date}")
     if errors:
         print("ERRORS:")
-        for e in errors: print("  -",e)
+        for error in errors:
+            print("  -", error)
         return 1
     print(f"PASS: contract {mode.lower()} gate")
     return 0
 
-def main():
-    ap=argparse.ArgumentParser()
-    ap.add_argument("--release",action="store_true")
-    args=ap.parse_args()
-    return audit(args.release)
 
-if __name__=="__main__": sys.exit(main())
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--release", action="store_true")
+    parser.add_argument("--expected-date", default=None)
+    parser.add_argument("--expected-today-kst", action="store_true")
+    args = parser.parse_args()
+    expected = datetime.now(KST).strftime("%Y-%m-%d") if args.expected_today_kst else args.expected_date
+    if args.expected_today_kst and args.expected_date and args.expected_date != expected:
+        print(f"ERROR: explicit expected-date {args.expected_date} conflicts with KST today {expected}")
+        return 2
+    return audit(args.release, expected)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
