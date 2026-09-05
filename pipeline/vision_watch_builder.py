@@ -10,7 +10,6 @@ from __future__ import annotations
 import datetime as dt
 import hashlib
 import json
-from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -53,7 +52,6 @@ def _publication_iso(value: str) -> str:
     text = str(value or "").strip()
     if not text:
         return ""
-    # Preserve the cited publication date without inventing precision.
     if len(text) == 10 and text[4] == "-":
         return text + "T00:00:00+00:00"
     return text
@@ -139,14 +137,17 @@ def _article(item: dict, checked_at: str) -> dict:
 def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
     policy = json.loads(POLICY.read_text(encoding="utf-8"))
     today = dt.date.today()
-    windows = policy.get("expansion_windows_days") or [7, 14, 30]
+    windows = [7, 14, int(policy.get("max_search_window_days", 30))]
     max_share = float(policy.get("max_single_topic_share", 0.4))
+    allowed_kinds = set(policy.get("allowed_kinds") or [])
     last = None
     provider_errors: list[dict] = []
 
     for days in windows:
         candidates, errors = _collect(int(days), limit_per_source=3)
         provider_errors.extend(errors)
+        if allowed_kinds:
+            candidates = [x for x in candidates if (x.get("evidence_type") or "RESEARCH / ISSUE") in allowed_kinds]
         chosen, topic_counts, source_counts, reject_counts, eligible = select(candidates, target, max_share, today)
         last = (days, candidates, chosen, topic_counts, source_counts, reject_counts, eligible)
         if len(chosen) >= target:
@@ -159,7 +160,7 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
         raise RuntimeError(f"VISION RESEARCH WATCH requires exactly {target}; selected={len(chosen)} eligible={eligible} window={days}d")
 
     exact_domains = {_domain(x.get("url", "")) for x in chosen if _domain(x.get("url", ""))}
-    min_domains = int(policy.get("minimum_source_domains", 4))
+    min_domains = int(policy.get("minimum_unique_source_domains", 5))
     if len(exact_domains) < min_domains:
         raise RuntimeError(f"VISION RESEARCH WATCH source diversity failed: domains={len(exact_domains)} < {min_domains}")
 
