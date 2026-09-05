@@ -220,7 +220,7 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
     last_report = None
 
     for days in windows:
-        candidates, errors = _collect(int(days), limit_per_source=4)
+        candidates, errors = _collect(int(days), limit_per_source=12)
         provider_errors.extend(errors)
         if allowed_kinds:
             candidates = [x for x in candidates if (x.get("evidence_type") or "RESEARCH / ISSUE") in allowed_kinds]
