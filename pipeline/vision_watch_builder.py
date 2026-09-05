@@ -5,6 +5,7 @@ import datetime as dt
 import hashlib
 import json
 import urllib.request
+from collections import Counter
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -16,6 +17,7 @@ POLICY = ROOT / "config" / "vision-research-policy.json"
 CHAPTER_ID = "vision-research-watch"
 CHAPTER_NAME = "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리"
 UA = "BLUELAB-Morning-Intelligence/1.0"
+DOI_DOMAINS = {"doi.org", "dx.doi.org"}
 
 CLINICAL_MEANING = {
     "myopia": "근시 진행과 근시관리 전략의 근거를 보완하는 연구입니다. 연령, 개입 방식, 축장·굴절 변화량과 추적기간을 원문에서 함께 확인해야 임상 적용 범위를 판단할 수 있습니다.",
@@ -33,13 +35,13 @@ def _domain(url: str) -> str:
 
 def _resolve_exact_url(url: str) -> str:
     """Resolve DOI identifiers to the publisher article URL when possible."""
-    if _domain(url) not in {"doi.org", "dx.doi.org"}:
+    if _domain(url) not in DOI_DOMAINS:
         return url
     try:
         req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html,application/xhtml+xml"})
         with urllib.request.urlopen(req, timeout=8) as resp:
             final = resp.geturl()
-        if final.startswith(("http://", "https://")) and _domain(final) not in {"doi.org", "dx.doi.org"}:
+        if final.startswith(("http://", "https://")) and _domain(final) not in DOI_DOMAINS:
             return final
     except Exception:
         pass
@@ -78,6 +80,79 @@ def _source_name(item: dict) -> str:
         "crossref": "Crossref / DOI",
         "clinicaltrials": "ClinicalTrials.gov",
     }.get(item.get("collector_source"), item.get("collector_source") or "Scholarly source")
+
+
+def _identity(item: dict) -> str:
+    return str(item.get("doi") or item.get("pmid") or item.get("nct_id") or item.get("url") or item.get("title") or "")
+
+
+def _choose_domain_diverse(pool: list[dict], target: int, min_domains: int, max_topic_share: float) -> list[dict]:
+    """Choose high-scoring records while proving source diversity before publication.
+
+    The old path selected the final ten first and only then resolved DOI links. That
+    made a healthy candidate pool fail whenever those ten happened to collapse onto
+    three registry/publisher domains. We instead resolve a bounded high-quality pool,
+    seed the final set with distinct real endpoints, then fill by score. Quality,
+    topic-share and exact-count gates remain fail-closed.
+    """
+    max_per_topic = max(1, int(target * max_topic_share))
+    ranked = sorted(pool, key=lambda x: (float(x.get("selection_score") or 0), str(x.get("publication_date") or "")), reverse=True)
+    chosen: list[dict] = []
+    chosen_ids: set[str] = set()
+    topic_counts: Counter = Counter()
+    domains: set[str] = set()
+
+    def eligible(item: dict) -> bool:
+        ident = _identity(item)
+        topic = item.get("topic_id") or "unknown"
+        return bool(ident) and ident not in chosen_ids and topic_counts[topic] < max_per_topic
+
+    # First secure the required number of genuinely different resolved endpoints.
+    for item in ranked:
+        if len(domains) >= min_domains or len(chosen) >= target:
+            break
+        if not eligible(item):
+            continue
+        d = _domain(item.get("exact_source_url", ""))
+        if not d or d in DOI_DOMAINS or d in domains:
+            continue
+        chosen.append(item)
+        chosen_ids.add(_identity(item))
+        topic_counts[item.get("topic_id") or "unknown"] += 1
+        domains.add(d)
+
+    if len(domains) < min_domains:
+        return []
+
+    # Preserve topic breadth where possible before ordinary score fill.
+    present_topics = set(topic_counts)
+    for item in ranked:
+        if len(chosen) >= target:
+            break
+        topic = item.get("topic_id") or "unknown"
+        if topic in present_topics or not eligible(item):
+            continue
+        chosen.append(item)
+        chosen_ids.add(_identity(item))
+        topic_counts[topic] += 1
+        present_topics.add(topic)
+        d = _domain(item.get("exact_source_url", ""))
+        if d and d not in DOI_DOMAINS:
+            domains.add(d)
+
+    for item in ranked:
+        if len(chosen) >= target:
+            break
+        if not eligible(item):
+            continue
+        chosen.append(item)
+        chosen_ids.add(_identity(item))
+        topic_counts[item.get("topic_id") or "unknown"] += 1
+        d = _domain(item.get("exact_source_url", ""))
+        if d and d not in DOI_DOMAINS:
+            domains.add(d)
+
+    return chosen if len(chosen) == target and len(domains) >= min_domains else []
 
 
 def _article(item: dict, checked_at: str) -> dict:
@@ -148,37 +223,46 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
     today = dt.date.today()
     windows = [7, 14, int(policy.get("max_search_window_days", 30))]
     max_share = float(policy.get("max_single_topic_share", 0.4))
+    min_domains = int(policy.get("minimum_unique_source_domains", 5))
     allowed_kinds = set(policy.get("allowed_kinds") or [])
-    last = None
     provider_errors: list[dict] = []
+    last_report = None
 
     for days in windows:
         candidates, errors = _collect(int(days), limit_per_source=3)
         provider_errors.extend(errors)
         if allowed_kinds:
             candidates = [x for x in candidates if (x.get("evidence_type") or "RESEARCH / ISSUE") in allowed_kinds]
-        chosen, topic_counts, source_counts, reject_counts, eligible = select(candidates, target, max_share, today)
-        last = (days, candidates, chosen, topic_counts, source_counts, reject_counts, eligible)
-        if len(chosen) >= target:
+
+        # Build a bounded high-quality reserve instead of locking the first ten.
+        # 30 is enough to search diversity without turning DOI resolution into an
+        # unbounded network crawl.
+        reserve_target = max(target * 3, target + min_domains)
+        reserve, _, reserve_sources, reject_counts, eligible = select(candidates, reserve_target, max_share, today)
+        for item in reserve:
+            item["exact_source_url"] = _resolve_exact_url(item.get("url", ""))
+
+        chosen = _choose_domain_diverse(reserve, target, min_domains, max_share)
+        last_report = (days, candidates, reserve, chosen, reserve_sources, reject_counts, eligible)
+        if len(chosen) == target:
             break
 
-    if last is None:
+    if last_report is None:
         raise RuntimeError("vision research acquisition produced no evaluation window")
-    days, candidates, chosen, topic_counts, source_counts, reject_counts, eligible = last
+    days, candidates, reserve, chosen, reserve_sources, reject_counts, eligible = last_report
     if len(chosen) != target:
-        raise RuntimeError(f"VISION RESEARCH WATCH requires exactly {target}; selected={len(chosen)} eligible={eligible} window={days}d")
+        resolved_domains = sorted({_domain(x.get("exact_source_url", "")) for x in reserve if _domain(x.get("exact_source_url", "")) not in DOI_DOMAINS})
+        raise RuntimeError(
+            f"VISION RESEARCH WATCH requires {target} records with >= {min_domains} resolved source domains; "
+            f"eligible={eligible} reserve={len(reserve)} resolved_domains={resolved_domains} window={days}d"
+        )
 
-    # Resolve DOI identifiers only for the final ten selected records. This
-    # preserves DOI provenance while measuring source diversity at the actual
-    # publisher/registry endpoint whenever the resolver is reachable.
-    for item in chosen:
-        item["exact_source_url"] = _resolve_exact_url(item.get("url", ""))
-
-    exact_domains = {_domain(x.get("exact_source_url", "")) for x in chosen if _domain(x.get("exact_source_url", ""))}
-    min_domains = int(policy.get("minimum_unique_source_domains", 5))
+    exact_domains = {_domain(x.get("exact_source_url", "")) for x in chosen if _domain(x.get("exact_source_url", "")) not in DOI_DOMAINS}
     if len(exact_domains) < min_domains:
         raise RuntimeError(f"VISION RESEARCH WATCH source diversity failed: domains={len(exact_domains)} < {min_domains}; domains={sorted(exact_domains)}")
 
+    topic_counts = Counter(x.get("topic_id") or "unknown" for x in chosen)
+    source_counts = Counter(x.get("collector_source") or "unknown" for x in chosen)
     checked_at = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
     articles = [_article(x, checked_at) for x in chosen]
     chapter = {
@@ -191,11 +275,12 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
         "articles": articles,
     }
     report = {
-        "schema_version": "vision-research-watch-v1",
+        "schema_version": "vision-research-watch-v2",
         "generated_at": checked_at,
         "window_days": days,
         "candidate_count": len(candidates),
         "eligible_count": eligible,
+        "reserve_count": len(reserve),
         "selected_count": len(chosen),
         "coverage_status": "PASS",
         "topic_counts": dict(topic_counts),
