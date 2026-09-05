@@ -4,6 +4,7 @@ from __future__ import annotations
 import datetime as dt
 import hashlib
 import json
+import urllib.error
 import urllib.request
 from collections import Counter
 from pathlib import Path
@@ -42,16 +43,26 @@ def _source_candidate_url(item: dict) -> str:
     return str(item.get("url") or "").strip()
 
 
+def _publisher_url(url: str) -> str:
+    host = _domain(url)
+    if url.startswith(("http://", "https://")) and host not in DOI_DOMAINS and not any(x in host for x in BAD_DOMAIN_MARKERS):
+        return url
+    return ""
+
+
 def _resolve_exact_url(url: str) -> str:
-    """Resolve DOI identifiers to the publisher article URL when possible."""
+    """Resolve DOI identifiers to publisher article URLs, preserving restricted final URLs."""
     if _domain(url) not in DOI_DOMAINS:
         return url
     try:
         req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html,application/xhtml+xml"})
         with urllib.request.urlopen(req, timeout=8) as resp:
-            final = resp.geturl()
-        host = _domain(final)
-        if final.startswith(("http://", "https://")) and host not in DOI_DOMAINS and not any(x in host for x in BAD_DOMAIN_MARKERS):
+            final = _publisher_url(resp.geturl())
+            if final:
+                return final
+    except urllib.error.HTTPError as exc:
+        final = _publisher_url(exc.geturl())
+        if final:
             return final
     except Exception:
         pass
