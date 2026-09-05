@@ -10,8 +10,10 @@ on:
     paths:
       - '.github/workflows/daily_briefing.yml'
       - 'pipeline/**'
+      - 'run_pipeline.py'
       - 'scripts/**'
       - 'config/**'
+      - 'tests/**'
 
 permissions:
   contents: write
@@ -49,8 +51,14 @@ jobs:
       - name: Run Master Pipeline
         run: python run_pipeline.py
 
+      - name: Strict Source QA
+        run: python scripts/validate_sources.py --strict
+
+      - name: Release Contract
+        run: python scripts/validate_release_contract.py --release --expected-today-kst
+
       - name: Validate Publication Manifest
-        run: python scripts/validate_publication_manifest.py
+        run: python scripts/validate_publication_manifest.py --expected-date "$(TZ=Asia/Seoul date +%F)"
 
       - name: PRE-SEND hard gates
         run: |
@@ -66,6 +74,16 @@ jobs:
           expected=datetime.now(ZoneInfo('Asia/Seoul')).strftime('%Y-%m-%d')
           if data.get('metadata',{}).get('date') != expected:
               errors.append(f"edition date mismatch: {data.get('metadata',{}).get('date')} != {expected}")
+          chapters=data.get('chapters',[])
+          if len(chapters) != 14:
+              errors.append(f'chapter count={len(chapters)} != 14')
+          for ch in chapters:
+              if len(ch.get('articles',[])) < 10:
+                  errors.append(f"{ch.get('name')}: rendered items={len(ch.get('articles',[]))} < 10")
+          articles=[a for ch in chapters for a in ch.get('articles',[])]
+          article_urls=[a.get('link','') for a in articles]
+          if len(article_urls) != len(set(article_urls)):
+              errors.append('cross-chapter exact URL duplicates remain')
           top5=data.get('top_5_highlights',[])
           if len(top5) != 5:
               errors.append(f'TOP5 count={len(top5)} != 5')
@@ -75,8 +93,7 @@ jobs:
               errors.append(f'YouTube count={len(videos)} < 10')
           if len(channels) < 4:
               errors.append(f'YouTube unique channels={len(channels)} < 4')
-          articles=[a for ch in data.get('chapters',[]) for a in ch.get('articles',[])]
-          urls=[a.get('link','') for a in articles] + [a.get('link','') for a in top5]
+          urls=article_urls+[a.get('link','') for a in top5]
           google_news=[u for u in urls if urlparse(u).netloc.lower().endswith('news.google.com')]
           if google_news:
               errors.append(f'exact article URL gate: {len(google_news)} Google News relay URLs remain')
