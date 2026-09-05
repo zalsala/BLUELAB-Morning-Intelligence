@@ -12,6 +12,12 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+# When this file is executed directly (`python scripts/validate_publication_manifest.py`),
+# Python places `scripts/` rather than the repository root on sys.path.  The
+# production manifest audit imports validators from the sibling `pipeline`
+# package, so fail closed only on real validation errors—not on invocation mode.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 
 def validate_manifest(
