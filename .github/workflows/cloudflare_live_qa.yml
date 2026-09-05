@@ -78,6 +78,8 @@ jobs:
           import { chromium } from 'playwright';
           const base=process.env.BASE_URL;
           const expectedDate=process.env.EXPECTED_DATE;
+          const [year,month,day]=expectedDate.split('-');
+          const renderedDateToken=`${year}년 ${month}월 ${day}일`;
           const browser=await chromium.launch({headless:true});
           const profiles=[
             {name:'desktop',width:1440,height:1000},
@@ -103,7 +105,7 @@ jobs:
                 height:document.documentElement.scrollHeight,
                 date:document.querySelector('#headerDateText')?.textContent||'',
               }));
-              if(!state.date.includes(expectedDate)) throw new Error(`${p.name}: edition not rendered: ${state.date}`);
+              if(!state.date.includes(renderedDateToken)) throw new Error(`${p.name}: edition not rendered: expected ${renderedDateToken}; got ${state.date}`);
               if(state.articles < 150) throw new Error(`${p.name}: rendered article rows=${state.articles} < 150`);
               if(state.chapterTabs < 16) throw new Error(`${p.name}: chapter tabs=${state.chapterTabs} < 16 (all + 15 expected)`);
               for (const needle of ['인천 서구 검단','NEXT SIGNALS']) {
