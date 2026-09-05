@@ -1,0 +1,97 @@
+name: Mobile Layout Fix Validation
+
+on:
+  push:
+    branches:
+      - 'remediation/cloudflare-live-qa-20260905'
+    paths:
+      - '.github/workflows/mobile_layout_fix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Apply minimal mobile flex containment fix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('public/index.html')
+          s=p.read_text(encoding='utf-8')
+          old='''<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-2">\n      <div class="flex items-center gap-2">\n        <button \n          onclick="switchMainView('news')" \n          id="btn-view-news"\n          class="view-tab-active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs"'''
+          new='''<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex min-w-0 items-center justify-between py-2">\n      <div class="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto no-scrollbar">\n        <button \n          onclick="switchMainView('news')" \n          id="btn-view-news"\n          class="view-tab-active shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs"'''
+          if s.count(old) != 1:
+              raise SystemExit(f'expected exactly one main switcher target, found {s.count(old)}')
+          s=s.replace(old,new,1)
+          old2='''id="btn-view-youtube"\n          class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2"'''
+          new2='''id="btn-view-youtube"\n          class="shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2"'''
+          if s.count(old2) != 1:
+              raise SystemExit(f'expected exactly one youtube switch target, found {s.count(old2)}')
+          s=s.replace(old2,new2,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Serve patched production locally
+        run: |
+          python -m http.server 8765 --directory public >/tmp/http.log 2>&1 &
+          echo $! > /tmp/http.pid
+          for i in {1..30}; do curl -fsS http://127.0.0.1:8765/data/today.json >/dev/null && exit 0; sleep 1; done
+          exit 1
+      - name: Desktop and mobile regression QA
+        run: |
+          cat > .local-layout-qa.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const browser=await chromium.launch({headless:true});
+          const profiles=[{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844}];
+          try {
+            for (const p of profiles) {
+              const page=await browser.newPage({viewport:{width:p.width,height:p.height}});
+              const errors=[];
+              page.on('pageerror',e=>errors.push(String(e)));
+              await page.goto('http://127.0.0.1:8765',{waitUntil:'domcontentloaded',timeout:60000});
+              await page.waitForFunction(()=>document.querySelectorAll('.article-row').length>0,{timeout:60000});
+              const state=await page.evaluate(()=>({
+                articles:document.querySelectorAll('.article-row').length,
+                tabs:document.querySelectorAll('.chapter-tab').length,
+                scrollWidth:document.documentElement.scrollWidth,
+                clientWidth:document.documentElement.clientWidth,
+                switcherScroll:document.querySelector('#btn-view-news')?.parentElement?.scrollWidth||0,
+                switcherClient:document.querySelector('#btn-view-news')?.parentElement?.clientWidth||0,
+                text:document.body.innerText
+              }));
+              if(state.articles<150) throw new Error(`${p.name}: articles ${state.articles}<150`);
+              if(state.tabs<16) throw new Error(`${p.name}: tabs ${state.tabs}<16`);
+              if(!state.text.includes('NEXT SIGNALS')) throw new Error(`${p.name}: NEXT SIGNALS missing`);
+              if(state.scrollWidth>state.clientWidth+2) throw new Error(`${p.name}: document overflow ${state.scrollWidth}>${state.clientWidth}`);
+              if(errors.length) throw new Error(`${p.name}: page errors ${errors.join(' | ')}`);
+              console.log(`${p.name.toUpperCase()}_LOCAL_LAYOUT=PASS document=${state.scrollWidth}/${state.clientWidth} switcher=${state.switcherScroll}/${state.switcherClient}`);
+              await page.close();
+            }
+          } finally { await browser.close(); }
+          JS
+          node .local-layout-qa.mjs
+          rm -f .local-layout-qa.mjs
+      - name: Commit validated layout fix to remediation branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/index.html
+          git diff --cached --check
+          if git diff --cached --quiet; then
+            echo 'No layout change to commit.'
+            exit 0
+          fi
+          git commit -m "fix: contain mobile view switcher overflow"
+          git push origin HEAD:remediation/cloudflare-live-qa-20260905
