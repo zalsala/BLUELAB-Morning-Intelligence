@@ -8,7 +8,7 @@ import urllib.error
 import urllib.request
 from collections import Counter
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 
 from scripts.collect_vision_research import PROVIDERS, QUERY_FILE, dedupe
 from scripts.select_vision_research import select
@@ -69,19 +69,51 @@ def _resolve_exact_url(url: str) -> str:
     return url
 
 
+def _crossref_resource_url(doi: str) -> str:
+    """Return Crossref's registered primary resource URL for one DOI when available."""
+    doi = str(doi or "").strip()
+    if not doi:
+        return ""
+    endpoint = f"https://api.crossref.org/works/{quote(doi, safe='')}"
+    try:
+        req = urllib.request.Request(endpoint, headers={"User-Agent": UA, "Accept": "application/json"})
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            payload = json.loads(resp.read().decode("utf-8"))
+        message = payload.get("message") if isinstance(payload, dict) else None
+        resource = message.get("resource") if isinstance(message, dict) else None
+        primary = resource.get("primary") if isinstance(resource, dict) else None
+        candidate = primary.get("URL") if isinstance(primary, dict) else ""
+        return _publisher_url(str(candidate or ""))
+    except Exception:
+        return ""
+
+
 def _valid_resolved_url(url: str) -> bool:
     host = _domain(url)
     return bool(host) and host not in DOI_DOMAINS and not any(x in host for x in BAD_DOMAIN_MARKERS)
 
 
 def _resolve_item_source_url(item: dict) -> str:
-    """Prefer publisher URL; if DOI remains unresolved, keep the exact scholarly record URL."""
+    """Prefer publisher URL; then Crossref primary resource; finally exact scholarly record."""
     resolved = _resolve_exact_url(_source_candidate_url(item))
     if _valid_resolved_url(resolved):
         return resolved
+    crossref_resource = _crossref_resource_url(item.get("doi", ""))
+    if _valid_resolved_url(crossref_resource):
+        return crossref_resource
     scholarly_record = str(item.get("url") or "").strip()
     if _valid_resolved_url(scholarly_record):
         return scholarly_record
+    return resolved
+
+
+def _resolve_reserve(items: list[dict]) -> list[dict]:
+    resolved: list[dict] = []
+    for item in items:
+        x = dict(item)
+        x["exact_source_url"] = _resolve_item_source_url(x)
+        if _valid_resolved_url(x["exact_source_url"]):
+            resolved.append(x)
     return resolved
 
 
@@ -209,7 +241,7 @@ def _article(item: dict, checked_at: str) -> dict:
             "status": "VERIFIED_PRIMARY",
             "evidence_type": "primary",
             "verified_sources": [source_domain] if source_domain else [],
-            "notes": "DOI가 제공되면 실제 출판사 원문으로 해석하고, 해석할 수 없으면 검증된 PubMed/Europe PMC 학술 레코드의 정확한 링크를 사용했습니다. 연구 결과 해석은 원문 전문 확인이 필요합니다.",
+            "notes": "DOI가 제공되면 실제 출판사 원문으로 해석하고, 해석할 수 없으면 Crossref primary resource 또는 검증된 PubMed/Europe PMC 학술 레코드의 정확한 링크를 사용했습니다. 연구 결과 해석은 원문 전문 확인이 필요합니다.",
             "checked_at": checked_at,
             "body_validation": {"status": "NO_QUALIFIED_BODY"},
         },
@@ -247,16 +279,23 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
         if allowed_kinds:
             candidates = [x for x in candidates if (x.get("evidence_type") or "RESEARCH / ISSUE") in allowed_kinds]
 
-        reserve_target = max(target * 6, target + min_domains)
+        reserve_target = max(target * 3, target + min_domains)
         reserve, _, reserve_sources, reject_counts, eligible = select(candidates, reserve_target, max_share, today)
-        resolved_reserve = []
-        for item in reserve:
-            item = dict(item)
-            item["exact_source_url"] = _resolve_item_source_url(item)
-            if _valid_resolved_url(item["exact_source_url"]):
-                resolved_reserve.append(item)
-
+        resolved_reserve = _resolve_reserve(reserve)
         chosen = _choose_domain_diverse(resolved_reserve, target, min_domains, max_share)
+
+        # The diversity gate must see the eligible pool before declaring scarcity.
+        # Expand only after the ranked fast path fails so normal runs keep network cost bounded.
+        if len(chosen) != target and eligible > len(reserve):
+            expanded, _, expanded_sources, expanded_rejects, expanded_eligible = select(
+                candidates, eligible, max_share, today
+            )
+            resolved_reserve = _resolve_reserve(expanded)
+            chosen = _choose_domain_diverse(resolved_reserve, target, min_domains, max_share)
+            reserve_sources = expanded_sources
+            reject_counts = expanded_rejects
+            eligible = expanded_eligible
+
         last_report = (days, candidates, resolved_reserve, chosen, reserve_sources, reject_counts, eligible)
         if len(chosen) == target:
             break
@@ -289,7 +328,7 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
         "articles": articles,
     }
     report = {
-        "schema_version": "vision-research-watch-v3",
+        "schema_version": "vision-research-watch-v4",
         "generated_at": checked_at,
         "window_days": days,
         "candidate_count": len(candidates),
