@@ -74,7 +74,7 @@ jobs:
       - name: Desktop and mobile top middle bottom render QA
         run: |
           mkdir -p qa-screenshots
-          cat > /tmp/live-qa.mjs <<'JS'
+          cat > .live-qa.mjs <<'JS'
           import { chromium } from 'playwright';
           const base=process.env.BASE_URL;
           const expectedDate=process.env.EXPECTED_DATE;
@@ -83,47 +83,52 @@ jobs:
             {name:'desktop',width:1440,height:1000},
             {name:'mobile',width:390,height:844},
           ];
-          for (const p of profiles) {
-            const page=await browser.newPage({viewport:{width:p.width,height:p.height}});
-            const consoleErrors=[];
-            page.on('console',m=>{ if(m.type()==='error') consoleErrors.push(m.text()); });
-            const resp=await page.goto(base,{waitUntil:'domcontentloaded',timeout:60000});
-            if(!resp || !resp.ok()) throw new Error(`${p.name}: root HTTP ${resp?.status()}`);
-            await page.waitForFunction(() => {
-              const el=document.querySelector('#headerDateText');
-              return el && !el.textContent.includes('로딩 중') && document.querySelectorAll('.article-row').length > 0;
-            },{timeout:60000});
-            const state=await page.evaluate((expectedDate)=>({
-              text:document.body.innerText,
-              articles:document.querySelectorAll('.article-row').length,
-              chapterTabs:document.querySelectorAll('.chapter-tab').length,
-              scrollWidth:document.documentElement.scrollWidth,
-              clientWidth:document.documentElement.clientWidth,
-              height:document.documentElement.scrollHeight,
-              date:document.querySelector('#headerDateText')?.textContent||'',
-            }),expectedDate);
-            if(!state.date.includes(expectedDate)) throw new Error(`${p.name}: edition not rendered: ${state.date}`);
-            if(state.articles < 150) throw new Error(`${p.name}: rendered article rows=${state.articles} < 150`);
-            if(state.chapterTabs < 16) throw new Error(`${p.name}: chapter tabs=${state.chapterTabs} < 16 (all + 15 expected)`);
-            for (const needle of ['인천 서구 검단','NEXT SIGNALS']) {
-              if(!state.text.includes(needle)) throw new Error(`${p.name}: missing ${needle}`);
+          try {
+            for (const p of profiles) {
+              const page=await browser.newPage({viewport:{width:p.width,height:p.height}});
+              const pageErrors=[];
+              page.on('pageerror',e=>pageErrors.push(String(e)));
+              const resp=await page.goto(base,{waitUntil:'domcontentloaded',timeout:60000});
+              if(!resp || !resp.ok()) throw new Error(`${p.name}: root HTTP ${resp?.status()}`);
+              await page.waitForFunction(() => {
+                const el=document.querySelector('#headerDateText');
+                return el && !el.textContent.includes('로딩 중') && document.querySelectorAll('.article-row').length > 0;
+              },{timeout:60000});
+              const state=await page.evaluate(()=>({
+                text:document.body.innerText,
+                articles:document.querySelectorAll('.article-row').length,
+                chapterTabs:document.querySelectorAll('.chapter-tab').length,
+                scrollWidth:document.documentElement.scrollWidth,
+                clientWidth:document.documentElement.clientWidth,
+                height:document.documentElement.scrollHeight,
+                date:document.querySelector('#headerDateText')?.textContent||'',
+              }));
+              if(!state.date.includes(expectedDate)) throw new Error(`${p.name}: edition not rendered: ${state.date}`);
+              if(state.articles < 150) throw new Error(`${p.name}: rendered article rows=${state.articles} < 150`);
+              if(state.chapterTabs < 16) throw new Error(`${p.name}: chapter tabs=${state.chapterTabs} < 16 (all + 15 expected)`);
+              for (const needle of ['인천 서구 검단','NEXT SIGNALS']) {
+                if(!state.text.includes(needle)) throw new Error(`${p.name}: missing ${needle}`);
+              }
+              if(state.scrollWidth > state.clientWidth + 2) throw new Error(`${p.name}: horizontal overflow ${state.scrollWidth} > ${state.clientWidth}`);
+              if(pageErrors.length) throw new Error(`${p.name}: uncaught page errors: ${pageErrors.join(' | ')}`);
+              await page.evaluate(()=>scrollTo(0,0));
+              await page.screenshot({path:`qa-screenshots/${p.name}-top.png`,fullPage:false});
+              await page.evaluate(()=>scrollTo(0,Math.floor((document.documentElement.scrollHeight-innerHeight)/2)));
+              await page.waitForTimeout(500);
+              await page.screenshot({path:`qa-screenshots/${p.name}-middle.png`,fullPage:false});
+              await page.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight));
+              await page.waitForTimeout(500);
+              await page.screenshot({path:`qa-screenshots/${p.name}-bottom.png`,fullPage:false});
+              console.log(`${p.name.toUpperCase()}_QA=PASS articles=${state.articles} tabs=${state.chapterTabs} height=${state.height}`);
+              await page.close();
             }
-            if(state.scrollWidth > state.clientWidth + 2) throw new Error(`${p.name}: horizontal overflow ${state.scrollWidth} > ${state.clientWidth}`);
-            await page.evaluate(()=>scrollTo(0,0));
-            await page.screenshot({path:`qa-screenshots/${p.name}-top.png`,fullPage:false});
-            await page.evaluate(()=>scrollTo(0,Math.floor((document.documentElement.scrollHeight-innerHeight)/2)));
-            await page.waitForTimeout(500);
-            await page.screenshot({path:`qa-screenshots/${p.name}-middle.png`,fullPage:false});
-            await page.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight));
-            await page.waitForTimeout(500);
-            await page.screenshot({path:`qa-screenshots/${p.name}-bottom.png`,fullPage:false});
-            console.log(`${p.name.toUpperCase()}_QA=PASS articles=${state.articles} tabs=${state.chapterTabs} height=${state.height} console_errors=${consoleErrors.length}`);
-            await page.close();
+          } finally {
+            await browser.close();
           }
-          await browser.close();
           console.log('CLOUDFLARE_BROWSER_QA=PASS');
           JS
-          node /tmp/live-qa.mjs
+          node .live-qa.mjs
+          rm -f .live-qa.mjs
       - name: Upload live QA screenshots
         uses: actions/upload-artifact@v4
         if: always()
