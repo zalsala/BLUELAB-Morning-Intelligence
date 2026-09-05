@@ -2,7 +2,6 @@ name: Daily Morning Intelligence Briefing
 
 on:
   schedule:
-    # 매일 아침 05:30 KST = 전날 20:30 UTC
     - cron: '30 20 * * *'
   workflow_dispatch:
   push:
@@ -30,36 +29,27 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TZ: Asia/Seoul
-
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with: {python-version: '3.11', cache: 'pip'}
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
       - name: Run Deterministic Regression Tests
         run: pytest -v tests/
-
       - name: Run Master Pipeline
         run: python run_pipeline.py
-
       - name: Strict Source QA
         run: python scripts/validate_sources.py --strict
-
       - name: Release Contract
         run: python scripts/validate_release_contract.py --release --expected-today-kst
-
       - name: Validate Publication Manifest
         run: python scripts/validate_publication_manifest.py --expected-date "$(TZ=Asia/Seoul date +%F)"
-
       - name: PRE-SEND hard gates
         run: |
           python - <<'PY'
@@ -75,13 +65,26 @@ jobs:
           if data.get('metadata',{}).get('date') != expected:
               errors.append(f"edition date mismatch: {data.get('metadata',{}).get('date')} != {expected}")
           chapters=data.get('chapters',[])
-          if len(chapters) != 14:
-              errors.append(f'chapter count={len(chapters)} != 14')
-          for ch in chapters:
+          vision=[c for c in chapters if c.get('id')=='vision-research-watch']
+          general=[c for c in chapters if c.get('id')!='vision-research-watch']
+          if len(general) != 14:
+              errors.append(f'general chapter count={len(general)} != 14')
+          if len(vision) != 1:
+              errors.append(f'vision research chapter count={len(vision)} != 1')
+          if len(chapters) != 15:
+              errors.append(f'total rendered chapter count={len(chapters)} != 15')
+          for ch in general:
               if len(ch.get('articles',[])) < 10:
                   errors.append(f"{ch.get('name')}: rendered items={len(ch.get('articles',[]))} < 10")
-          articles=[a for ch in chapters for a in ch.get('articles',[])]
-          article_urls=[a.get('link','') for a in articles]
+          if vision and len(vision[0].get('articles',[])) != 10:
+              errors.append(f"VISION RESEARCH WATCH rendered items={len(vision[0].get('articles',[]))} != 10")
+          general_articles=[a for ch in general for a in ch.get('articles',[])]
+          all_articles=general_articles + (vision[0].get('articles',[]) if vision else [])
+          if len(general_articles) != 140:
+              errors.append(f'general article count={len(general_articles)} != 140')
+          if len(all_articles) != 150:
+              errors.append(f'total rendered article count={len(all_articles)} != 150')
+          article_urls=[a.get('link','') for a in all_articles]
           if len(article_urls) != len(set(article_urls)):
               errors.append('cross-chapter exact URL duplicates remain')
           top5=data.get('top_5_highlights',[])
@@ -102,13 +105,28 @@ jobs:
               errors.append(f'trending keyword count must be 0 or 20; found {len(trends)}')
           if len(data.get('three_line_summary',[])) != 3:
               errors.append('final summary must contain exactly 3 lines')
+          weather=data.get('weather') or {}
+          if not weather.get('source') or not weather.get('source_level'):
+              errors.append('weather source/source_level missing')
+          story_files=data.get('metadata',{}).get('story_files',[])
+          if story_files != [f'stories-{i}.json' for i in range(1,6)]:
+              errors.append('exactly five active story bundles are required')
+          if vision:
+              domains=set()
+              for a in vision[0].get('articles',[]):
+                  rw=a.get('research_watch') or {}
+                  for key in ('evidence_type','study_design','clinical_meaning_ko','limitations_conflicts_ko','exact_source_url'):
+                      if not rw.get(key): errors.append(f"VISION RESEARCH WATCH missing {key}: {a.get('title','')}")
+                  h=urlparse(rw.get('exact_source_url') or a.get('link','')).hostname
+                  if h: domains.add(h.lower().removeprefix('www.'))
+              if len(domains) < 5:
+                  errors.append(f'VISION RESEARCH WATCH source domains={len(domains)} < 5')
           if errors:
               print('PRE_SEND_QA=FAIL')
               for e in errors: print(' -',e)
               raise SystemExit(2)
           print('PRE_SEND_QA=PASS')
           PY
-
       - name: Commit and push updated briefing data
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
@@ -121,12 +139,10 @@ jobs:
             git pull --rebase origin main
             git push origin main
           fi
-
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
         with:
           enablement: true
-
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -139,7 +155,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
