@@ -10,11 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "public" / "data"
 POLICY = ROOT / "config" / "source-policy.json"
 WIRE_DOMAINS = {"reuters.com", "apnews.com", "afp.com"}
-SPECIALIST = {
-    "과학",
-    "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
-    "의료 · 헬스케어",
-}
+EXPECTED_FILES = [f"stories-{i}.json" for i in range(1, 6)]
 
 
 def norm_domain(url: str) -> str:
@@ -24,19 +20,21 @@ def norm_domain(url: str) -> str:
 
 def is_generic_url(url: str, rejected_paths: set[str]) -> bool:
     parsed = urlparse(url or "")
-    path = parsed.path or "/"
-    return path in rejected_paths
+    return (parsed.path or "/") in rejected_paths
 
 
 def load() -> tuple[dict, dict, list[dict]]:
     today = json.loads((DATA / "today.json").read_text(encoding="utf-8"))
     policy = json.loads(POLICY.read_text(encoding="utf-8"))
-    files = today.get("story_files", [])
-    if files != [f"stories-{i}.json" for i in range(1, 6)]:
-        raise SystemExit("FAIL: today.json must reference exactly stories-1.json..stories-5.json")
+    files = today.get("metadata", {}).get("story_files", [])
+    if files != EXPECTED_FILES:
+        raise SystemExit(f"FAIL: metadata.story_files must equal {EXPECTED_FILES}")
     stories: list[dict] = []
     for name in files:
-        stories.extend(json.loads((DATA / name).read_text(encoding="utf-8")))
+        chunk = json.loads((DATA / name).read_text(encoding="utf-8"))
+        if not isinstance(chunk, list):
+            raise SystemExit(f"FAIL: {name} must contain a JSON list")
+        stories.extend(chunk)
     return today, policy, stories
 
 
@@ -45,7 +43,6 @@ def audit(strict: bool) -> int:
     rules = policy["diversity_rules"]
     rejected = set(policy["generic_url_paths_rejected_for_verified_articles"])
     discovery_only = set(policy["discovery_only_domains"])
-    top5 = set(today.get("top5_titles", []))
 
     errors: list[str] = []
     warnings: list[str] = []
@@ -53,31 +50,43 @@ def audit(strict: bool) -> int:
     for story in stories:
         grouped[story.get("section", "")].append(story)
 
-    for section, cfg in policy["chapters"].items():
-        items = grouped.get(section, [])
-        rendered = [x for x in items if x.get("title") not in top5]
-        domains = Counter(norm_domain(x.get("url", "")) for x in rendered if norm_domain(x.get("url", "")))
-        unique = len(domains)
-        required = rules["specialist_chapter_min_unique_domains"] if section in SPECIALIST else rules["general_chapter_min_unique_domains"]
+    chapters = today.get("chapters", [])
+    expected_sections = [ch.get("name", "") for ch in chapters]
+    if len(expected_sections) != 14 or any(not x for x in expected_sections):
+        errors.append(f"production chapter contract invalid: expected 14 named chapters, found {len(expected_sections)}")
 
-        if rendered and unique < required:
+    if len(stories) != 140:
+        errors.append(f"story bundle count={len(stories)} != 140")
+
+    seen_urls: set[str] = set()
+    duplicate_urls: list[str] = []
+    for story in stories:
+        url = story.get("url", "")
+        if url in seen_urls:
+            duplicate_urls.append(url)
+        seen_urls.add(url)
+    if duplicate_urls:
+        errors.append(f"cross-chapter duplicate URLs remain: {len(duplicate_urls)}")
+
+    for section in expected_sections:
+        items = grouped.get(section, [])
+        domains = Counter(norm_domain(x.get("url", "")) for x in items if norm_domain(x.get("url", "")))
+        unique = len(domains)
+        required = rules["general_chapter_min_unique_domains"]
+        if len(items) != 10:
+            errors.append(f"{section}: story bundle items={len(items)} != 10")
+        if items and unique < required:
             msg = f"{section}: unique domains {unique} < {required} ({dict(domains)})"
             (errors if strict else warnings).append(msg)
-
-        if rendered:
-            max_share = max(domains.values(), default=0) / len(rendered)
+        if items:
+            max_share = max(domains.values(), default=0) / len(items)
             if max_share > rules["max_single_domain_share"]:
                 msg = f"{section}: largest domain share {max_share:.0%} > {rules['max_single_domain_share']:.0%}"
                 (errors if strict else warnings).append(msg)
-            wire = sum(n for d, n in domains.items() if d in WIRE_DOMAINS) / len(rendered)
+            wire = sum(n for d, n in domains.items() if d in WIRE_DOMAINS) / len(items)
             if wire > rules["max_wire_share_reuters_ap_afp_combined"]:
                 msg = f"{section}: Reuters/AP/AFP share {wire:.0%} > {rules['max_wire_share_reuters_ap_afp_combined']:.0%}"
                 (errors if strict else warnings).append(msg)
-
-        preferred = set(cfg.get("preferred_domains", []))
-        off_policy = [d for d in domains if d and d not in preferred and d not in discovery_only]
-        if off_policy:
-            warnings.append(f"{section}: review unclassified domains: {', '.join(sorted(off_policy))}")
 
     for story in stories:
         url = story.get("url", "")
@@ -85,37 +94,37 @@ def audit(strict: bool) -> int:
         if not url or not domain:
             errors.append(f"missing source URL: {story.get('title', '<untitled>')}")
             continue
-        if domain in discovery_only and story.get("section") not in {
-            "유튜브 · 숏츠",
-            "핫이슈 · 바이럴 · 밈 · 온라인/소셜 트렌드",
-        }:
+        parsed = urlparse(url)
+        if parsed.scheme not in {"http", "https"}:
+            errors.append(f"non-http source URL: {url}")
+        if domain in discovery_only:
             msg = f"discovery-only source used as final article: {domain} | {story.get('title')}"
             (errors if strict else warnings).append(msg)
         if is_generic_url(url, rejected):
             msg = f"generic/home/section URL requires exact-article replacement: {url} | {story.get('title')}"
             (errors if strict else warnings).append(msg)
 
-    print(f"SOURCE_AUDIT edition={today.get('meta', {}).get('edition', today.get('meta', {}).get('date', 'unknown'))}")
-    for section in policy["chapters"]:
-        rendered = [x for x in grouped.get(section, []) if x.get("title") not in top5]
-        domains = Counter(norm_domain(x.get("url", "")) for x in rendered if norm_domain(x.get("url", "")))
-        print(f"  {section}: {len(rendered)} rendered stories / {len(domains)} unique domains")
+    print(f"SOURCE_QA edition={today.get('metadata', {}).get('date', 'unknown')}")
+    for section in expected_sections:
+        items = grouped.get(section, [])
+        domains = Counter(norm_domain(x.get("url", "")) for x in items if norm_domain(x.get("url", "")))
+        print(f"  {section}: {len(items)} stories / {len(domains)} unique domains")
 
     if warnings:
         print("WARNINGS:")
-        for w in warnings:
-            print(f"  - {w}")
+        for warning in warnings:
+            print(f"  - {warning}")
     if errors:
         print("ERRORS:")
-        for e in errors:
-            print(f"  - {e}")
+        for error in errors:
+            print(f"  - {error}")
         return 1
-    print("PASS: source audit completed" + (" in strict mode" if strict else " in report mode"))
+    print("PASS: source QA completed" + (" in strict mode" if strict else " in report mode"))
     return 0
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--strict", action="store_true", help="Fail on diversity and generic/discovery-only source violations")
+    parser.add_argument("--strict", action="store_true")
     args = parser.parse_args()
     raise SystemExit(audit(args.strict))
