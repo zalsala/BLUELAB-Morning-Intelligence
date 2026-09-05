@@ -1,20 +1,20 @@
 [
   {
     "section": "거시 경제 & 금융",
-    "title": "비트코인, 美 금리 인상 우려 완화에 급등... 3개월 만에 8만1000달러 돌파",
-    "summary": "조선일보 보도에 따르면, ‘비트코인, 美 금리 인상 우려 완화에 급등... 3개월 만에 8만1000달러 돌파’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "조선일보",
-    "url": "https://www.chosun.com/economy/money/2026/09/04/7FHDBQJZONDG7KNPDAXZFF45D4/",
+    "title": "비상장주식 내년 2월부터 '토큰증권'으로 사고판다",
+    "summary": "한국경제 보도에 따르면, ‘비상장주식 내년 2월부터 '토큰증권'으로 사고판다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한국경제",
+    "url": "https://www.hankyung.com/article/2026090451531",
     "date": "Fri, 04 Se",
-    "status": "CONFIRMED",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
     "section": "거시 경제 & 금융",
-    "title": "[증시-마감] 美금리 동결 기대에 코스피 1.64%↑…자사주소각 효과 지속",
-    "summary": "연합인포맥스 보도에 따르면, ‘美금리 동결 기대에 코스피 1.64%↑…자사주소각 효과 지속’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합인포맥스",
-    "url": "https://news.einfomax.co.kr/news/articleView.html?idxno=4433522",
+    "title": "美금리 동결 기대감 코스피 1.64% 반등…코스닥 5일 만에 상승",
+    "summary": "KBC광주방송 보도에 따르면, ‘美금리 동결 기대감 코스피 1.64% 반등…코스닥 5일 만에 상승’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "KBC광주방송",
+    "url": "https://news.ikbc.co.kr/article/view/kbc202609040064",
     "date": "Fri, 04 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "발행일 확인 필요"
@@ -31,12 +31,32 @@
   },
   {
     "section": "글로벌 국제 정세",
+    "title": "\"이란군 자금 지원\"…미국, 튀르키예 은행 제재",
+    "summary": "연합뉴스TV 보도에 따르면, ‘\"이란군 자금 지원\"…미국, 튀르키예 은행 제재’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스TV",
+    "url": "https://www.yonhapnewstv.co.kr/news/AKR20260905011433702",
+    "date": "Fri, 04 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "글로벌 국제 정세",
     "title": "트럼프, 이란 상황에 \"별 것 아닌 사소한 일… 군사적 충돌일 뿐\"",
     "summary": "조선일보 보도에 따르면, ‘트럼프, 이란 상황에 \"별 것 아닌 사소한 일… 군사적 충돌일 뿐\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "조선일보",
     "url": "https://www.chosun.com/international/us/2026/09/05/RMDU5QPYBVEOFJ5XKQ4NJBSWEE/",
     "date": "Fri, 04 Se",
     "status": "CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "글로벌 국제 정세",
+    "title": "중국 티베트 지역 사망자 31명으로 늘어…실종자는 531명",
+    "summary": "연합뉴스TV 보도에 따르면, ‘중국 티베트 지역 사망자 31명으로 늘어…실종자는 531명’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스TV",
+    "url": "https://www.yonhapnewstv.co.kr/news/AKR20260904213648MPV",
+    "date": "Fri, 04 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
@@ -61,30 +81,10 @@
   },
   {
     "section": "글로벌 국제 정세",
-    "title": "'지옥에 다녀온' 5천 미군‥\"땅이다\" 파타야 우르르",
-    "summary": "MBC 뉴스 보도에 따르면, ‘'지옥에 다녀온' 5천 미군‥\"땅이다\" 파타야 우르르’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "MBC 뉴스",
-    "url": "https://imnews.imbc.com/news/2026/world/article/6849661_36925.html",
-    "date": "Fri, 04 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "글로벌 국제 정세",
-    "title": "미 재무부, 이란 정권과 거래한 '튀르키예 은행과 자회사 2곳' 제재",
-    "summary": "뉴스핌 원문에 따르면, [워싱턴=뉴스핌] 이상민 특파원 = 미국 재무부가 4일(현지시간) 이란 정권과 거래한 튀르키예 은행과 그 자회사 2곳을 제재하며 이란에 대한 경제적 압박을 강화했다.",
-    "source": "뉴스핌",
-    "url": "https://www.newspim.com/news/view/20260905000014",
-    "date": "Fri, 04 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "글로벌 국제 정세",
-    "title": "중국 티베트 지역 사망자 31명으로 늘어…실종자는 531명",
-    "summary": "원문 매체 보도에 따르면, ‘중국 티베트 지역 사망자 31명으로 늘어…실종자는 531명’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "yonhapnewstv.co.kr",
-    "url": "https://www.yonhapnewstv.co.kr/news/AKR20260904213648MPV",
+    "title": "카니 “美 준비되면 무역협상 재개…자동차·철강 경쟁력 훼손 안돼”",
+    "summary": "동아일보 보도에 따르면, ‘카니 “美 준비되면 무역협상 재개…자동차·철강 경쟁력 훼손 안돼”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "donga.com",
+    "url": "https://www.donga.com/news/Inter/article/all/20260904/134605265/1",
     "date": "Fri, 04 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "발행일 확인 필요"
@@ -96,7 +96,7 @@
     "source": "VOA 한국어 홈페이지",
     "url": "https://www.voakorea.com/a/trump-repost-korea-m-sam-2-090426/8194297.html",
     "date": "Fri, 04 Se",
-    "status": "CONFIRMED",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
@@ -113,7 +113,7 @@
     "section": "글로벌 국제 정세",
     "title": "호르무즈 불확실성 장기화…SK·포스코 해외 자원개발 가치 부각",
     "summary": "파이낸셜뉴스 보도에 따르면, ‘호르무즈 불확실성 장기화…SK·포스코 해외 자원개발 가치 부각’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "fnnews.com",
+    "source": "파이낸셜뉴스",
     "url": "https://www.fnnews.com/news/202609031648558481",
     "date": "Fri, 04 Se",
     "status": "PARTIALLY CONFIRMED",
@@ -191,16 +191,6 @@
   },
   {
     "section": "테크 & IT 산업",
-    "title": "[AI 시대, 권력 대이동-빅테크] 검색·SNS 'AI 전환'…플랫폼 권력 재편",
-    "summary": "원문 매체 보도에 따르면, ‘검색·SNS 'AI 전환'…플랫폼 권력 재편’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "pointdaily.co.kr",
-    "url": "https://www.pointdaily.co.kr/news/articleView.html?idxno=318074",
-    "date": "Fri, 04 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "테크 & IT 산업",
     "title": "[더벨]에이치티보로틱스,빅테크 데이터센터 부품 공급망 진입 - 머니투데이",
     "summary": "머니투데이 보도에 따르면, ‘에이치티보로틱스,빅테크 데이터센터 부품 공급망 진입’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "머니투데이",
@@ -220,13 +210,23 @@
     "freshness_note": "발행일 확인 필요"
   },
   {
+    "section": "테크 & IT 산업",
+    "title": "AI 수요 폭증, DC 공랭식 한계 드러나...액침냉각이 데이터센터의 새 표준되나",
+    "summary": "M이코노미뉴스 보도에 따르면, ‘AI 수요 폭증, DC 공랭식 한계 드러나...액침냉각이 데이터센터의 새 표준되나’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "M이코노미뉴스",
+    "url": "https://www.m-economynews.com/news/article.html?no=70446",
+    "date": "Fri, 04 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
     "section": "인공지능 & 딥테크",
     "title": "초중고 교사 63% \"생성형 AI, 수업·평가에 활용\"",
     "summary": "뉴시스 보도에 따르면, ‘초중고 교사 63% \"생성형 AI, 수업·평가에 활용\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "뉴시스",
     "url": "https://www.newsis.com/view/NISX20260904_0003776465",
     "date": "Fri, 04 Se",
-    "status": "PARTIALLY CONFIRMED",
+    "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
@@ -271,10 +271,10 @@
   },
   {
     "section": "인공지능 & 딥테크",
-    "title": "AI로 일하는 공무원들…행정현장에서 혁신 이끈다",
-    "summary": "지디넷코리아 보도에 따르면, ‘AI로 일하는 공무원들…행정현장에서 혁신 이끈다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "title": "\"국방 AI, 이제 장병 손으로\"…현장 운용이 성패 가른다",
+    "summary": "지디넷코리아 보도에 따르면, ‘\"국방 AI, 이제 장병 손으로\"…현장 운용이 성패 가른다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "지디넷코리아",
-    "url": "https://zdnet.co.kr/view/?no=20260904110842",
+    "url": "https://zdnet.co.kr/view/?no=20260904143159",
     "date": "Fri, 04 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "발행일 확인 필요"

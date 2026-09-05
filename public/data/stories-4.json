@@ -22,8 +22,8 @@
   {
     "section": "에너지 & 모빌리티",
     "title": "테슬라, ‘운전대·페달 없는’ 사이버캡 예고…완전자율주행 로보택시 공개 임박",
-    "summary": "파이낸스투데이 보도에 따르면, ‘테슬라, ‘운전대·페달 없는’ 사이버캡 예고…완전자율주행 로보택시 공개 임박’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "파이낸스투데이",
+    "summary": "원문 매체 보도에 따르면, ‘테슬라, ‘운전대·페달 없는’ 사이버캡 예고…완전자율주행 로보택시 공개 임박’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "fntoday.co.kr",
     "url": "https://fntoday.co.kr/news/articleView.html?idxno=392128",
     "date": "Fri, 04 Se",
     "status": "CONFIRMED",
@@ -55,16 +55,6 @@
     "summary": "마켓인 보도에 따르면, ‘테슬라 사이버캡 공개 D-DAY...관전 포인트는?’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "마켓인",
     "url": "https://marketin.edaily.co.kr/News/ReadE?newsId=03201286645576840",
-    "date": "Fri, 04 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "부동산 & 건설",
-    "title": "박소영 아나운서, 안유진 40억 아파트 청약 당첨에 \"나도 도전\"",
-    "summary": "뉴시스 보도에 따르면, ‘박소영 아나운서, 안유진 40억 아파트 청약 당첨에 \"나도 도전\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴시스",
-    "url": "https://www.newsis.com/view/NISX20260904_0003775984",
     "date": "Fri, 04 Se",
     "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
@@ -111,6 +101,16 @@
   },
   {
     "section": "부동산 & 건설",
+    "title": "홍지선 국토장관 후보 10억 아파트…‘영끌’은 글쎄, 타이밍은 절묘",
+    "summary": "한겨레 보도에 따르면, ‘홍지선 국토장관 후보 10억 아파트…‘영끌’은 글쎄, 타이밍은 절묘’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한겨레",
+    "url": "https://www.hani.co.kr/arti/economy/property/1276331.html",
+    "date": "Fri, 04 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "부동산 & 건설",
     "title": "\"집 보러 갈게요\" 서울서 몰려간다...2.4억 떨어졌던 세종 집값 움직이나 - 머니투데이",
     "summary": "머니투데이 보도에 따르면, ‘\"집 보러 갈게요\" 서울서 몰려간다...2.4억 떨어졌던 세종 집값 움직이나’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "머니투데이",
@@ -151,12 +151,12 @@
   },
   {
     "section": "부동산 & 건설",
-    "title": "빚투 말라는 정부, 10억아파트 5.3억 영끌한 국토 후보자",
-    "summary": "동아일보 보도에 따르면, ‘빚투 말라는 정부, 10억아파트 5.3억 영끌한 국토 후보자’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "동아일보",
-    "url": "https://www.donga.com/news/Politics/article/all/20260904/134609689/2",
+    "title": "오세훈 \"부동산 불씨에 기름 붓는 격\"… 李정부 예산안 비판",
+    "summary": "조선일보 보도에 따르면, ‘오세훈 \"부동산 불씨에 기름 붓는 격\"… 李정부 예산안 비판’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "조선일보",
+    "url": "https://www.chosun.com/national/national_general/2026/09/04/V4RWPOY76FF7PAM5XIYQSBFHJQ/",
     "date": "Fri, 04 Se",
-    "status": "PARTIALLY CONFIRMED",
+    "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
@@ -191,6 +191,16 @@
   },
   {
     "section": "유통 & 소비재",
+    "title": "소비자 물가 상승세…대구 2.8%·경북 3.4%↑",
+    "summary": "KBS 뉴스 보도에 따르면, ‘소비자 물가 상승세…대구 2.8%·경북 3.4%↑’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "KBS 뉴스",
+    "url": "https://news.kbs.co.kr/news/pc/view/view.do?ncd=8654615",
+    "date": "Thu, 03 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "유통 & 소비재",
     "title": "소비자물가지수(CPI)가 올해 첫 8개월 동안 상승했습니다. 연말 가격 상승 압력을 무시할 수 없습니다.",
     "summary": "Vietnam.vn 원문에 따르면, 전반적으로, 올해 첫 8개월 동안 소비자물가지수(CPI)는 전월 ​​대비 월평균 0.44% 상승했습니다.",
     "source": "Vietnam.vn",
@@ -201,22 +211,22 @@
   },
   {
     "section": "유통 & 소비재",
-    "title": "소비자 물가 상승세…대구 2.8%·경북 3.4%↑",
-    "summary": "KBS 뉴스 보도에 따르면, ‘소비자 물가 상승세…대구 2.8%·경북 3.4%↑’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "KBS 뉴스",
-    "url": "https://news.kbs.co.kr/news/mobile/view/view.do?ncd=8654615",
-    "date": "Thu, 03 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "유통 & 소비재",
     "title": "2026년 첫 8개월 동안 소비자물가지수(CPI)는 4.45% 상승했으며, 주요 원자재 시장은 안정세를 유지했습니다.",
     "summary": "Vietnam.vn 원문에 따르면, 2026년 첫 8개월 동안 소비자물가지수(CPI)는 평균적으로 2025년 동기 대비 4.45% 상승했으며, 이는 주로 주택, 전기, 수도, 연료 및 건축자재 등 몇몇 주요 품목군에 집중되었습니다.",
     "source": "Vietnam.vn",
     "url": "https://www.vietnam.vn/ko/cpi-8-thang-nam-2026-tang-4-45-thi-truong-hang-hoa-co-ban-on-dinh",
     "date": "Fri, 04 Se",
     "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "유통 & 소비재",
+    "title": "[다음 주 경제일정] 美 8월 소비자물가 관건…애플 첫 '폴더블폰' 공개",
+    "summary": "SBS Biz 보도에 따르면, ‘美 8월 소비자물가 관건…애플 첫 '폴더블폰' 공개’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "SBS Biz",
+    "url": "https://biz.sbs.co.kr/amp/article/20000332779",
+    "date": "Fri, 04 Se",
+    "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
@@ -237,16 +247,6 @@
     "url": "https://tv.edaily.co.kr/News/NewsRead?NewsId=01453046645576840&Kind=257",
     "date": "Thu, 03 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "유통 & 소비재",
-    "title": "[게시판] 한유원, 현대백화점 판교점서 中企 공예 제품 팝업",
-    "summary": "연합뉴스 보도에 따르면, ‘한유원, 현대백화점 판교점서 中企 공예 제품 팝업’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합뉴스",
-    "url": "https://www.yna.co.kr/view/AKR20260904038500030",
-    "date": "Fri, 04 Se",
-    "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {

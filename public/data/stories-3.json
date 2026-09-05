@@ -1,6 +1,26 @@
 [
   {
     "section": "인공지능 & 딥테크",
+    "title": "중앙대 첨단영상대학원, AI 영화 창작 교육 강화…AI 단편영화 10편 제작",
+    "summary": "한겨레 보도에 따르면, ‘중앙대 첨단영상대학원, AI 영화 창작 교육 강화…AI 단편영화 10편 제작’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한겨레",
+    "url": "https://www.hani.co.kr/arti/economy/biznews/1276362.html",
+    "date": "Fri, 04 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "인공지능 & 딥테크",
+    "title": "해커가 파일 훔쳐도 ‘철통보안’…AI 시대 DRM의 진화[빛이 나는 비즈]",
+    "summary": "서울경제 보도에 따르면, ‘해커가 파일 훔쳐도 ‘철통보안’…AI 시대 DRM의 진화[빛이 나는 비즈]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "서울경제",
+    "url": "https://www.sedaily.com/article/20087328",
+    "date": "Sat, 05 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "인공지능 & 딥테크",
     "title": "AI가 인정한 대한민국 1등 우유…서울우유, ‘AIBIX’ 브랜드 경쟁력 1위 차지",
     "summary": "MTN 머니투데이방송 보도에 따르면, ‘AI가 인정한 대한민국 1등 우유…서울우유, ‘AIBIX’ 브랜드 경쟁력 1위 차지’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "MTN 머니투데이방송",
@@ -20,33 +40,13 @@
     "freshness_note": "발행일 확인 필요"
   },
   {
-    "section": "인공지능 & 딥테크",
-    "title": "오지훈 경기도의원, 수업 넘어 과제·평가까지…생성형 AI 기준 마련 - 디스커버리뉴스(DISCOVERYNEWS)",
-    "summary": "디스커버리뉴스(DISCOVERYNEWS) 보도에 따르면, ‘오지훈 경기도의원, 수업 넘어 과제·평가까지…생성형 AI 기준 마련’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "디스커버리뉴스(DISCOVERYNEWS)",
-    "url": "https://www.discoverynews.kr/news/articleView.html?idxno=1100643",
-    "date": "Fri, 04 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "인공지능 & 딥테크",
-    "title": "경기도의회 오지훈 의원, 생성형 AI 활용기준 마련 나서… 조례 개정안 상임위 통과",
-    "summary": "원문 매체 보도에 따르면, ‘경기도의회 오지훈 의원, 생성형 AI 활용기준 마련 나서… 조례 개정안 상임위 통과’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "ggpyeonghwa.com",
-    "url": "https://www.ggpyeonghwa.com/606852",
-    "date": "Fri, 04 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
     "section": "반도체 & 첨단제조",
-    "title": "반도체 호황에 7월 경상흑자 420.8억달러…\"상반기 세계 2위\"(종합)",
-    "summary": "연합뉴스 보도에 따르면, ‘반도체 호황에 7월 경상흑자 420.8억달러…\"상반기 세계 2위\"(종합)’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합뉴스",
-    "url": "https://www.yna.co.kr/view/AKR20260904017951002",
+    "title": "미, 반도체 ‘표적 관세’ 공식화…‘지경학 위기’ 직면한 3대 메가",
+    "summary": "한겨레 보도에 따르면, ‘미, 반도체 ‘표적 관세’ 공식화…‘지경학 위기’ 직면한 3대 메가’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한겨레",
+    "url": "https://www.hani.co.kr/arti/economy/marketing/1276188.html",
     "date": "Fri, 04 Se",
-    "status": "CONFIRMED",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
@@ -61,11 +61,11 @@
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "삼성전자·SK하이닉스 나란히 1%대 강세…반도체株 반등[핫스탁]",
-    "summary": "뉴시스 보도에 따르면, ‘삼성전자·SK하이닉스 나란히 1%대 강세…반도체株 반등[핫스탁]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴시스",
-    "url": "https://www.newsis.com/view/NISX20260903_0003774346",
-    "date": "Thu, 03 Se",
+    "title": "반도체 호황에 7월 경상흑자 420.8억달러…\"상반기 세계 2위\"(종합)",
+    "summary": "연합뉴스 보도에 따르면, ‘반도체 호황에 7월 경상흑자 420.8억달러…\"상반기 세계 2위\"(종합)’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스",
+    "url": "https://www.yna.co.kr/view/AKR20260904017951002",
+    "date": "Fri, 04 Se",
     "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
@@ -121,42 +121,22 @@
   },
   {
     "section": "반도체 & 첨단제조",
+    "title": "삼성전자·SK하이닉스 나란히 1%대 강세…반도체株 반등[핫스탁]",
+    "summary": "뉴시스 보도에 따르면, ‘삼성전자·SK하이닉스 나란히 1%대 강세…반도체株 반등[핫스탁]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴시스",
+    "url": "https://www.newsis.com/view/NISX20260903_0003774346",
+    "date": "Thu, 03 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "반도체 & 첨단제조",
     "title": "SK하이닉스 낸드서 2%p 좁힐 때 삼성전자 HBM서 20%p 추격",
     "summary": "뉴스프리존 보도에 따르면, ‘SK하이닉스 낸드서 2%p 좁힐 때 삼성전자 HBM서 20%p 추격’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "뉴스프리존",
     "url": "https://www.newsfreezone.co.kr/news/articleView.html?idxno=707600",
     "date": "Fri, 04 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "반도체 & 첨단제조",
-    "title": "정부는 미적, 기업은 진땀…삼성·SK 덮친 美 ‘반도체 표적 관세’",
-    "summary": "에너지경제신문 보도에 따르면, ‘정부는 미적, 기업은 진땀…삼성·SK 덮친 美 ‘반도체 표적 관세’’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "에너지경제신문",
-    "url": "https://m.ekn.kr/view.php?key=20260904022150604",
-    "date": "Fri, 04 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "페니트리움바이오, 고형암 치료제 FDA 임상 2상 승인…\"1상 생략\" - 머니투데이",
-    "summary": "머니투데이 보도에 따르면, ‘페니트리움바이오, 고형암 치료제 FDA 임상 2상 승인…\"1상 생략\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "머니투데이",
-    "url": "https://www.mt.co.kr/stock/2026/09/04/2026090409154059931",
-    "date": "Fri, 04 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "페니트리움바이오, 고형암 치료제 美 FDA 2a상 승인",
-    "summary": "서울경제TV 보도에 따르면, ‘페니트리움바이오, 고형암 치료제 美 FDA 2a상 승인’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "서울경제TV",
-    "url": "https://www.sentv.co.kr/article/view/sentv202609040047",
-    "date": "Fri, 04 Se",
-    "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
@@ -181,11 +161,31 @@
   },
   {
     "section": "바이오 & 헬스케어",
+    "title": "대웅제약 마곡연구소 찾은 인니 식약청 대표단…신약·바이오 규제 협력 - 머니투데이",
+    "summary": "머니투데이 보도에 따르면, ‘대웅제약 마곡연구소 찾은 인니 식약청 대표단…신약·바이오 규제 협력’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "머니투데이",
+    "url": "https://www.mt.co.kr/thebio/2026/09/03/2026090314314738598",
+    "date": "Thu, 03 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "바이오 & 헬스케어",
     "title": "바이오사이토젠, 치루제약과 완전 인간 VHH 항체 비독점 라이선싱 계약 체결로 신경과학 분야 혁신 신약 개발 지원",
-    "summary": "뉴스와이어 보도에 따르면, ‘바이오사이토젠, 치루제약과 완전 인간 VHH 항체 비독점 라이선싱 계약 체결로 신경과학 분야 혁신 신약 개발 지원’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스와이어",
+    "summary": "원문 매체 보도에 따르면, ‘바이오사이토젠, 치루제약과 완전 인간 VHH 항체 비독점 라이선싱 계약 체결로 신경과학 분야 혁신 신약 개발 지원’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "newswire.co.kr",
     "url": "https://www.newswire.co.kr/newsRead.php?no=1041831",
     "date": "Thu, 03 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "바이오 & 헬스케어",
+    "title": "페니트리움바이오, 고형암 치료제 美 FDA 2a상 승인",
+    "summary": "서울경제TV 보도에 따르면, ‘페니트리움바이오, 고형암 치료제 美 FDA 2a상 승인’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "서울경제TV",
+    "url": "https://www.sentv.co.kr/article/view/sentv202609040047",
+    "date": "Fri, 04 Se",
     "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
@@ -241,6 +241,16 @@
   },
   {
     "section": "에너지 & 모빌리티",
+    "title": "내년 전기차 보조금 2.1조원으로 역대 최대⋯지원 대상도 30만→43만대로",
+    "summary": "엠투데이 보도에 따르면, ‘내년 전기차 보조금 2.1조원으로 역대 최대⋯지원 대상도 30만→43만대로’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "엠투데이",
+    "url": "https://www.autodaily.co.kr/news/articleView.html?idxno=600206",
+    "date": "Sat, 05 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "에너지 & 모빌리티",
     "title": "테슬라 ‘사이버캡’ 시제품 출시 행사 \"운전대도 페달도 없다\"",
     "summary": "미디어데일 보도에 따르면, ‘테슬라 ‘사이버캡’ 시제품 출시 행사 \"운전대도 페달도 없다\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "미디어데일",
@@ -252,20 +262,10 @@
   {
     "section": "에너지 & 모빌리티",
     "title": "“차가 알아서 손님 태운다” KGM, 구역형 자율주행 로보택시 서비스 확대[재율 아빠 국산차 업계 소식]",
-    "summary": "Naver Blog 보도에 따르면, ‘“차가 알아서 손님 태운다” KGM, 구역형 자율주행 로보택시 서비스 확대[재율 아빠 국산차 업계 소식]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "Naver Blog",
+    "summary": "원문 매체 보도에 따르면, ‘“차가 알아서 손님 태운다” KGM, 구역형 자율주행 로보택시 서비스 확대[재율 아빠 국산차 업계 소식]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "blog.naver.com",
     "url": "https://blog.naver.com/PostView.naver?blogId=nasimo&logNo=224399292419",
     "date": "Fri, 04 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "KGM, 구역형 자율주행 로보택시 서비스 확대…토레스 EVX 투입",
-    "summary": "한국경제 보도에 따르면, ‘KGM, 구역형 자율주행 로보택시 서비스 확대…토레스 EVX 투입’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "한국경제",
-    "url": "https://www.hankyung.com/article/202609028552g",
-    "date": "Wed, 02 Se",
     "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },

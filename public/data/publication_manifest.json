@@ -4,15 +4,18 @@
   "edition_date": "2026-09-05",
   "timezone": "Asia/Seoul",
   "source_main_sha": "44d568f03028ce4b35deda7660f69deeb92d3e70",
-  "release_sha": "9da0e8b373f6594798fc7334aa4620f783787d01",
+  "release_sha": "096610ef280ae0f7941774e0f055f4a44a0ab4f0",
   "fingerprints": {
-    "snapshot_fingerprint_sha256": "9da67835b448cbc9719a997b11b2b064e920367d6190c4beebac1e337217ce22",
-    "editorial_fingerprint_sha256": "c9f202071a334eaafe3260f7f2a854856ecc40c4c0c3fc2c8401916a8f0cb430",
-    "production_fingerprint_sha256": "b41f7ee5c2230e9ad368a004d546cec18d134c62425edc48fe2858288a5bebce"
+    "snapshot_fingerprint_sha256": "b4c8e64357469d50ed13406317d3ba492ef6c9a8b6251d0378d6aaa82f683173",
+    "editorial_fingerprint_sha256": "0279626c13115e0b62919315cdbdb5752656f0c8fad1d2ecb9dd2ba2a1987846",
+    "production_fingerprint_sha256": "c61cc001bde5fa247430033263bddd472d6f72b85b02119d709210de3c95b37d"
   },
   "content_counts": {
-    "total_chapters": 14,
-    "total_articles": 140,
+    "total_chapters": 15,
+    "total_articles": 150,
+    "general_chapters": 14,
+    "general_articles": 140,
+    "vision_research_watch": 10,
     "top5": 5,
     "youtube": 10,
     "trends": 0,
@@ -28,9 +31,11 @@
     "IMAGE_PROVENANCE_GATE": "PASS",
     "EXACT_URL_GATE": "PASS",
     "STORY_BUNDLE_GATE": "PASS",
+    "VISION_RESEARCH_WATCH_GATE": "PASS",
+    "WEATHER_SOURCE_GATE": "PASS",
     "GOOGLE_TRENDS_GATE": "WITHHELD_POLICY_COMPLIANT"
   },
   "canonical_status": "CANONICAL_PASS",
-  "created_at": "2026-09-05T09:10:57.711718+09:00",
-  "manifest_sha256": "c1cf22eaeb2bd3ec4ace66c8e1b0a91813130a6df9ae7904fab90daccb2c461f"
+  "created_at": "2026-09-05T09:55:18.555803+09:00",
+  "manifest_sha256": "7ba5074f582f61350e4bf05d70d4d1491dcf3813577f4f05cd448c04423b1e89"
 }
