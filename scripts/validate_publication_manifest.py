@@ -79,6 +79,20 @@ def validate_manifest(
         failures.append(f"content_counts.trends={counts.get('trends')} not in (0, 20)")
     if counts.get("summary_lines") != 3:
         failures.append(f"content_counts.summary_lines={counts.get('summary_lines')} != 3")
+    if counts.get("story_bundles") != 5:
+        failures.append(f"content_counts.story_bundles={counts.get('story_bundles')} != 5")
+
+    # Canonical file-level story bundle gate.
+    try:
+        from pipeline.story_bundle_writer import validate_story_bundles
+        failures.extend(validate_story_bundles(today_json_path, today_json_path.parent))
+    except Exception as exc:
+        failures.append(f"story bundle validator error: {exc}")
+
+    metadata_story_files = today_data.get("metadata", {}).get("story_files")
+    expected_story_files = [f"stories-{i}.json" for i in range(1, 6)]
+    if metadata_story_files != expected_story_files:
+        failures.append(f"today metadata.story_files must be exactly {expected_story_files}; found {metadata_story_files}")
 
     return (len(failures) == 0, failures)
 
@@ -96,7 +110,7 @@ def main() -> int:
         for err in errors:
             print(" -", err)
         return 1
-    print("[PUBLICATION MANIFEST AUDIT PASSED] 100% Fingerprint Continuity Verified")
+    print("[PUBLICATION MANIFEST AUDIT PASSED] fingerprint + five-story-bundle continuity verified")
     return 0
 
 
