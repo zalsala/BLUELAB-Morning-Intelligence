@@ -1,0 +1,111 @@
+name: Mobile Layout Fix V2 Validation
+
+on:
+  push:
+    branches:
+      - 'remediation/cloudflare-live-qa-20260905'
+    paths:
+      - '.github/workflows/mobile_layout_fix_v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Apply responsive containment fixes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('public/index.html'); s=p.read_text(encoding='utf-8')
+          replacements=[
+            (
+              '''<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">''',
+              '''<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex min-w-0 items-center justify-between gap-2 sm:gap-3">'''
+            ),
+            (
+              '''<div class="flex items-center gap-3">\n        <div class="w-10 h-10 rounded-xl''',
+              '''<div class="flex min-w-0 items-center gap-2 sm:gap-3">\n        <div class="w-10 h-10 rounded-xl'''
+            ),
+            (
+              '''<span class="text-xs font-bold px-2 py-0.5 rounded-md bg-sky-100 dark:bg-sky-900/60 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800">\n              Morning Intelligence\n            </span>''',
+              '''<span class="hidden sm:inline text-xs font-bold px-2 py-0.5 rounded-md bg-sky-100 dark:bg-sky-900/60 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800">\n              Morning Intelligence\n            </span>'''
+            ),
+            (
+              '''<div class="flex items-center rounded-lg border border-slate-300 dark:border-darkbg-border bg-slate-100 dark:bg-darkbg-card p-0.5" title="글자 크기 조절">''',
+              '''<div class="hidden sm:flex items-center rounded-lg border border-slate-300 dark:border-darkbg-border bg-slate-100 dark:bg-darkbg-card p-0.5" title="글자 크기 조절">'''
+            ),
+            (
+              '''class="no-print p-2 rounded-lg bg-slate-100 dark:bg-darkbg-card hover:bg-slate-200 dark:hover:bg-darkbg-hover border border-slate-300 dark:border-darkbg-border text-slate-700 dark:text-slate-300 transition"''',
+              '''class="no-print hidden sm:block p-2 rounded-lg bg-slate-100 dark:bg-darkbg-card hover:bg-slate-200 dark:hover:bg-darkbg-hover border border-slate-300 dark:border-darkbg-border text-slate-700 dark:text-slate-300 transition"'''
+            ),
+            (
+              '''<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-2">\n      <div class="flex items-center gap-2">\n        <button \n          onclick="switchMainView('news')" \n          id="btn-view-news"\n          class="view-tab-active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs"''',
+              '''<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex min-w-0 items-center justify-between py-2">\n      <div class="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto no-scrollbar">\n        <button \n          onclick="switchMainView('news')" \n          id="btn-view-news"\n          class="view-tab-active shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs"'''
+            ),
+            (
+              '''id="btn-view-youtube"\n          class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2"''',
+              '''id="btn-view-youtube"\n          class="shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2"'''
+            ),
+          ]
+          for old,new in replacements:
+              if s.count(old)!=1:
+                  raise SystemExit(f'expected one responsive target; found {s.count(old)} for {old[:80]!r}')
+              s=s.replace(old,new,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Install Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Serve patched production
+        run: |
+          python -m http.server 8765 --directory public >/tmp/http.log 2>&1 &
+          for i in {1..20}; do sleep 1; curl -fsS http://127.0.0.1:8765/data/today.json >/dev/null && exit 0; done
+          exit 1
+      - name: Browser regression QA
+        run: |
+          cat > .layout-v2.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const browser=await chromium.launch({headless:true});
+          try {
+            for(const p of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844}]){
+              const page=await browser.newPage({viewport:{width:p.width,height:p.height}});
+              const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
+              await page.goto('http://127.0.0.1:8765',{waitUntil:'domcontentloaded',timeout:60000});
+              await page.waitForFunction(()=>document.querySelectorAll('.article-row').length>0,{timeout:60000});
+              const s=await page.evaluate(()=>({
+                articles:document.querySelectorAll('.article-row').length,
+                tabs:document.querySelectorAll('.chapter-tab').length,
+                sw:document.documentElement.scrollWidth,
+                cw:document.documentElement.clientWidth,
+                body:document.body.innerText,
+                fontDisplay:getComputedStyle(document.querySelector('#fs-normal-btn').parentElement).display,
+                printDisplay:getComputedStyle(document.querySelector('button[title="보고서 인쇄 및 PDF 저장"]')).display
+              }));
+              if(s.articles<150||s.tabs<16) throw new Error(`${p.name}: incomplete rendering ${s.articles}/${s.tabs}`);
+              if(!s.body.includes('NEXT SIGNALS')||!s.body.includes('인천 서구 검단')) throw new Error(`${p.name}: key content missing`);
+              if(s.sw>s.cw+2) throw new Error(`${p.name}: document overflow ${s.sw}>${s.cw}`);
+              if(errors.length) throw new Error(`${p.name}: pageerror ${errors.join('|')}`);
+              if(p.name==='mobile' && (s.fontDisplay!=='none'||s.printDisplay!=='none')) throw new Error(`mobile: nonessential controls not collapsed`);
+              console.log(`${p.name.toUpperCase()}_LAYOUT_V2=PASS width=${s.sw}/${s.cw} articles=${s.articles} tabs=${s.tabs}`);
+              await page.close();
+            }
+          } finally { await browser.close(); }
+          JS
+          node .layout-v2.mjs
+      - name: Commit validated index only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/index.html
+          git diff --cached --check
+          git diff --cached --quiet && exit 0
+          git commit -m 'fix: prevent mobile header horizontal overflow'
+          git push origin HEAD:remediation/cloudflare-live-qa-20260905
