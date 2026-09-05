@@ -111,7 +111,24 @@ jobs:
               for (const needle of ['인천 서구 검단','NEXT SIGNALS']) {
                 if(!state.text.includes(needle)) throw new Error(`${p.name}: missing ${needle}`);
               }
-              if(state.scrollWidth > state.clientWidth + 2) throw new Error(`${p.name}: horizontal overflow ${state.scrollWidth} > ${state.clientWidth}`);
+              if(state.scrollWidth > state.clientWidth + 2) {
+                const offenders=await page.evaluate((vw)=>Array.from(document.querySelectorAll('body *')).map((el)=>{
+                  const r=el.getBoundingClientRect();
+                  const cs=getComputedStyle(el);
+                  return {
+                    tag:el.tagName.toLowerCase(), id:el.id||'', cls:String(el.className||'').slice(0,180),
+                    left:Math.round(r.left), right:Math.round(r.right), width:Math.round(r.width),
+                    scrollWidth:el.scrollWidth, clientWidth:el.clientWidth,
+                    display:cs.display, position:cs.position, whiteSpace:cs.whiteSpace,
+                    text:(el.textContent||'').trim().replace(/\s+/g,' ').slice(0,120)
+                  };
+                }).filter(x=>x.right>vw+2 || x.left<-2 || x.scrollWidth>x.clientWidth+2)
+                  .sort((a,b)=>Math.max(b.right-vw,b.scrollWidth-b.clientWidth)-Math.max(a.right-vw,a.scrollWidth-a.clientWidth))
+                  .slice(0,20), p.width);
+                console.log(`${p.name.toUpperCase()}_OVERFLOW_OFFENDERS=${JSON.stringify(offenders)}`);
+                await page.screenshot({path:`qa-screenshots/${p.name}-overflow.png`,fullPage:false});
+                throw new Error(`${p.name}: horizontal overflow ${state.scrollWidth} > ${state.clientWidth}`);
+              }
               if(pageErrors.length) throw new Error(`${p.name}: uncaught page errors: ${pageErrors.join(' | ')}`);
               await page.evaluate(()=>scrollTo(0,0));
               await page.screenshot({path:`qa-screenshots/${p.name}-top.png`,fullPage:false});
