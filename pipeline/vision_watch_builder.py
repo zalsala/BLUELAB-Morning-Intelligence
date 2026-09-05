@@ -247,7 +247,7 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
         if allowed_kinds:
             candidates = [x for x in candidates if (x.get("evidence_type") or "RESEARCH / ISSUE") in allowed_kinds]
 
-        reserve_target = max(target * 3, target + min_domains)
+        reserve_target = max(target * 6, target + min_domains)
         reserve, _, reserve_sources, reject_counts, eligible = select(candidates, reserve_target, max_share, today)
         resolved_reserve = []
         for item in reserve:
