@@ -185,20 +185,28 @@ def europe_pmc(family, days, limit):
     return out
 
 
+def _crossref_query_terms(family):
+    """Crossref free-text search does not reliably interpret PubMed-style OR."""
+    terms = [clean_text(x) for x in re.split(r"\s+OR\s+", family.get("query", ""), flags=re.I) if clean_text(x)]
+    return terms[:6] or [clean_text(family.get("query", ""))]
+
+
 def crossref(family, days, limit):
     since = (dt.date.today() - dt.timedelta(days=days)).isoformat()
-    params = urllib.parse.urlencode({"query.bibliographic":family["query"],"filter":f"from-pub-date:{since}","rows":limit,"sort":"published","order":"desc","select":"DOI,title,abstract,container-title,published-online,published-print,author,type,URL"})
-    data = request_json("https://api.crossref.org/works?" + params)
+    rows = max(4, min(int(limit), 8))
     out = []
-    for x in data.get("message", {}).get("items", []):
-        title = (x.get("title") or [""])[0]
-        container = (x.get("container-title") or [""])[0]
-        parts = ((x.get("published-online") or x.get("published-print") or {}).get("date-parts") or [[]])[0]
-        pubdate = "-".join(str(i).zfill(2) if n else str(i) for n, i in enumerate(parts))
-        doi = norm_doi(x.get("DOI", ""))
-        authors = [" ".join(filter(None, [a.get("given", ""), a.get("family", "")])).strip() for a in x.get("author", [])[:12]]
-        out.append(base_record("crossref", family, title, f"https://doi.org/{doi}" if doi else x.get("URL", ""), abstract=x.get("abstract", ""), journal=container, publication_date=pubdate, doi=doi, authors=authors, study_type=x.get("type", "")))
-    return out
+    for term in _crossref_query_terms(family):
+        params = urllib.parse.urlencode({"query.bibliographic":term,"filter":f"from-pub-date:{since}","rows":rows,"sort":"published","order":"desc","select":"DOI,title,abstract,container-title,published-online,published-print,author,type,URL"})
+        data = request_json("https://api.crossref.org/works?" + params)
+        for x in data.get("message", {}).get("items", []):
+            title = (x.get("title") or [""])[0]
+            container = (x.get("container-title") or [""])[0]
+            parts = ((x.get("published-online") or x.get("published-print") or {}).get("date-parts") or [[]])[0]
+            pubdate = "-".join(str(i).zfill(2) if n else str(i) for n, i in enumerate(parts))
+            doi = norm_doi(x.get("DOI", ""))
+            authors = [" ".join(filter(None, [a.get("given", ""), a.get("family", "")])).strip() for a in x.get("author", [])[:12]]
+            out.append(base_record("crossref", family, title, f"https://doi.org/{doi}" if doi else x.get("URL", ""), abstract=x.get("abstract", ""), journal=container, publication_date=pubdate, doi=doi, authors=authors, study_type=x.get("type", "")))
+    return dedupe(out)
 
 
 def clinical_trials(family, days, limit):
@@ -241,6 +249,7 @@ def self_test():
     assert norm_doi("https://doi.org/10.1000/ABC") == "10.1000/abc"
     assert norm_title("Binocular-Vision: Study!") == "binocular vision study"
     assert classify_kind("A randomized controlled trial") == "RCT"
+    assert _crossref_query_terms({"query":"myopia OR axial length OR atropine"}) == ["myopia", "axial length", "atropine"]
     sample = [
         base_record("pubmed", {"id":"x","label":"X"}, "Same paper", "u", doi="10.1/a"),
         base_record("crossref", {"id":"x","label":"X"}, "Same paper", "u2", doi="https://doi.org/10.1/A"),
