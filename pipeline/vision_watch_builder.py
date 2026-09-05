@@ -1,15 +1,10 @@
-"""Build the independent VISION RESEARCH WATCH production chapter.
-
-This pipeline is deliberately independent from general-news acquisition. It uses
-scholarly/registry APIs, selects exactly ten ophthalmic/optometric records with
-relevance and future-date guards, and projects them into the same UI article
-shape while retaining research-specific metadata.
-"""
+"""Build the independent VISION RESEARCH WATCH production chapter."""
 from __future__ import annotations
 
 import datetime as dt
 import hashlib
 import json
+import urllib.request
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -20,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 POLICY = ROOT / "config" / "vision-research-policy.json"
 CHAPTER_ID = "vision-research-watch"
 CHAPTER_NAME = "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리"
+UA = "BLUELAB-Morning-Intelligence/1.0"
 
 CLINICAL_MEANING = {
     "myopia": "근시 진행과 근시관리 전략의 근거를 보완하는 연구입니다. 연령, 개입 방식, 축장·굴절 변화량과 추적기간을 원문에서 함께 확인해야 임상 적용 범위를 판단할 수 있습니다.",
@@ -33,6 +29,21 @@ CLINICAL_MEANING = {
 
 def _domain(url: str) -> str:
     return (urlparse(url or "").hostname or "").lower().removeprefix("www.")
+
+
+def _resolve_exact_url(url: str) -> str:
+    """Resolve DOI identifiers to the publisher article URL when possible."""
+    if _domain(url) not in {"doi.org", "dx.doi.org"}:
+        return url
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html,application/xhtml+xml"})
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            final = resp.geturl()
+        if final.startswith(("http://", "https://")) and _domain(final) not in {"doi.org", "dx.doi.org"}:
+            return final
+    except Exception:
+        pass
+    return url
 
 
 def _collect(days: int, limit_per_source: int = 3) -> tuple[list[dict], list[dict]]:
@@ -74,7 +85,7 @@ def _article(item: dict, checked_at: str) -> dict:
     evidence = item.get("evidence_type") or "RESEARCH / ISSUE"
     design = (item.get("study_type") or evidence).strip()
     title = (item.get("title") or "").strip()
-    url = (item.get("url") or "").strip()
+    url = (item.get("exact_source_url") or item.get("url") or "").strip()
     abstract = (item.get("abstract") or "").strip()
     clinical = CLINICAL_MEANING.get(topic, CLINICAL_MEANING["vision_science"])
     limitation = (
@@ -85,8 +96,6 @@ def _article(item: dict, checked_at: str) -> dict:
     art_id = hashlib.sha256(f"vision|{identity}".encode("utf-8")).hexdigest()[:16]
     source_domain = _domain(url)
     fact = f"근거유형은 {evidence}, 연구설계 표기는 {design}입니다. 원문 제목은 ‘{title}’이며 정확한 논문·등록 링크를 기준으로 검토합니다."
-    background = f"임상적 의미: {clinical}"
-    why = f"한계·이해상충 확인: {limitation}"
     return {
         "id": art_id,
         "chapter_id": CHAPTER_ID,
@@ -98,8 +107,8 @@ def _article(item: dict, checked_at: str) -> dict:
         "summary_raw": abstract or title,
         "editorial": {
             "fact": fact,
-            "background": background,
-            "why_it_matters": why,
+            "background": f"임상적 의미: {clinical}",
+            "why_it_matters": f"한계·이해상충 확인: {limitation}",
             "checkpoints": [
                 "표본 수·대상 연령·진단 기준과 주요 효과크기를 원문에서 확인",
                 "추적기간·탈락률·통계분석 및 이상반응/안전성 결과 확인",
@@ -159,10 +168,16 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
     if len(chosen) != target:
         raise RuntimeError(f"VISION RESEARCH WATCH requires exactly {target}; selected={len(chosen)} eligible={eligible} window={days}d")
 
-    exact_domains = {_domain(x.get("url", "")) for x in chosen if _domain(x.get("url", ""))}
+    # Resolve DOI identifiers only for the final ten selected records. This
+    # preserves DOI provenance while measuring source diversity at the actual
+    # publisher/registry endpoint whenever the resolver is reachable.
+    for item in chosen:
+        item["exact_source_url"] = _resolve_exact_url(item.get("url", ""))
+
+    exact_domains = {_domain(x.get("exact_source_url", "")) for x in chosen if _domain(x.get("exact_source_url", ""))}
     min_domains = int(policy.get("minimum_unique_source_domains", 5))
     if len(exact_domains) < min_domains:
-        raise RuntimeError(f"VISION RESEARCH WATCH source diversity failed: domains={len(exact_domains)} < {min_domains}")
+        raise RuntimeError(f"VISION RESEARCH WATCH source diversity failed: domains={len(exact_domains)} < {min_domains}; domains={sorted(exact_domains)}")
 
     checked_at = dt.datetime.now(dt.timezone.utc).replace(microsecond=0).isoformat()
     articles = [_article(x, checked_at) for x in chosen]
