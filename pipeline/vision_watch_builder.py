@@ -18,6 +18,7 @@ CHAPTER_ID = "vision-research-watch"
 CHAPTER_NAME = "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리"
 UA = "BLUELAB-Morning-Intelligence/1.0"
 DOI_DOMAINS = {"doi.org", "dx.doi.org"}
+BAD_DOMAIN_MARKERS = ("dukcapil", "kotagresik")
 
 CLINICAL_MEANING = {
     "myopia": "근시 진행과 근시관리 전략의 근거를 보완하는 연구입니다. 연령, 개입 방식, 축장·굴절 변화량과 추적기간을 원문에서 함께 확인해야 임상 적용 범위를 판단할 수 있습니다.",
@@ -33,6 +34,14 @@ def _domain(url: str) -> str:
     return (urlparse(url or "").hostname or "").lower().removeprefix("www.")
 
 
+def _source_candidate_url(item: dict) -> str:
+    """Prefer DOI when present so PubMed/Europe PMC records resolve to publishers."""
+    doi = str(item.get("doi") or "").strip()
+    if doi:
+        return f"https://doi.org/{doi}"
+    return str(item.get("url") or "").strip()
+
+
 def _resolve_exact_url(url: str) -> str:
     """Resolve DOI identifiers to the publisher article URL when possible."""
     if _domain(url) not in DOI_DOMAINS:
@@ -41,11 +50,17 @@ def _resolve_exact_url(url: str) -> str:
         req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "text/html,application/xhtml+xml"})
         with urllib.request.urlopen(req, timeout=8) as resp:
             final = resp.geturl()
-        if final.startswith(("http://", "https://")) and _domain(final) not in DOI_DOMAINS:
+        host = _domain(final)
+        if final.startswith(("http://", "https://")) and host not in DOI_DOMAINS and not any(x in host for x in BAD_DOMAIN_MARKERS):
             return final
     except Exception:
         pass
     return url
+
+
+def _valid_resolved_url(url: str) -> bool:
+    host = _domain(url)
+    return bool(host) and host not in DOI_DOMAINS and not any(x in host for x in BAD_DOMAIN_MARKERS)
 
 
 def _collect(days: int, limit_per_source: int = 3) -> tuple[list[dict], list[dict]]:
@@ -87,14 +102,6 @@ def _identity(item: dict) -> str:
 
 
 def _choose_domain_diverse(pool: list[dict], target: int, min_domains: int, max_topic_share: float) -> list[dict]:
-    """Choose high-scoring records while proving source diversity before publication.
-
-    The old path selected the final ten first and only then resolved DOI links. That
-    made a healthy candidate pool fail whenever those ten happened to collapse onto
-    three registry/publisher domains. We instead resolve a bounded high-quality pool,
-    seed the final set with distinct real endpoints, then fill by score. Quality,
-    topic-share and exact-count gates remain fail-closed.
-    """
     max_per_topic = max(1, int(target * max_topic_share))
     ranked = sorted(pool, key=lambda x: (float(x.get("selection_score") or 0), str(x.get("publication_date") or "")), reverse=True)
     chosen: list[dict] = []
@@ -105,26 +112,21 @@ def _choose_domain_diverse(pool: list[dict], target: int, min_domains: int, max_
     def eligible(item: dict) -> bool:
         ident = _identity(item)
         topic = item.get("topic_id") or "unknown"
-        return bool(ident) and ident not in chosen_ids and topic_counts[topic] < max_per_topic
+        return bool(ident) and ident not in chosen_ids and topic_counts[topic] < max_per_topic and _valid_resolved_url(item.get("exact_source_url", ""))
 
-    # First secure the required number of genuinely different resolved endpoints.
     for item in ranked:
         if len(domains) >= min_domains or len(chosen) >= target:
             break
         if not eligible(item):
             continue
         d = _domain(item.get("exact_source_url", ""))
-        if not d or d in DOI_DOMAINS or d in domains:
+        if d in domains:
             continue
-        chosen.append(item)
-        chosen_ids.add(_identity(item))
-        topic_counts[item.get("topic_id") or "unknown"] += 1
-        domains.add(d)
+        chosen.append(item); chosen_ids.add(_identity(item)); topic_counts[item.get("topic_id") or "unknown"] += 1; domains.add(d)
 
     if len(domains) < min_domains:
         return []
 
-    # Preserve topic breadth where possible before ordinary score fill.
     present_topics = set(topic_counts)
     for item in ranked:
         if len(chosen) >= target:
@@ -132,25 +134,14 @@ def _choose_domain_diverse(pool: list[dict], target: int, min_domains: int, max_
         topic = item.get("topic_id") or "unknown"
         if topic in present_topics or not eligible(item):
             continue
-        chosen.append(item)
-        chosen_ids.add(_identity(item))
-        topic_counts[topic] += 1
-        present_topics.add(topic)
-        d = _domain(item.get("exact_source_url", ""))
-        if d and d not in DOI_DOMAINS:
-            domains.add(d)
+        chosen.append(item); chosen_ids.add(_identity(item)); topic_counts[topic] += 1; present_topics.add(topic); domains.add(_domain(item.get("exact_source_url", "")))
 
     for item in ranked:
         if len(chosen) >= target:
             break
         if not eligible(item):
             continue
-        chosen.append(item)
-        chosen_ids.add(_identity(item))
-        topic_counts[item.get("topic_id") or "unknown"] += 1
-        d = _domain(item.get("exact_source_url", ""))
-        if d and d not in DOI_DOMAINS:
-            domains.add(d)
+        chosen.append(item); chosen_ids.add(_identity(item)); topic_counts[item.get("topic_id") or "unknown"] += 1; domains.add(_domain(item.get("exact_source_url", "")))
 
     return chosen if len(chosen) == target and len(domains) >= min_domains else []
 
@@ -196,7 +187,7 @@ def _article(item: dict, checked_at: str) -> dict:
             "status": "VERIFIED_PRIMARY",
             "evidence_type": "primary",
             "verified_sources": [source_domain] if source_domain else [],
-            "notes": "학술 데이터베이스 또는 임상시험 등록의 정확한 원문/서지 링크를 사용했습니다. 연구 결과 해석은 원문 전문 확인이 필요합니다.",
+            "notes": "DOI가 제공되면 실제 출판사 원문으로 해석하고, 그 외에는 학술 데이터베이스·임상시험 등록의 정확한 원문 링크를 사용했습니다. 연구 결과 해석은 원문 전문 확인이 필요합니다.",
             "checked_at": checked_at,
             "body_validation": {"status": "NO_QUALIFIED_BODY"},
         },
@@ -229,21 +220,22 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
     last_report = None
 
     for days in windows:
-        candidates, errors = _collect(int(days), limit_per_source=3)
+        candidates, errors = _collect(int(days), limit_per_source=4)
         provider_errors.extend(errors)
         if allowed_kinds:
             candidates = [x for x in candidates if (x.get("evidence_type") or "RESEARCH / ISSUE") in allowed_kinds]
 
-        # Build a bounded high-quality reserve instead of locking the first ten.
-        # 30 is enough to search diversity without turning DOI resolution into an
-        # unbounded network crawl.
         reserve_target = max(target * 3, target + min_domains)
         reserve, _, reserve_sources, reject_counts, eligible = select(candidates, reserve_target, max_share, today)
+        resolved_reserve = []
         for item in reserve:
-            item["exact_source_url"] = _resolve_exact_url(item.get("url", ""))
+            item = dict(item)
+            item["exact_source_url"] = _resolve_exact_url(_source_candidate_url(item))
+            if _valid_resolved_url(item["exact_source_url"]):
+                resolved_reserve.append(item)
 
-        chosen = _choose_domain_diverse(reserve, target, min_domains, max_share)
-        last_report = (days, candidates, reserve, chosen, reserve_sources, reject_counts, eligible)
+        chosen = _choose_domain_diverse(resolved_reserve, target, min_domains, max_share)
+        last_report = (days, candidates, resolved_reserve, chosen, reserve_sources, reject_counts, eligible)
         if len(chosen) == target:
             break
 
@@ -251,13 +243,13 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
         raise RuntimeError("vision research acquisition produced no evaluation window")
     days, candidates, reserve, chosen, reserve_sources, reject_counts, eligible = last_report
     if len(chosen) != target:
-        resolved_domains = sorted({_domain(x.get("exact_source_url", "")) for x in reserve if _domain(x.get("exact_source_url", "")) not in DOI_DOMAINS})
+        resolved_domains = sorted({_domain(x.get("exact_source_url", "")) for x in reserve if _valid_resolved_url(x.get("exact_source_url", ""))})
         raise RuntimeError(
             f"VISION RESEARCH WATCH requires {target} records with >= {min_domains} resolved source domains; "
             f"eligible={eligible} reserve={len(reserve)} resolved_domains={resolved_domains} window={days}d"
         )
 
-    exact_domains = {_domain(x.get("exact_source_url", "")) for x in chosen if _domain(x.get("exact_source_url", "")) not in DOI_DOMAINS}
+    exact_domains = {_domain(x.get("exact_source_url", "")) for x in chosen if _valid_resolved_url(x.get("exact_source_url", ""))}
     if len(exact_domains) < min_domains:
         raise RuntimeError(f"VISION RESEARCH WATCH source diversity failed: domains={len(exact_domains)} < {min_domains}; domains={sorted(exact_domains)}")
 
@@ -275,7 +267,7 @@ def build_vision_watch(target: int = 10) -> tuple[dict, dict]:
         "articles": articles,
     }
     report = {
-        "schema_version": "vision-research-watch-v2",
+        "schema_version": "vision-research-watch-v3",
         "generated_at": checked_at,
         "window_days": days,
         "candidate_count": len(candidates),
