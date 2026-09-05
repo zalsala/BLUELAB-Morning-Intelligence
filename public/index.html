@@ -87,10 +87,10 @@
 
   <!-- Top Sticky Header -->
   <header class="sticky top-0 z-50 bg-white/90 dark:bg-darkbg-main/90 backdrop-blur-md border-b-2 border-slate-200 dark:border-darkbg-border shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex min-w-0 items-center justify-between gap-2 sm:gap-3">
       
       <!-- Brand Logo -->
-      <div class="flex items-center gap-3">
+      <div class="flex min-w-0 items-center gap-2 sm:gap-3">
         <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 via-cyan-500 to-blue-600 flex items-center justify-center text-white font-black text-xl shadow-md shadow-sky-500/20 shrink-0">
           B
         </div>
@@ -99,7 +99,7 @@
             <span class="font-black text-lg sm:text-xl tracking-tight bg-gradient-to-r from-sky-600 via-cyan-600 to-blue-600 dark:from-sky-400 dark:via-cyan-400 dark:to-blue-400 bg-clip-text text-transparent">
               BLUELAB
             </span>
-            <span class="text-xs font-bold px-2 py-0.5 rounded-md bg-sky-100 dark:bg-sky-900/60 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
+            <span class="hidden sm:inline text-xs font-bold px-2 py-0.5 rounded-md bg-sky-100 dark:bg-sky-900/60 text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
               Morning Intelligence
             </span>
           </div>
@@ -126,7 +126,7 @@
         </div>
 
         <!-- Font Size Scaler (가독성 글자 크기 조절) -->
-        <div class="flex items-center rounded-lg border border-slate-300 dark:border-darkbg-border bg-slate-100 dark:bg-darkbg-card p-0.5" title="글자 크기 조절">
+        <div class="hidden sm:flex items-center rounded-lg border border-slate-300 dark:border-darkbg-border bg-slate-100 dark:bg-darkbg-card p-0.5" title="글자 크기 조절">
           <button onclick="setFontSize('normal')" id="fs-normal-btn" class="px-2 py-1 text-xs font-black rounded text-sky-600 dark:text-sky-400 bg-white dark:bg-darkbg-hover shadow-xs">가</button>
           <button onclick="setFontSize('large')" id="fs-large-btn" class="px-2 py-1 text-sm font-bold rounded text-slate-600 dark:text-slate-400 hover:text-sky-500">가+</button>
           <button onclick="setFontSize('xlarge')" id="fs-xlarge-btn" class="px-2 py-1 text-base font-bold rounded text-slate-600 dark:text-slate-400 hover:text-sky-500">가++</button>
@@ -146,7 +146,7 @@
         <!-- Print / PDF -->
         <button 
           onclick="window.print()" 
-          class="no-print p-2 rounded-lg bg-slate-100 dark:bg-darkbg-card hover:bg-slate-200 dark:hover:bg-darkbg-hover border border-slate-300 dark:border-darkbg-border text-slate-700 dark:text-slate-300 transition"
+          class="no-print hidden sm:block p-2 rounded-lg bg-slate-100 dark:bg-darkbg-card hover:bg-slate-200 dark:hover:bg-darkbg-hover border border-slate-300 dark:border-darkbg-border text-slate-700 dark:text-slate-300 transition"
           title="보고서 인쇄 및 PDF 저장"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -180,19 +180,19 @@
 
   <!-- Main View Mode Switcher (뉴스 인텔리전스 / 유튜브 핫이슈) -->
   <div class="bg-white dark:bg-darkbg-card border-b border-slate-200 dark:border-darkbg-border shadow-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-2">
-      <div class="flex items-center gap-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex min-w-0 items-center justify-between py-2">
+      <div class="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto no-scrollbar">
         <button 
           onclick="switchMainView('news')" 
           id="btn-view-news"
-          class="view-tab-active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs"
+          class="view-tab-active shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs"
         >
           <span>📰</span> 14개 챕터 인텔리전스 (140)
         </button>
         <button 
           onclick="switchMainView('youtube')" 
           id="btn-view-youtube"
-          class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2"
+          class="shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-darkbg-hover transition flex items-center gap-2"
         >
           <span class="text-red-500">🎬</span> 실시간 유튜브 핫이슈 <span class="px-1.5 py-0.2 rounded-full bg-red-500/20 text-red-500 text-[10px] font-mono" id="youtubeBadge">LIVE</span>
         </button>
