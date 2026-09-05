@@ -1,0 +1,134 @@
+name: Cloudflare Live QA
+
+on:
+  push:
+    branches:
+      - 'remediation/cloudflare-live-qa-*'
+    paths:
+      - '.github/workflows/cloudflare_live_qa.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  cloudflare-live-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      BASE_URL: https://bluelab-morning-intelligence.zalsala82.workers.dev
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read expected publication identity
+        run: |
+          python - <<'PY' >> "$GITHUB_ENV"
+          import json
+          from pathlib import Path
+          m=json.loads(Path('public/data/publication_manifest.json').read_text(encoding='utf-8'))
+          print('EXPECTED_EDITION='+m['edition'])
+          print('EXPECTED_DATE='+m['edition_date'])
+          print('EXPECTED_PRODUCTION_SHA='+m['fingerprints']['production_fingerprint_sha256'])
+          print('EXPECTED_MANIFEST_SHA='+m['manifest_sha256'])
+          PY
+      - name: Cloudflare production JSON read-back
+        run: |
+          python - <<'PY'
+          import json, os, time, urllib.request
+          base=os.environ['BASE_URL'].rstrip('/')
+          expected_edition=os.environ['EXPECTED_EDITION']
+          expected_date=os.environ['EXPECTED_DATE']
+          expected_prod=os.environ['EXPECTED_PRODUCTION_SHA']
+          last=None
+          for attempt in range(1,13):
+              try:
+                  req=urllib.request.Request(base+'/data/publication_manifest.json',headers={'User-Agent':'BLUELAB-Live-QA/1.0','Cache-Control':'no-cache'})
+                  with urllib.request.urlopen(req,timeout=15) as r:
+                      remote=json.loads(r.read().decode('utf-8'))
+                  req2=urllib.request.Request(base+'/data/today.json',headers={'User-Agent':'BLUELAB-Live-QA/1.0','Cache-Control':'no-cache'})
+                  with urllib.request.urlopen(req2,timeout=15) as r:
+                      today=json.loads(r.read().decode('utf-8'))
+                  edition=remote.get('edition')
+                  date=remote.get('edition_date')
+                  prod=(remote.get('fingerprints') or {}).get('production_fingerprint_sha256')
+                  today_date=(today.get('metadata') or {}).get('date')
+                  print(f'attempt={attempt} edition={edition} date={date} today_date={today_date} production={prod}')
+                  if edition==expected_edition and date==expected_date and today_date==expected_date and prod==expected_prod:
+                      print('CLOUDFLARE_READBACK=PASS')
+                      break
+                  last=f'identity mismatch: {edition=} {date=} {today_date=} {prod=}'
+              except Exception as e:
+                  last=f'{type(e).__name__}: {e}'
+                  print(f'attempt={attempt} error={last}')
+              if attempt < 12:
+                  time.sleep(10)
+          else:
+              raise SystemExit('CLOUDFLARE_READBACK=FAIL: '+str(last))
+          PY
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Desktop and mobile top middle bottom render QA
+        run: |
+          mkdir -p qa-screenshots
+          cat > /tmp/live-qa.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const base=process.env.BASE_URL;
+          const expectedDate=process.env.EXPECTED_DATE;
+          const browser=await chromium.launch({headless:true});
+          const profiles=[
+            {name:'desktop',width:1440,height:1000},
+            {name:'mobile',width:390,height:844},
+          ];
+          for (const p of profiles) {
+            const page=await browser.newPage({viewport:{width:p.width,height:p.height}});
+            const consoleErrors=[];
+            page.on('console',m=>{ if(m.type()==='error') consoleErrors.push(m.text()); });
+            const resp=await page.goto(base,{waitUntil:'domcontentloaded',timeout:60000});
+            if(!resp || !resp.ok()) throw new Error(`${p.name}: root HTTP ${resp?.status()}`);
+            await page.waitForFunction(() => {
+              const el=document.querySelector('#headerDateText');
+              return el && !el.textContent.includes('로딩 중') && document.querySelectorAll('.article-row').length > 0;
+            },{timeout:60000});
+            const state=await page.evaluate((expectedDate)=>({
+              text:document.body.innerText,
+              articles:document.querySelectorAll('.article-row').length,
+              chapterTabs:document.querySelectorAll('.chapter-tab').length,
+              scrollWidth:document.documentElement.scrollWidth,
+              clientWidth:document.documentElement.clientWidth,
+              height:document.documentElement.scrollHeight,
+              date:document.querySelector('#headerDateText')?.textContent||'',
+            }),expectedDate);
+            if(!state.date.includes(expectedDate)) throw new Error(`${p.name}: edition not rendered: ${state.date}`);
+            if(state.articles < 150) throw new Error(`${p.name}: rendered article rows=${state.articles} < 150`);
+            if(state.chapterTabs < 16) throw new Error(`${p.name}: chapter tabs=${state.chapterTabs} < 16 (all + 15 expected)`);
+            for (const needle of ['인천 서구 검단','NEXT SIGNALS']) {
+              if(!state.text.includes(needle)) throw new Error(`${p.name}: missing ${needle}`);
+            }
+            if(state.scrollWidth > state.clientWidth + 2) throw new Error(`${p.name}: horizontal overflow ${state.scrollWidth} > ${state.clientWidth}`);
+            await page.evaluate(()=>scrollTo(0,0));
+            await page.screenshot({path:`qa-screenshots/${p.name}-top.png`,fullPage:false});
+            await page.evaluate(()=>scrollTo(0,Math.floor((document.documentElement.scrollHeight-innerHeight)/2)));
+            await page.waitForTimeout(500);
+            await page.screenshot({path:`qa-screenshots/${p.name}-middle.png`,fullPage:false});
+            await page.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight));
+            await page.waitForTimeout(500);
+            await page.screenshot({path:`qa-screenshots/${p.name}-bottom.png`,fullPage:false});
+            console.log(`${p.name.toUpperCase()}_QA=PASS articles=${state.articles} tabs=${state.chapterTabs} height=${state.height} console_errors=${consoleErrors.length}`);
+            await page.close();
+          }
+          await browser.close();
+          console.log('CLOUDFLARE_BROWSER_QA=PASS');
+          JS
+          node /tmp/live-qa.mjs
+      - name: Upload live QA screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cloudflare-live-qa-screenshots
+          path: qa-screenshots/*.png
+          if-no-files-found: warn
+          retention-days: 7
