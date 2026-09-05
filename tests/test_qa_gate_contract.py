@@ -70,6 +70,12 @@ def test_valid_bundle_passes_hardened_gate(tmp_path):
     assert run_qa_gate(_write(tmp_path, _valid_bundle()))
 
 
+def test_http_429_body_validation_is_retained_as_transient_non_grounded_state(tmp_path):
+    data = _valid_bundle()
+    data["chapters"][0]["articles"][0]["fact_check"]["body_validation"] = {"status": "HTTP_429"}
+    assert run_qa_gate(_write(tmp_path, data))
+
+
 def test_top5_opinion_is_rejected_even_if_count_is_five(tmp_path):
     data = _valid_bundle()
     data["top_5_highlights"][0]["title"] = "[사설] 사실 뉴스처럼 보이는 의견"
