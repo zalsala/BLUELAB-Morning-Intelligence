@@ -46,10 +46,10 @@ jobs:
           last=None
           for attempt in range(1,13):
               try:
-                  req=urllib.request.Request(base+'/data/publication_manifest.json',headers={'User-Agent':'BLUELAB-Live-QA/1.1','Cache-Control':'no-cache'})
+                  req=urllib.request.Request(base+'/data/publication_manifest.json',headers={'User-Agent':'BLUELAB-Live-QA/1.2','Cache-Control':'no-cache'})
                   with urllib.request.urlopen(req,timeout=15) as r:
                       remote=json.loads(r.read().decode('utf-8'))
-                  req2=urllib.request.Request(base+'/data/today.json',headers={'User-Agent':'BLUELAB-Live-QA/1.1','Cache-Control':'no-cache'})
+                  req2=urllib.request.Request(base+'/data/today.json',headers={'User-Agent':'BLUELAB-Live-QA/1.2','Cache-Control':'no-cache'})
                   with urllib.request.urlopen(req2,timeout=15) as r:
                       today=json.loads(r.read().decode('utf-8'))
                   edition=remote.get('edition'); date=remote.get('edition_date')
@@ -84,6 +84,7 @@ jobs:
           const expectedDate=process.env.EXPECTED_DATE;
           const [year,month,day]=expectedDate.split('-');
           const renderedDateToken=`${year}년 ${month}월 ${day}일`;
+          const compact=s=>String(s).replace(/\s+/g,' ').trim();
           const browser=await chromium.launch({headless:true});
           const profiles=[{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844}];
           try {
@@ -112,32 +113,34 @@ jobs:
               if(state.scrollWidth > state.clientWidth + 2) throw new Error(`${p.name}: horizontal overflow ${state.scrollWidth} > ${state.clientWidth}`);
               if(pageErrors.length) throw new Error(`${p.name}: page errors: ${pageErrors.join(' | ')}`);
 
-              // Title-detail interaction: click the first article's interactive header/button and require its editorial body to become visible.
+              // The article accordion is toggled by the row's first direct DIV.
+              // Bookmark buttons deliberately stop propagation and are not the title interaction target.
               const first=page.locator('.article-row').first();
               const detail=first.locator('.editorial-content').first();
-              if(await detail.count()) {
-                const before=await detail.isVisible();
-                const clickTarget=first.locator('button').first();
-                if(await clickTarget.count()) await clickTarget.click(); else await first.click();
-                await page.waitForTimeout(250);
-                const after=await detail.isVisible();
-                if(before===after && !after) throw new Error(`${p.name}: title-detail interaction did not reveal editorial content`);
-              } else throw new Error(`${p.name}: article detail container missing`);
+              if(!(await detail.count())) throw new Error(`${p.name}: article detail container missing`);
+              const before=await detail.isVisible();
+              const accordionHeader=first.locator(':scope > div').first();
+              await accordionHeader.click();
+              await page.waitForTimeout(250);
+              const after=await detail.isVisible();
+              if(before===after || !after) throw new Error(`${p.name}: title-detail accordion did not open`);
+              await accordionHeader.click();
+              await page.waitForTimeout(150);
+              if(await detail.isVisible()) throw new Error(`${p.name}: title-detail accordion did not close`);
 
               // Exact source links must exist and be navigable HTTP(S) URLs, not Google News relays.
+              // They may reside inside collapsed details, but href must still be present in the DOM.
               const links=await page.locator('.article-row a[href]').evaluateAll(nodes=>nodes.map(a=>a.href));
               if(!links.length) throw new Error(`${p.name}: no article source links rendered`);
               const bad=links.filter(u=>!/^https?:\/\//.test(u) || /news\.google\.com/.test(u));
               if(bad.length) throw new Error(`${p.name}: invalid article links ${bad.slice(0,3).join(', ')}`);
 
-              // Final three-line summary is checked both in live JSON and visible page text.
+              // Final three-line summary must be present in live JSON and visibly rendered.
               const today=await page.evaluate(async()=>await (await fetch('/data/today.json',{cache:'no-store'})).json());
               if(!Array.isArray(today.three_line_summary)||today.three_line_summary.length!==3) throw new Error(`${p.name}: final summary is not exactly 3 lines`);
-              for(const line of today.three_line_summary) if(line && !document.body.innerText.includes(line)) {
-                // page text may normalize whitespace; compare compact form
-                const compact=s=>String(s).replace(/\s+/g,' ').trim();
-                const body=compact(await page.locator('body').innerText());
-                if(!body.includes(compact(line))) throw new Error(`${p.name}: final summary line not rendered: ${line}`);
+              const bodyText=compact(await page.locator('body').innerText());
+              for(const line of today.three_line_summary) {
+                if(line && !bodyText.includes(compact(line))) throw new Error(`${p.name}: final summary line not rendered: ${line}`);
               }
 
               await page.evaluate(()=>scrollTo(0,0)); await page.screenshot({path:`qa-screenshots/${p.name}-top.png`,fullPage:false});
