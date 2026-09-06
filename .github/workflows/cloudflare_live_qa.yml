@@ -1,0 +1,161 @@
+name: Cloudflare Live QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cloudflare_live_qa.yml'
+      - 'public/data/**'
+      - 'public/index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  cloudflare-live-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      BASE_URL: https://bluelab-morning-intelligence.zalsala82.workers.dev
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read expected publication identity
+        run: |
+          python - <<'PY' >> "$GITHUB_ENV"
+          import json
+          from pathlib import Path
+          m=json.loads(Path('public/data/publication_manifest.json').read_text(encoding='utf-8'))
+          print('EXPECTED_EDITION='+m['edition'])
+          print('EXPECTED_DATE='+m['edition_date'])
+          print('EXPECTED_PRODUCTION_SHA='+m['fingerprints']['production_fingerprint_sha256'])
+          print('EXPECTED_MANIFEST_SHA='+m['manifest_sha256'])
+          PY
+      - name: Cloudflare production JSON read-back
+        run: |
+          python - <<'PY'
+          import json, os, time, urllib.request
+          base=os.environ['BASE_URL'].rstrip('/')
+          expected_edition=os.environ['EXPECTED_EDITION']
+          expected_date=os.environ['EXPECTED_DATE']
+          expected_prod=os.environ['EXPECTED_PRODUCTION_SHA']
+          last=None
+          for attempt in range(1,13):
+              try:
+                  req=urllib.request.Request(base+'/data/publication_manifest.json',headers={'User-Agent':'BLUELAB-Live-QA/1.1','Cache-Control':'no-cache'})
+                  with urllib.request.urlopen(req,timeout=15) as r:
+                      remote=json.loads(r.read().decode('utf-8'))
+                  req2=urllib.request.Request(base+'/data/today.json',headers={'User-Agent':'BLUELAB-Live-QA/1.1','Cache-Control':'no-cache'})
+                  with urllib.request.urlopen(req2,timeout=15) as r:
+                      today=json.loads(r.read().decode('utf-8'))
+                  edition=remote.get('edition'); date=remote.get('edition_date')
+                  prod=(remote.get('fingerprints') or {}).get('production_fingerprint_sha256')
+                  today_date=(today.get('metadata') or {}).get('date')
+                  summary=today.get('three_line_summary') or []
+                  story_files=(today.get('metadata') or {}).get('story_files') or []
+                  print(f'attempt={attempt} edition={edition} date={date} today_date={today_date} production={prod}')
+                  if len(summary)!=3: raise RuntimeError(f'live summary lines={len(summary)} != 3')
+                  if story_files != [f'stories-{i}.json' for i in range(1,6)]: raise RuntimeError(f'live story files mismatch: {story_files}')
+                  if edition==expected_edition and date==expected_date and today_date==expected_date and prod==expected_prod:
+                      print('CLOUDFLARE_READBACK=PASS')
+                      break
+                  last=f'identity mismatch: {edition=} {date=} {today_date=} {prod=}'
+              except Exception as e:
+                  last=f'{type(e).__name__}: {e}'
+                  print(f'attempt={attempt} error={last}')
+              if attempt < 12: time.sleep(10)
+          else:
+              raise SystemExit('CLOUDFLARE_READBACK=FAIL: '+str(last))
+          PY
+      - name: Install Playwright Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Desktop and mobile live interaction QA
+        run: |
+          mkdir -p qa-screenshots
+          cat > .live-qa.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const base=process.env.BASE_URL;
+          const expectedDate=process.env.EXPECTED_DATE;
+          const [year,month,day]=expectedDate.split('-');
+          const renderedDateToken=`${year}년 ${month}월 ${day}일`;
+          const browser=await chromium.launch({headless:true});
+          const profiles=[{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844}];
+          try {
+            for (const p of profiles) {
+              const page=await browser.newPage({viewport:{width:p.width,height:p.height}});
+              const pageErrors=[]; page.on('pageerror',e=>pageErrors.push(String(e)));
+              const resp=await page.goto(base,{waitUntil:'domcontentloaded',timeout:60000});
+              if(!resp || !resp.ok()) throw new Error(`${p.name}: root HTTP ${resp?.status()}`);
+              await page.waitForFunction(() => {
+                const el=document.querySelector('#headerDateText');
+                return el && !el.textContent.includes('로딩 중') && document.querySelectorAll('.article-row').length > 0;
+              },{timeout:60000});
+              const state=await page.evaluate(()=>({
+                text:document.body.innerText,
+                articles:document.querySelectorAll('.article-row').length,
+                chapterTabs:document.querySelectorAll('.chapter-tab').length,
+                scrollWidth:document.documentElement.scrollWidth,
+                clientWidth:document.documentElement.clientWidth,
+                height:document.documentElement.scrollHeight,
+                date:document.querySelector('#headerDateText')?.textContent||'',
+              }));
+              if(!state.date.includes(renderedDateToken)) throw new Error(`${p.name}: edition not rendered: ${state.date}`);
+              if(state.articles < 150) throw new Error(`${p.name}: rendered article rows=${state.articles} < 150`);
+              if(state.chapterTabs < 16) throw new Error(`${p.name}: chapter tabs=${state.chapterTabs} < 16`);
+              for (const needle of ['인천 서구 검단','NEXT SIGNALS']) if(!state.text.includes(needle)) throw new Error(`${p.name}: missing ${needle}`);
+              if(state.scrollWidth > state.clientWidth + 2) throw new Error(`${p.name}: horizontal overflow ${state.scrollWidth} > ${state.clientWidth}`);
+              if(pageErrors.length) throw new Error(`${p.name}: page errors: ${pageErrors.join(' | ')}`);
+
+              // Title-detail interaction: click the first article's interactive header/button and require its editorial body to become visible.
+              const first=page.locator('.article-row').first();
+              const detail=first.locator('.editorial-content').first();
+              if(await detail.count()) {
+                const before=await detail.isVisible();
+                const clickTarget=first.locator('button').first();
+                if(await clickTarget.count()) await clickTarget.click(); else await first.click();
+                await page.waitForTimeout(250);
+                const after=await detail.isVisible();
+                if(before===after && !after) throw new Error(`${p.name}: title-detail interaction did not reveal editorial content`);
+              } else throw new Error(`${p.name}: article detail container missing`);
+
+              // Exact source links must exist and be navigable HTTP(S) URLs, not Google News relays.
+              const links=await page.locator('.article-row a[href]').evaluateAll(nodes=>nodes.map(a=>a.href));
+              if(!links.length) throw new Error(`${p.name}: no article source links rendered`);
+              const bad=links.filter(u=>!/^https?:\/\//.test(u) || /news\.google\.com/.test(u));
+              if(bad.length) throw new Error(`${p.name}: invalid article links ${bad.slice(0,3).join(', ')}`);
+
+              // Final three-line summary is checked both in live JSON and visible page text.
+              const today=await page.evaluate(async()=>await (await fetch('/data/today.json',{cache:'no-store'})).json());
+              if(!Array.isArray(today.three_line_summary)||today.three_line_summary.length!==3) throw new Error(`${p.name}: final summary is not exactly 3 lines`);
+              for(const line of today.three_line_summary) if(line && !document.body.innerText.includes(line)) {
+                // page text may normalize whitespace; compare compact form
+                const compact=s=>String(s).replace(/\s+/g,' ').trim();
+                const body=compact(await page.locator('body').innerText());
+                if(!body.includes(compact(line))) throw new Error(`${p.name}: final summary line not rendered: ${line}`);
+              }
+
+              await page.evaluate(()=>scrollTo(0,0)); await page.screenshot({path:`qa-screenshots/${p.name}-top.png`,fullPage:false});
+              await page.evaluate(()=>scrollTo(0,Math.floor((document.documentElement.scrollHeight-innerHeight)/2))); await page.waitForTimeout(300); await page.screenshot({path:`qa-screenshots/${p.name}-middle.png`,fullPage:false});
+              await page.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight)); await page.waitForTimeout(300); await page.screenshot({path:`qa-screenshots/${p.name}-bottom.png`,fullPage:false});
+              console.log(`${p.name.toUpperCase()}_QA=PASS articles=${state.articles} tabs=${state.chapterTabs} links=${links.length}`);
+              await page.close();
+            }
+          } finally { await browser.close(); }
+          console.log('CLOUDFLARE_BROWSER_QA=PASS');
+          JS
+          node .live-qa.mjs
+          rm -f .live-qa.mjs
+      - name: Upload live QA screenshots
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cloudflare-live-qa-screenshots
+          path: qa-screenshots/*.png
+          if-no-files-found: warn
+          retention-days: 7
