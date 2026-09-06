@@ -369,7 +369,7 @@
       </nav>
 
       <!-- Chapter Blocks & Compact Article List Stream (공간 효율 극대화 챕터 블록형) -->
-      <section id="chapterBlocksContainer" class="space-y-8 pb-16">
+      <section id="chapterBlocksContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-5 pb-16">
         <!-- Dynamic Chapter Blocks with Accordion Rows -->
       </section>
 
@@ -424,6 +424,7 @@
     let isBookmarkOnly = false;
     let bookmarkedIds = new Set(JSON.parse(localStorage.getItem('bluelab_bookmarks') || '[]'));
     let isAllExpanded = false;
+    let expandedChapterLists = new Set();
     let currentFontSize = localStorage.getItem('bluelab_fontsize') || 'normal';
     let currentView = 'news';
 
@@ -817,6 +818,9 @@
 
       const container = document.getElementById('chapterBlocksContainer');
       const chapters = briefingData.chapters || [];
+      container.className = currentChapterFilter === 'all'
+        ? 'grid grid-cols-1 lg:grid-cols-2 gap-5 pb-16 items-start'
+        : 'grid grid-cols-1 gap-5 pb-16';
       const searchTerm = (document.getElementById('searchInput').value || document.getElementById('searchInputMobile').value || '').trim().toLowerCase();
 
       let chaptersToRender = chapters;
@@ -869,7 +873,7 @@
           const keywords = art.keywords || [];
 
           return `
-            <div id="art-row-${art.id}" class="article-row border-b border-slate-100 dark:border-slate-800 last:border-b-0 transition duration-150">
+            <div id="art-row-${art.id}" class="article-row ${(!searchTerm && !currentKeywordFilter && !isBookmarkOnly && idx >= 5 && !expandedChapterLists.has(ch.id)) ? 'hidden' : ''} border-b border-slate-100 dark:border-slate-800 last:border-b-0 transition duration-150">
               
               <!-- Compact List Row Header (Click to Open Editorial Dropdown) -->
               <div onclick="toggleAccordion('${art.id}')" class="py-3.5 px-4 sm:px-5 cursor-pointer hover:bg-sky-500/5 dark:hover:bg-darkbg-hover/70 transition flex items-center justify-between gap-3 group select-none">
@@ -1023,7 +1027,7 @@
                   onclick="toggleChapterExpand('${ch.id}')"
                   class="px-2.5 py-1 text-xs font-bold rounded-lg border border-slate-300 dark:border-darkbg-border text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-darkbg-hover transition"
                 >
-                  펼치기/접기
+                  상세 전체 열기/닫기
                 </button>
               </div>
             </div>
@@ -1032,6 +1036,19 @@
             <div class="divide-y divide-slate-100 dark:divide-slate-800">
               ${chapterRowsHTML}
             </div>
+
+            ${arts.length > 5 && !searchTerm && !currentKeywordFilter && !isBookmarkOnly ? `
+            <div class="border-t border-slate-200 dark:border-darkbg-border p-3 bg-slate-50/70 dark:bg-darkbg-subtle/40">
+              <button
+                onclick="toggleChapterList('${ch.id}')"
+                class="w-full py-2.5 rounded-xl border border-sky-300/70 dark:border-sky-700/70 bg-white dark:bg-darkbg-card hover:bg-sky-50 dark:hover:bg-sky-950/30 text-sky-700 dark:text-sky-300 text-sm font-black transition flex items-center justify-center gap-2"
+                aria-expanded="${expandedChapterLists.has(ch.id) ? 'true' : 'false'}"
+              >
+                <span class="w-6 h-6 rounded-full bg-sky-500 text-white inline-flex items-center justify-center text-lg leading-none">${expandedChapterLists.has(ch.id) ? '−' : '+'}</span>
+                <span>${expandedChapterLists.has(ch.id) ? '나머지 기사 접기' : `나머지 ${arts.length - 5}개 기사 더 보기`}</span>
+              </button>
+            </div>
+            ` : ''}
 
           </div>
         `);
@@ -1049,6 +1066,13 @@
       } else {
         container.innerHTML = htmlParts.join('');
       }
+    }
+
+    // Show/hide the second half of a chapter list.
+    function toggleChapterList(chapterId) {
+      if (expandedChapterLists.has(chapterId)) expandedChapterLists.delete(chapterId);
+      else expandedChapterLists.add(chapterId);
+      renderArticles();
     }
 
     // Render YouTube Hot Issues View
@@ -1157,6 +1181,8 @@
 
     function scrollToArticle(articleId) {
       switchMainView('news');
+      const ownerChapter = (briefingData?.chapters || []).find(ch => (ch.articles || []).some(a => a.id === articleId));
+      if (ownerChapter) expandedChapterLists.add(ownerChapter.id);
       filterByChapter('all');
       setTimeout(() => {
         const row = document.getElementById(`art-row-${articleId}`);
