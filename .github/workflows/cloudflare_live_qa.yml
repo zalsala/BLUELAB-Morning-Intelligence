@@ -1,4 +1,5 @@
 name: Cloudflare Live QA
+# 2026-09-07 edition verification trigger
 
 on:
   push:
@@ -113,8 +114,6 @@ jobs:
               if(state.scrollWidth > state.clientWidth + 2) throw new Error(`${p.name}: horizontal overflow ${state.scrollWidth} > ${state.clientWidth}`);
               if(pageErrors.length) throw new Error(`${p.name}: page errors: ${pageErrors.join(' | ')}`);
 
-              // The article accordion is toggled by the row's first direct DIV.
-              // Bookmark buttons deliberately stop propagation and are not the title interaction target.
               const first=page.locator('.article-row').first();
               const detail=first.locator('.editorial-content').first();
               if(!(await detail.count())) throw new Error(`${p.name}: article detail container missing`);
@@ -128,14 +127,11 @@ jobs:
               await page.waitForTimeout(150);
               if(await detail.isVisible()) throw new Error(`${p.name}: title-detail accordion did not close`);
 
-              // Exact source links must exist and be navigable HTTP(S) URLs, not Google News relays.
-              // They may reside inside collapsed details, but href must still be present in the DOM.
               const links=await page.locator('.article-row a[href]').evaluateAll(nodes=>nodes.map(a=>a.href));
               if(!links.length) throw new Error(`${p.name}: no article source links rendered`);
               const bad=links.filter(u=>!/^https?:\/\//.test(u) || /news\.google\.com/.test(u));
               if(bad.length) throw new Error(`${p.name}: invalid article links ${bad.slice(0,3).join(', ')}`);
 
-              // Final three-line summary must be present in live JSON and visibly rendered.
               const today=await page.evaluate(async()=>await (await fetch('/data/today.json',{cache:'no-store'})).json());
               if(!Array.isArray(today.three_line_summary)||today.three_line_summary.length!==3) throw new Error(`${p.name}: final summary is not exactly 3 lines`);
               const bodyText=compact(await page.locator('body').innerText());
