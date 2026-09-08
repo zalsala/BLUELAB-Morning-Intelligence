@@ -1,20 +1,20 @@
 [
   {
     "section": "인공지능 & 딥테크",
-    "title": "NS홈쇼핑, 소상공인에 생성형 AI 교육…상품 홍보·콘텐츠 제작 돕는다",
-    "summary": "지디넷코리아 보도에 따르면, ‘NS홈쇼핑, 소상공인에 생성형 AI 교육…상품 홍보·콘텐츠 제작 돕는다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "지디넷코리아",
-    "url": "https://zdnet.co.kr/view/?no=20260907195110",
+    "title": "모든 장면을 생성형 AI로…90분 장편 SF ‘스틸레이’ 내달 개봉",
+    "summary": "중앙일보 보도에 따르면, ‘모든 장면을 생성형 AI로…90분 장편 SF ‘스틸레이’ 내달 개봉’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "중앙일보",
+    "url": "https://www.joongang.co.kr/article/25459811",
     "date": "Mon, 07 Se",
-    "status": "CONFIRMED",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
     "section": "인공지능 & 딥테크",
-    "title": "가비아, 언론사 전용 생성형 AI 인프라 구축",
-    "summary": "전자신문 보도에 따르면, ‘가비아, 언론사 전용 생성형 AI 인프라 구축’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "전자신문",
-    "url": "https://www.etnews.com/20260907000036",
+    "title": "NS홈쇼핑, 소상공인에 생성형 AI 교육…상품 홍보·콘텐츠 제작 돕는다",
+    "summary": "지디넷코리아 보도에 따르면, ‘NS홈쇼핑, 소상공인에 생성형 AI 교육…상품 홍보·콘텐츠 제작 돕는다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "지디넷코리아",
+    "url": "https://zdnet.co.kr/view/?no=20260907195110",
     "date": "Mon, 07 Se",
     "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
@@ -51,30 +51,10 @@
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "‘아스트라 효과’에 반도체株 불기둥…삼성전자·SK하이닉스 4% 안팎↑[마켓시그널]",
-    "summary": "서울경제 보도에 따르면, ‘‘아스트라 효과’에 반도체株 불기둥…삼성전자·SK하이닉스 4% 안팎↑[마켓시그널]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "서울경제",
-    "url": "https://www.sedaily.com/article/20087776",
-    "date": "Sun, 06 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "반도체 & 첨단제조",
     "title": "SK하이닉스 주가 전망: 메모리 반도체 재고 10일 치 미만으로 감소, 주가 185달러 돌파 전망",
-    "summary": "원문 매체 보도에 따르면, ‘SK하이닉스 주가 전망: 메모리 반도체 재고 10일 치 미만으로 감소, 주가 185달러 돌파 전망’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "tradingkey.com",
+    "summary": "TradingKey 보도에 따르면, ‘SK하이닉스 주가 전망: 메모리 반도체 재고 10일 치 미만으로 감소, 주가 185달러 돌파 전망’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "TradingKey",
     "url": "https://www.tradingkey.com/kr/analysis/stocks/us-stocks/262154474-sk-hynix-skhy-memory-inventory-shortage-kb-securities-samsung-hbm4-nand-185-tradingkey",
-    "date": "Mon, 07 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "반도체 & 첨단제조",
-    "title": "삼전닉스 메모리 재고 어떻길래…“내년 역대급 공급난 가능성”",
-    "summary": "중앙일보 보도에 따르면, ‘삼전닉스 메모리 재고 어떻길래…“내년 역대급 공급난 가능성”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "중앙일보",
-    "url": "https://www.joongang.co.kr/article/25459763",
     "date": "Mon, 07 Se",
     "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
@@ -114,7 +94,27 @@
     "title": "AI의 네번째 분기점?…자극받은 투자자에 반도체 '활짝' - 머니투데이",
     "summary": "머니투데이 보도에 따르면, ‘AI의 네번째 분기점?…자극받은 투자자에 반도체 '활짝'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "머니투데이",
-    "url": "https://www.mt.co.kr/index.php/stock/2026/09/07/2026090716070658057",
+    "url": "https://www.mt.co.kr/stock/2026/09/07/2026090716070658057",
+    "date": "Mon, 07 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "‘아스트라 효과’에 반도체株 불기둥…삼성전자·SK하이닉스 4% 안팎↑[마켓시그널]",
+    "summary": "서울경제 보도에 따르면, ‘‘아스트라 효과’에 반도체株 불기둥…삼성전자·SK하이닉스 4% 안팎↑[마켓시그널]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "서울경제",
+    "url": "https://www.sedaily.com/article/20087776",
+    "date": "Sun, 06 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "반도체 주주환원이 끌어내린 환율…‘강한 원화’ 경제 판도 바꾼다",
+    "summary": "디지털데일리 보도에 따르면, ‘반도체 주주환원이 끌어내린 환율…‘강한 원화’ 경제 판도 바꾼다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "디지털데일리",
+    "url": "https://www.ddaily.co.kr/page/view/2026090717044274389",
     "date": "Mon, 07 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "발행일 확인 필요"
@@ -131,12 +131,22 @@
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "반도체 주주환원이 끌어내린 환율…‘강한 원화’ 경제 판도 바꾼다",
-    "summary": "디지털데일리 보도에 따르면, ‘반도체 주주환원이 끌어내린 환율…‘강한 원화’ 경제 판도 바꾼다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "디지털데일리",
-    "url": "https://www.ddaily.co.kr/page/view/2026090717044274389",
+    "title": "GPT6발 반도체 랠리…삼성전자·SK하이닉스 강세 - 머니투데이",
+    "summary": "머니투데이 보도에 따르면, ‘GPT6발 반도체 랠리…삼성전자·SK하이닉스 강세’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "머니투데이",
+    "url": "https://www.mt.co.kr/index.php/stock/2026/09/07/2026090709253749977",
     "date": "Mon, 07 Se",
-    "status": "PARTIALLY CONFIRMED",
+    "status": "CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "바이오 & 헬스케어",
+    "title": "[넥스트 K-제약바이오①] 초기 단계에 머무는 AI 신약개발...\"전 과정으로 활용 넓혀야\"",
+    "summary": "원문 매체 보도에 따르면, ‘초기 단계에 머무는 AI 신약개발...\"전 과정으로 활용 넓혀야\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "news2day.co.kr",
+    "url": "https://www.news2day.co.kr/article/20260907500208",
+    "date": "Mon, 07 Se",
+    "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
@@ -152,8 +162,8 @@
   {
     "section": "바이오 & 헬스케어",
     "title": "홍천 바이오기업 엘앤피솔루션, 10억원 규모 정부 신약개발 과제 선정",
-    "summary": "원문 매체 보도에 따르면, ‘홍천 바이오기업 엘앤피솔루션, 10억원 규모 정부 신약개발 과제 선정’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "shinailbo.co.kr",
+    "summary": "신아일보 보도에 따르면, ‘홍천 바이오기업 엘앤피솔루션, 10억원 규모 정부 신약개발 과제 선정’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "신아일보",
     "url": "https://www.shinailbo.co.kr/news/articleView.html?idxno=5059392",
     "date": "Mon, 07 Se",
     "status": "PARTIALLY CONFIRMED",
@@ -177,26 +187,6 @@
     "url": "https://www.newsway.co.kr/news/view?ud=2026090714350591750",
     "date": "Mon, 07 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "\"신약개발 등 체질 개선 나선다\"…정부, 제약산업 구조 재편 '신호탄'",
-    "summary": "청년일보 보도에 따르면, ‘\"신약개발 등 체질 개선 나선다\"…정부, 제약산업 구조 재편 '신호탄'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "청년일보",
-    "url": "https://www.youthdaily.co.kr/news/article.html?no=226457",
-    "date": "Sun, 06 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "[넥스트 K-제약바이오①] 초기 단계에 머무는 AI 신약개발...\"전 과정으로 활용 넓혀야\"",
-    "summary": "뉴스투데이 보도에 따르면, ‘초기 단계에 머무는 AI 신약개발...\"전 과정으로 활용 넓혀야\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스투데이",
-    "url": "https://www.news2day.co.kr/article/20260907500208",
-    "date": "Mon, 07 Se",
-    "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
@@ -240,23 +230,23 @@
     "freshness_note": "발행일 확인 필요"
   },
   {
-    "section": "에너지 & 모빌리티",
-    "title": "‘황금빛 자율주행 택시’ 테슬라 사이버캡 안전기준 조사",
-    "summary": "애틀랜타 중앙일보 보도에 따르면, ‘‘황금빛 자율주행 택시’ 테슬라 사이버캡 안전기준 조사’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "애틀랜타 중앙일보",
-    "url": "https://www.atlantajoongang.com/142775",
+    "section": "바이오 & 헬스케어",
+    "title": "[분석] 바이오시밀러 넘어 신약·CDMO까지…K바이오, 수출산업의 새 축 되나",
+    "summary": "폴리뉴스 Polinews 보도에 따르면, ‘바이오시밀러 넘어 신약·CDMO까지…K바이오, 수출산업의 새 축 되나’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "폴리뉴스 Polinews",
+    "url": "https://www.polinews.co.kr/news/articleView.html?idxno=742466",
     "date": "Mon, 07 Se",
-    "status": "CONFIRMED",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
     "section": "에너지 & 모빌리티",
-    "title": "[TECH한주] 중국 전기차 공세를 꺾는 K-섀시의 안전 갑옷… ‘HL만도’가 완성한 바이와이어 혁신",
-    "summary": "테크월드 보도에 따르면, ‘중국 전기차 공세를 꺾는 K-섀시의 안전 갑옷… ‘HL만도’가 완성한 바이와이어 혁신’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "테크월드",
-    "url": "https://www.epnc.co.kr/news/articleView.html?idxno=406571",
-    "date": "Sun, 06 Se",
-    "status": "PARTIALLY CONFIRMED",
+    "title": "타타대우모빌리티·라이드플럭스, 레벨2+ 양산 개발…레벨4 자율주행트럭 사업화 추진",
+    "summary": "원문 매체 보도에 따르면, ‘타타대우모빌리티·라이드플럭스, 레벨2+ 양산 개발…레벨4 자율주행트럭 사업화 추진’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "motormag.co.kr",
+    "url": "https://www.motormag.co.kr/news/articleView.html?idxno=22054",
+    "date": "Mon, 07 Se",
+    "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
@@ -266,7 +256,17 @@
     "source": "뉴시스",
     "url": "https://www.newsis.com/view/NISX20260904_0003777077",
     "date": "Sat, 05 Se",
-    "status": "PARTIALLY CONFIRMED",
+    "status": "CONFIRMED",
+    "freshness_note": "발행일 확인 필요"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "‘황금빛 자율주행 택시’ 테슬라 사이버캡 안전기준 조사",
+    "summary": "원문 매체 보도에 따르면, ‘‘황금빛 자율주행 택시’ 테슬라 사이버캡 안전기준 조사’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "atlantajoongang.com",
+    "url": "https://www.atlantajoongang.com/142775",
+    "date": "Mon, 07 Se",
+    "status": "CONFIRMED",
     "freshness_note": "발행일 확인 필요"
   },
   {
