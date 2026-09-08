@@ -69,7 +69,19 @@ def is_top5_title_eligible(title: str) -> bool:
 
 
 def is_top5_eligible(article: Article) -> bool:
-    return is_top5_title_eligible(article.title)
+    """Fail closed on explicit exact-body event mismatches for the TOP5 surface.
+
+    Body access failures (403/paywall/timeout/no qualified body) remain eligible
+    when other evidence is sufficient, because the body collector is designed
+    to permit safe headline fallback. EVENT_MISMATCH is different: it means a
+    body was retrieved but did not match the selected event, so that item must
+    not receive headline prominence.
+    """
+    if not is_top5_title_eligible(article.title):
+        return False
+    fact = article.fact_check or {}
+    body_status = (fact.get("body_validation") or {}).get("status", "NO_QUALIFIED_BODY")
+    return body_status != "EVENT_MISMATCH"
 
 
 def _recency_points(published_at: str, now: datetime | None = None) -> float:
@@ -121,6 +133,7 @@ def select_top5_v2(articles: Iterable[Article], now: datetime | None = None) -> 
 
     Rules:
     - explicitly labelled opinion/editorial pieces are ineligible for TOP5;
+    - an explicit exact-body EVENT_MISMATCH is ineligible for TOP5;
     - score eligible articles deterministically;
     - first pass allows at most one item per chapter;
     - PARTIAL articles remain eligible but pay an evidence penalty;
