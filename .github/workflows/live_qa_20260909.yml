@@ -18,15 +18,16 @@ jobs:
       - name: Verify live JSON identity
         run: |
           python - <<'PY'
-          import json,urllib.request,time
+          import json,os,urllib.request,time
           from pathlib import Path
+          base=os.environ['BASE_URL'].rstrip('/')
           local=json.loads(Path('public/data/publication_manifest.json').read_text())
           expected=local['edition_date']; expected_prod=local['fingerprints']['production_fingerprint_sha256']
           last=None
           for i in range(12):
               try:
                   def get(p):
-                      r=urllib.request.Request('$BASE_URL'+p,headers={'User-Agent':'BLUELAB-Live-QA/20260909','Cache-Control':'no-cache'})
+                      r=urllib.request.Request(base+p,headers={'User-Agent':'BLUELAB-Live-QA/20260909','Cache-Control':'no-cache'})
                       return json.loads(urllib.request.urlopen(r,timeout=15).read())
                   remote=get('/data/publication_manifest.json'); today=get('/data/today.json')
                   if remote.get('edition_date')==expected and (remote.get('fingerprints') or {}).get('production_fingerprint_sha256')==expected_prod and (today.get('metadata') or {}).get('date')==expected and len(today.get('three_line_summary') or [])==3:
