@@ -1,0 +1,105 @@
+name: Expanded Cloudflare Live QA Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/expanded_cloudflare_live_qa_once.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  live-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      BASE_URL: https://bluelab-morning-intelligence.zalsala82.workers.dev
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - name: Read expected production identity
+        run: |
+          python - <<'PY' >> "$GITHUB_ENV"
+          import json
+          from pathlib import Path
+          m=json.loads(Path('public/data/publication_manifest.json').read_text(encoding='utf-8'))
+          print('EXPECTED_EDITION='+m['edition'])
+          print('EXPECTED_DATE='+m['edition_date'])
+          print('EXPECTED_PRODUCTION_SHA='+m['fingerprints']['production_fingerprint_sha256'])
+          PY
+      - name: Cloudflare JSON read-back
+        run: |
+          python - <<'PY'
+          import json, os, time, urllib.request
+          base=os.environ['BASE_URL'].rstrip('/'); last=None
+          for attempt in range(1,13):
+              try:
+                  def get(path):
+                      req=urllib.request.Request(base+path,headers={'User-Agent':'BLUELAB-Expanded-Live-QA/1.0','Cache-Control':'no-cache'})
+                      with urllib.request.urlopen(req,timeout=15) as r:return json.loads(r.read().decode('utf-8'))
+                  m=get('/data/publication_manifest.json'); d=get('/data/today.json')
+                  prod=(m.get('fingerprints') or {}).get('production_fingerprint_sha256')
+                  meta=d.get('metadata') or {}; chapters=d.get('chapters') or []
+                  general=[c for c in chapters if c.get('id')!='vision-research-watch']; watch=[c for c in chapters if c.get('id')=='vision-research-watch']
+                  ok=(m.get('edition')==os.environ['EXPECTED_EDITION'] and m.get('edition_date')==os.environ['EXPECTED_DATE'] and prod==os.environ['EXPECTED_PRODUCTION_SHA'] and meta.get('date')==os.environ['EXPECTED_DATE'] and len(general)==15 and len(chapters)==16 and len(watch)==1 and len(d.get('three_line_summary') or [])==3)
+                  print(f"attempt={attempt} edition={m.get('edition')} date={meta.get('date')} general={len(general)} total={len(chapters)} prod={prod}")
+                  if ok:
+                      print('CLOUDFLARE_EXPANDED_READBACK=PASS');break
+                  last='identity/count mismatch'
+              except Exception as e:
+                  last=f'{type(e).__name__}: {e}'; print('attempt',attempt,'error',last)
+              if attempt<12:time.sleep(10)
+          else: raise SystemExit('CLOUDFLARE_EXPANDED_READBACK=FAIL '+str(last))
+          PY
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Desktop/mobile browser QA
+        run: |
+          cat > .expanded-live-qa.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const base=process.env.BASE_URL; const expected=process.env.EXPECTED_DATE;
+          const browser=await chromium.launch({headless:true});
+          try {
+            for (const p of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844}]) {
+              const page=await browser.newPage({viewport:{width:p.width,height:p.height}}); const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
+              const r=await page.goto(base,{waitUntil:'domcontentloaded',timeout:60000}); if(!r?.ok()) throw new Error(`${p.name} HTTP ${r?.status()}`);
+              await page.waitForFunction(()=>document.querySelectorAll('.article-row').length>=160,{timeout:60000});
+              const state=await page.evaluate(()=>({
+                text:document.body.innerText,
+                articleRows:document.querySelectorAll('.article-row').length,
+                visibleRows:[...document.querySelectorAll('.article-row')].filter(el=>getComputedStyle(el).display!=='none').length,
+                tabs:document.querySelectorAll('.chapter-tab').length,
+                chapters:document.querySelectorAll('[id^="chapter-block-"]').length,
+                links:[...document.querySelectorAll('.article-row a[href]')].length,
+                sw:document.documentElement.scrollWidth,cw:document.documentElement.clientWidth,
+                date:document.querySelector('#headerDateText')?.textContent||''
+              }));
+              if(state.articleRows!==160) throw new Error(`${p.name}: rows=${state.articleRows}`);
+              if(state.tabs<17) throw new Error(`${p.name}: tabs=${state.tabs}`);
+              if(state.chapters!==16) throw new Error(`${p.name}: chapters=${state.chapters}`);
+              if(!state.text.includes('안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리')) throw new Error(`${p.name}: general vision chapter missing`);
+              if(!state.text.includes('VISION RESEARCH WATCH')) throw new Error(`${p.name}: research watch missing`);
+              if(!state.text.includes('NEXT SIGNALS')) throw new Error(`${p.name}: NEXT SIGNALS missing`);
+              if(state.sw>state.cw+2) throw new Error(`${p.name}: horizontal overflow`);
+              if(errors.length) throw new Error(`${p.name}: ${errors.join(' | ')}`);
+              const first=page.locator('.article-row').first(); const detail=first.locator('.editorial-content').first();
+              if(!(await detail.count())) throw new Error(`${p.name}: detail missing`);
+              await first.locator(':scope > div').first().click(); await page.waitForTimeout(150);
+              if(await detail.evaluate(el=>el.classList.contains('hidden'))) throw new Error(`${p.name}: title-detail open failed`);
+              await first.locator(':scope > div').first().click(); await page.waitForTimeout(100);
+              if(!(await detail.evaluate(el=>el.classList.contains('hidden')))) throw new Error(`${p.name}: title-detail close failed`);
+              const href=await page.locator('.article-row a[href]').first().getAttribute('href'); if(!href?.startsWith('http')) throw new Error(`${p.name}: source link invalid`);
+              const plus=page.getByRole('button',{name:/나머지 .*개 기사 더 보기/}).first();
+              if(await plus.count()){await plus.click();await page.waitForTimeout(150);}
+              console.log(`${p.name.toUpperCase()}_LIVE_QA=PASS rows=${state.articleRows} tabs=${state.tabs} chapters=${state.chapters} sourceLinks=${state.links}`);
+              await page.close();
+            }
+            console.log('CLOUDFLARE_EXPANDED_BROWSER_QA=PASS');
+          } finally {await browser.close();}
+          JS
+          node .expanded-live-qa.mjs
