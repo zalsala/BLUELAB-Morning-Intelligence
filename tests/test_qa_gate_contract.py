@@ -8,7 +8,7 @@ CHAPTER_IDS = [
     "top-headlines", "politics-policy", "macro-finance", "global-affairs", "tech-it",
     "ai-deeptech", "semiconductors-mfg", "bio-healthcare", "energy-mobility",
     "realestate-construction", "retail-consumer", "society-environment",
-    "culture-entertainment", "science-future",
+    "culture-entertainment", "vision-optometry-ophthalmology", "science-future",
 ]
 
 

@@ -1,6 +1,6 @@
 """Write and validate the five canonical active general-news story bundles.
 
-Exactly five ``stories-N.json`` files preserve the 140 general-news records.
+Exactly five ``stories-N.json`` files preserve the 150 general-news records.
 The independent VISION RESEARCH WATCH chapter is intentionally outside these
 five legacy bundles but remains inside today.json for live rendering.
 """
@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
@@ -33,11 +34,15 @@ def _fact_status(article: Any) -> str:
 
 
 def _freshness(article: Any, edition_date: str) -> str:
-    published = (getattr(article, "published_at", "") or "")[:10]
+    raw = (getattr(article, "published_at", "") or "").strip()
     try:
-        age = (datetime.fromisoformat(edition_date).date() - datetime.fromisoformat(published).date()).days
+        published = datetime.fromisoformat(raw.replace("Z", "+00:00"))
     except Exception:
-        return "발행일 확인 필요"
+        try:
+            published = parsedate_to_datetime(raw)
+        except Exception:
+            return "발행일 확인 필요"
+    age = (datetime.fromisoformat(edition_date).date() - published.date()).days
     if age <= 1:
         return "NEW SINCE LAST BRIEFING"
     if age <= 3:
@@ -67,24 +72,24 @@ def _story(article: Any, edition_date: str) -> dict[str, Any]:
 def write_story_bundles(bundle: Any, data_dir: Path = DATA_DIR) -> list[str]:
     data_dir.mkdir(parents=True, exist_ok=True)
     articles = [a for chapter in bundle.chapters if getattr(chapter, "id", "") != VISION_CHAPTER_ID for a in chapter.articles]
-    if len(articles) != 140:
-        raise ValueError(f"story bundle contract requires exactly 140 general articles; found {len(articles)}")
+    if len(articles) != 150:
+        raise ValueError(f"story bundle contract requires exactly 150 general articles; found {len(articles)}")
 
     edition_date = bundle.metadata.get("date") or datetime.now(KST).strftime("%Y-%m-%d")
     stories = [_story(a, edition_date) for a in articles]
-    if len({s["url"] for s in stories}) != 140:
-        raise ValueError("story bundle contract requires 140 unique general article URLs")
+    if len({s["url"] for s in stories}) != 150:
+        raise ValueError("story bundle contract requires 150 unique general article URLs")
 
     for idx, name in enumerate(EXPECTED_FILES):
-        chunk = stories[idx * 28:(idx + 1) * 28]
-        if len(chunk) != 28:
-            raise ValueError(f"{name}: expected 28 records; found {len(chunk)}")
+        chunk = stories[idx * 30:(idx + 1) * 30]
+        if len(chunk) != 30:
+            raise ValueError(f"{name}: expected 30 records; found {len(chunk)}")
         (data_dir / name).write_text(json.dumps(chunk, ensure_ascii=False, indent=2), encoding="utf-8")
 
     extras = sorted(p.name for p in data_dir.glob("stories-*.json") if p.name not in EXPECTED_FILES)
     if extras:
         raise ValueError(f"unexpected story bundle files: {extras}")
-    print("  [story bundles] stories-1..5.json written: 28 x 5 = 140 general stories")
+    print("  [story bundles] stories-1..5.json written: 30 x 5 = 150 general stories")
     return EXPECTED_FILES.copy()
 
 
@@ -99,8 +104,8 @@ def validate_story_bundles(today_path: Path = DATA_DIR / "today.json", data_dir:
     general_chapters = [ch for ch in today.get("chapters", []) if ch.get("id") != VISION_CHAPTER_ID]
     today_articles = [a for ch in general_chapters for a in ch.get("articles", [])]
     today_urls = [a.get("link", "") for a in today_articles]
-    if len(today_urls) != 140 or len(set(today_urls)) != 140:
-        errors.append(f"today.json must contain 140 unique general article URLs; count={len(today_urls)} unique={len(set(today_urls))}")
+    if len(today_urls) != 150 or len(set(today_urls)) != 150:
+        errors.append(f"today.json must contain 150 unique general article URLs; count={len(today_urls)} unique={len(set(today_urls))}")
 
     bundle_rows: list[dict[str, Any]] = []
     for name in EXPECTED_FILES:
@@ -109,14 +114,14 @@ def validate_story_bundles(today_path: Path = DATA_DIR / "today.json", data_dir:
         except Exception as exc:
             errors.append(f"{name}: invalid JSON: {exc}")
             continue
-        if not isinstance(rows, list) or len(rows) != 28:
-            errors.append(f"{name}: expected list of 28 stories; found {len(rows) if isinstance(rows, list) else type(rows).__name__}")
+        if not isinstance(rows, list) or len(rows) != 30:
+            errors.append(f"{name}: expected list of 30 stories; found {len(rows) if isinstance(rows, list) else type(rows).__name__}")
             continue
         bundle_rows.extend(rows)
 
     bundle_urls = [r.get("url", "") for r in bundle_rows]
-    if len(bundle_urls) != 140 or len(set(bundle_urls)) != 140:
-        errors.append(f"story bundles must contain 140 unique URLs; count={len(bundle_urls)} unique={len(set(bundle_urls))}")
+    if len(bundle_urls) != 150 or len(set(bundle_urls)) != 150:
+        errors.append(f"story bundles must contain 150 unique URLs; count={len(bundle_urls)} unique={len(set(bundle_urls))}")
     if set(bundle_urls) != set(today_urls):
         errors.append("story bundle URL set does not exactly match today.json general article URL set")
 
@@ -139,7 +144,7 @@ def main() -> int:
         for e in errors:
             print(" -", e)
         return 2
-    print("STORY_BUNDLE_GATE=PASS files=5 general_records=140 unique_urls=140")
+    print("STORY_BUNDLE_GATE=PASS files=5 general_records=150 unique_urls=150")
     return 0
 
 

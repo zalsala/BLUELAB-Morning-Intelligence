@@ -1,7 +1,7 @@
 """
 pipeline/snapshot_arbiter.py
 중복 제거, 최신성, 출처 다양성, 챕터 관련성을 적용하고 Google News discovery URL을 원문으로 해석한 뒤
-14개 챕터 × 10개 기사를 잠근다.
+15개 챕터 × 10개 기사를 잠근다.
 """
 from __future__ import annotations
 
@@ -186,7 +186,7 @@ def resolve_exact_links(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], target_per_chapter: int = 10) -> List[Dict[str, Any]]:
     print("=" * 70)
-    print(f" [Step 2] 최신성·관련성·중복·출처 다양성 적용: 14개 챕터 × {target_per_chapter}개")
+    print(f" [Step 2] 최신성·관련성·중복·출처 다양성 적용: 15개 챕터 × {target_per_chapter}개")
     print("=" * 70)
     final_snapshot = []
     global_seen_titles: set[str] = set()
@@ -221,7 +221,7 @@ def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], targe
         for art in selected:
             art.pop("tokens", None)
             final_snapshot.append(art)
-        print(f"  ({idx:02d}/14) [{c_name}] 10/10 / publishers={len(pubs)} / max_per_publisher={max(pubs.values())}")
+        print(f"  ({idx:02d}/15) [{c_name}] 10/10 / publishers={len(pubs)} / max_per_publisher={max(pubs.values())}")
 
     expected = len(CHAPTER_DEFINITIONS) * target_per_chapter
     if len(final_snapshot) != expected:

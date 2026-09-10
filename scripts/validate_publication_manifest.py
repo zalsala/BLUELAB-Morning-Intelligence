@@ -42,13 +42,13 @@ def validate_manifest(manifest_path: Path, today_json_path: Path, expected_date:
 
     counts=manifest.get("content_counts",{})
     vision_declared="vision_research_watch" in counts
-    expected_chapters=15 if vision_declared else 14
-    expected_articles=150 if vision_declared else 140
+    expected_chapters=16 if vision_declared else 15
+    expected_articles=160 if vision_declared else 150
     if counts.get("total_chapters")!=expected_chapters: failures.append(f"content_counts.total_chapters={counts.get('total_chapters')} != {expected_chapters}")
     if counts.get("total_articles")!=expected_articles: failures.append(f"content_counts.total_articles={counts.get('total_articles')} != {expected_articles}")
     if vision_declared:
-        if counts.get("general_chapters")!=14: failures.append(f"content_counts.general_chapters={counts.get('general_chapters')} != 14")
-        if counts.get("general_articles")!=140: failures.append(f"content_counts.general_articles={counts.get('general_articles')} != 140")
+        if counts.get("general_chapters")!=15: failures.append(f"content_counts.general_chapters={counts.get('general_chapters')} != 15")
+        if counts.get("general_articles")!=150: failures.append(f"content_counts.general_articles={counts.get('general_articles')} != 150")
         if counts.get("vision_research_watch")!=10: failures.append(f"content_counts.vision_research_watch={counts.get('vision_research_watch')} != 10")
         vchap=[c for c in today_data.get("chapters",[]) if c.get("id")==VISION_ID]
         if len(vchap)!=1: failures.append(f"today.json requires exactly one {VISION_ID} chapter; found {len(vchap)}")

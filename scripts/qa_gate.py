@@ -13,9 +13,9 @@ if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
 from pipeline.schema import FACT_CHECK_STATES
 from pipeline.top5_ranker import is_top5_title_eligible
 
-EXPECTED_GENERAL_CHAPTERS=14
+EXPECTED_GENERAL_CHAPTERS=15
 EXPECTED_ARTICLES_PER_CHAPTER=10
-EXPECTED_GENERAL_ARTICLES=140
+EXPECTED_GENERAL_ARTICLES=150
 EXPECTED_TOP5_COUNT=5
 VISION_ID="vision-research-watch"
 # Article-body verification is fail-closed: only a positively validated body can
@@ -40,21 +40,21 @@ def run_qa_gate(json_path:str="public/data/today.json")->bool:
     general=[ch for ch in chapters if ch.get("id")!=VISION_ID]
     vision_enabled=len(vision)>0
 
-    if len(general)!=EXPECTED_GENERAL_CHAPTERS: failures.append(f"general chapter count={len(general)} != 14")
+    if len(general)!=EXPECTED_GENERAL_CHAPTERS: failures.append(f"general chapter count={len(general)} != 15")
     if vision_enabled and len(vision)!=1: failures.append(f"VISION RESEARCH WATCH chapter count={len(vision)} != 1")
-    if vision_enabled and len(chapters)!=15: failures.append(f"rendered chapter count={len(chapters)} != 15")
-    if not vision_enabled and len(chapters)!=14: failures.append(f"chapter count={len(chapters)} != 14")
+    if vision_enabled and len(chapters)!=16: failures.append(f"rendered chapter count={len(chapters)} != 16")
+    if not vision_enabled and len(chapters)!=15: failures.append(f"chapter count={len(chapters)} != 15")
 
     general_articles=[]
     for ch in general:
         arts=ch.get("articles",[]); general_articles.extend(arts)
         if len(arts)!=EXPECTED_ARTICLES_PER_CHAPTER: failures.append(f"{ch.get('name')}: article count={len(arts)} != 10")
-    if len(general_articles)!=EXPECTED_GENERAL_ARTICLES: failures.append(f"general articles={len(general_articles)} != 140")
+    if len(general_articles)!=EXPECTED_GENERAL_ARTICLES: failures.append(f"general articles={len(general_articles)} != 150")
 
     vision_articles=vision[0].get("articles",[]) if vision_enabled else []
     if vision_enabled and len(vision_articles)!=10: failures.append(f"VISION RESEARCH WATCH articles={len(vision_articles)} != 10")
     all_articles=general_articles+vision_articles
-    expected_total=150 if vision_enabled else 140
+    expected_total=160 if vision_enabled else 150
     if len(all_articles)!=expected_total: failures.append(f"total rendered articles={len(all_articles)} != {expected_total}")
 
     ids=[a.get("id","") for a in all_articles]; urls=[a.get("link","") for a in all_articles]; titles=[a.get("title","") for a in all_articles]
@@ -116,8 +116,8 @@ def run_qa_gate(json_path:str="public/data/today.json")->bool:
     top5_ids=[a.get("id","") for a in top5]; top5_urls=[a.get("link","") for a in top5]
     if any(not x for x in top5_ids) or len(top5_ids)!=len(set(top5_ids)): failures.append("TOP5 ids must be present and unique")
     general_ids={a.get("id","") for a in general_articles}; general_urls={a.get("link","") for a in general_articles}
-    if any(x not in general_ids for x in top5_ids): failures.append("TOP5 contains item not present in canonical 140 general-story snapshot")
-    if any(x not in general_urls for x in top5_urls): failures.append("TOP5 contains URL not present in canonical 140 general-story snapshot")
+    if any(x not in general_ids for x in top5_ids): failures.append("TOP5 contains item not present in canonical 150 general-story snapshot")
+    if any(x not in general_urls for x in top5_urls): failures.append("TOP5 contains URL not present in canonical 150 general-story snapshot")
     if any(urlparse(u).netloc.lower().endswith("news.google.com") for u in top5_urls): failures.append("TOP5 exact URL gate: Google News relay URL remains")
     if [a for a in top5 if not is_top5_title_eligible(a.get("title",""))]: failures.append("TOP5 factual-news gate: opinion/editorial item remains")
     if canonical_v11 and len(top5)==5 and len({a.get("chapter_id","") for a in top5})!=5: failures.append("TOP5 chapter diversity gate: expected 5 distinct chapters")
@@ -140,7 +140,7 @@ def run_qa_gate(json_path:str="public/data/today.json")->bool:
         for i,f in enumerate(failures[:50],1): print(f"  {i}. {f}")
         return False
     print(" [QA GATE PASSED]")
-    print(f"  general_chapters=14 general_articles=140 vision={len(vision_articles)} rendered={len(all_articles)} top5=5 youtube={len(data.get('youtube_hot_issues',[]))} trends={len(trends)} summary_lines=3 market=PASS signals={len(next_signals)}")
+    print(f"  general_chapters=15 general_articles=150 vision={len(vision_articles)} rendered={len(all_articles)} top5=5 youtube={len(data.get('youtube_hot_issues',[]))} trends={len(trends)} summary_lines=3 market=PASS signals={len(next_signals)}")
     return True
 
 if __name__=="__main__":

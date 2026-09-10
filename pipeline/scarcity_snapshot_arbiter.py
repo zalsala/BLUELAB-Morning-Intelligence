@@ -191,7 +191,7 @@ def _attach_corroborating_urls(
 
 def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], target_per_chapter: int = 10) -> List[Dict[str, Any]]:
     print("=" * 70)
-    print(f" [Step 2] scarcity-first 최신성·관련성·중복·출처 다양성 적용: 14개 챕터 × {target_per_chapter}개")
+    print(f" [Step 2] scarcity-first 최신성·관련성·중복·출처 다양성 적용: 15개 챕터 × {target_per_chapter}개")
     print("=" * 70)
 
     prepared = {c["id"]: _prepared_raw(c, raw_data, target_per_chapter) for c in CHAPTER_DEFINITIONS}
@@ -245,7 +245,7 @@ def arbitrate_and_lock_snapshot(raw_data: Dict[str, List[Dict[str, Any]]], targe
             item["chapter_name"] = c_name
             item.pop("tokens", None)
             final_snapshot.append(item)
-        print(f"  ({idx:02d}/14) [{c_name}] {len(selected)}/{target_per_chapter}")
+        print(f"  ({idx:02d}/15) [{c_name}] {len(selected)}/{target_per_chapter}")
 
     expected = len(CHAPTER_DEFINITIONS) * target_per_chapter
     if len(final_snapshot) != expected:

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BLUELAB Morning Intelligence</title>
-  <meta name="description" content="14개 챕터 140개 인텔리전스 뉴스, 실시간 인기순위 & 유튜브 핫이슈 브리핑" />
+  <meta name="description" content="15개 챕터 150개 인텔리전스 뉴스, 실시간 인기순위 & 유튜브 핫이슈 브리핑" />
   
   <!-- Pretendard & Inter Web Fonts for Maximum Readability -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
@@ -187,7 +187,7 @@
           id="btn-view-news"
           class="view-tab-active shrink-0 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center gap-2 shadow-xs"
         >
-          <span>📰</span> 14개 챕터 인텔리전스 (140)
+          <span>📰</span> 15개 챕터 인텔리전스 (150)
         </button>
         <button 
           onclick="switchMainView('youtube')" 
@@ -408,7 +408,7 @@
   <!-- Footer -->
   <footer class="bg-white dark:bg-darkbg-main border-t border-slate-200 dark:border-darkbg-border py-8 text-center text-xs text-slate-500 dark:text-slate-400 space-y-2">
     <p class="font-bold text-sm text-slate-700 dark:text-slate-300">BLUELAB Morning Intelligence Automated Briefing Engine</p>
-    <p>140 Curated Intelligence Articles · Realtime YouTube Hot Issues · 100% Deterministic Integrity Gate</p>
+    <p>150 Curated Intelligence Articles · Realtime YouTube Hot Issues · 100% Deterministic Integrity Gate</p>
     <p class="text-[11px] text-slate-400">매일 아침 05:30 KST 자동 실행 · Cloudflare Pages & GitHub Actions Powered</p>
     <div class="pt-2 flex flex-wrap justify-center items-center gap-2 font-mono text-[11px]">
       <span class="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold">CANONICAL RELEASE CONTRACT VERIFIED</span>
@@ -598,7 +598,7 @@
 
       // Header Meta
       const meta = briefingData.metadata || {};
-      document.getElementById('headerDateText').textContent = `${meta.date_formatted || meta.date} · 140 Intelligence Nodes`;
+      document.getElementById('headerDateText').textContent = `${meta.date_formatted || meta.date} · 150 Intelligence Nodes`;
       document.getElementById('briefingMetaStats').textContent = `${meta.total_chapters}개 챕터 · ${meta.total_articles}개 기사 완결`;
       document.getElementById('integrityHashDisplay').textContent = `Hash: ${briefingData.integrity_hash?.slice(0, 16)}...`;
 
@@ -672,7 +672,7 @@
           id="tab-all"
           class="chapter-tab tab-active px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap border-2 border-slate-300 dark:border-darkbg-border transition flex items-center gap-1.5"
         >
-          <span>전체 챕터 (140)</span>
+          <span>전체 챕터 (150)</span>
         </button>
         ${chapterTabHTML}
       `;

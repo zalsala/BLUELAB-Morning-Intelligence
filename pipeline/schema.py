@@ -128,6 +128,15 @@ CHAPTER_DEFINITIONS: List[Dict[str, Any]] = [
         "rss_topics": ["CAAqJggKIiBDQkFTRWdvSUwyMHZNRGpxTXpNU0FtdHZHZ0pMVWlnQVAB"], # Entertainment
     },
     {
+        "id": "vision-optometry-ophthalmology",
+        "name": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
+        "name_en": "Vision / Optometry / Ophthalmology",
+        "icon": "👓",
+        "description": "안경렌즈·콘택트렌즈 산업, 검안·시과학, 근시관리, 안과 임상·규제·제품 및 전문기관 동향",
+        "queries": ["안경 안경렌즈 신제품", "콘택트렌즈 시력 FDA 승인", "근시 억제 근시관리 렌즈", "검안 시과학 양안시 사시", "안과 망막 녹내장 백내장 각막", "myopia control optometry ophthalmology contact lens"],
+        "rss_topics": [],
+    },
+    {
         "id": "science-future",
         "name": "과학 & 미래기술",
         "name_en": "Science & Future Tech",

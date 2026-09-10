@@ -39,9 +39,9 @@ def audit(strict:bool)->int:
 
     chapters=today.get("chapters",[]); general=[ch for ch in chapters if ch.get("id")!=VISION_ID]; vision=[ch for ch in chapters if ch.get("id")==VISION_ID]
     expected_sections=[ch.get("name","") for ch in general]
-    if len(expected_sections)!=14 or any(not x for x in expected_sections): errors.append(f"general production chapter contract invalid: expected 14 named chapters, found {len(expected_sections)}")
+    if len(expected_sections)!=15 or any(not x for x in expected_sections): errors.append(f"general production chapter contract invalid: expected 15 named chapters, found {len(expected_sections)}")
     if vision and len(vision)!=1: errors.append(f"VISION RESEARCH WATCH chapter count={len(vision)} != 1")
-    if len(stories)!=140: errors.append(f"story bundle count={len(stories)} != 140")
+    if len(stories)!=150: errors.append(f"story bundle count={len(stories)} != 150")
 
     seen=set(); dup=[]
     for story in stories:

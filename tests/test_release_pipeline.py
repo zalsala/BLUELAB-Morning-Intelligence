@@ -35,7 +35,7 @@ def valid_bundle_data() -> dict:
         "top-headlines", "politics-policy", "macro-finance", "global-affairs",
         "tech-it", "ai-deeptech", "semiconductors-mfg", "bio-healthcare",
         "energy-mobility", "realestate-construction", "retail-consumer",
-        "society-environment", "culture-entertainment", "science-future"
+        "society-environment", "culture-entertainment", "vision-optometry-ophthalmology", "science-future"
     ]
 
     counter = 1
@@ -122,8 +122,8 @@ def valid_bundle_data() -> dict:
             "date": today_kst,
             "date_formatted": f"{today_kst} (Mock)",
             "generated_at": f"{today_kst}T08:30:00",
-            "total_chapters": 14,
-            "total_articles": 140,
+            "total_chapters": 15,
+            "total_articles": 150,
             "total_youtube_videos": 10,
             "trends_source": "WITHHELD_INSUFFICIENT_RELIABLE_TERMS"
         },
@@ -177,7 +177,7 @@ def test_cross_edition_artifact_mismatch(tmp_path: Path, valid_bundle_data: dict
         snapshot_fingerprint="b" * 64,
         editorial_fingerprint="c" * 64,
         production_fingerprint="d" * 64,
-        content_counts={"total_chapters": 14, "total_articles": 140, "top5": 5, "youtube": 10, "trends": 0, "summary_lines": 3},
+        content_counts={"total_chapters": 15, "total_articles": 150, "top5": 5, "youtube": 10, "trends": 0, "summary_lines": 3},
         gate_outcomes={"QA_GATE": "PASS"}
     )
     manifest_file = tmp_path / "manifest.json"
@@ -299,8 +299,8 @@ def test_production_manifest_fingerprint_continuity(tmp_path: Path, valid_bundle
         editorial_fingerprint="b" * 64,
         production_fingerprint=prod_fp,
         content_counts={
-            "total_chapters": 14,
-            "total_articles": 140,
+            "total_chapters": 15,
+            "total_articles": 150,
             "top5": 5,
             "youtube": 10,
             "trends": 0,

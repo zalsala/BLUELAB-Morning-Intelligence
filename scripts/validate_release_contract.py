@@ -20,17 +20,17 @@ def audit(release:bool=False,expected_date:str|None=None)->int:
     if date!=expected: errors.append(f"edition date mismatch: {date} != {expected}")
 
     chapters=today.get("chapters",[]); general=[c for c in chapters if c.get("id")!=VISION_ID]; vision=[c for c in chapters if c.get("id")==VISION_ID]
-    if len(general)!=14: errors.append(f"general chapter count={len(general)} != 14")
+    if len(general)!=15: errors.append(f"general chapter count={len(general)} != 15")
     if len(vision)!=1: errors.append(f"VISION RESEARCH WATCH chapter count={len(vision)} != 1")
     articles=[]
     for c in general:
         ca=c.get("articles",[])
         if len(ca)<10: errors.append(f"{c.get('name')}: rendered items={len(ca)} < 10")
         articles.extend(ca)
-    if len(articles)!=140: errors.append(f"general rendered article total={len(articles)} != 140")
+    if len(articles)!=150: errors.append(f"general rendered article total={len(articles)} != 150")
     vrows=vision[0].get("articles",[]) if vision else []
     if len(vrows)!=10: errors.append(f"VISION RESEARCH WATCH rendered items={len(vrows)} != 10")
-    if vision and len(chapters)!=15: errors.append(f"total rendered chapter count={len(chapters)} != 15")
+    if vision and len(chapters)!=16: errors.append(f"total rendered chapter count={len(chapters)} != 16")
 
     all_urls=[a.get("link","") for a in articles+vrows]
     if len(all_urls)!=len(set(all_urls)): errors.append("cross-chapter duplicate article URLs remain")
@@ -54,8 +54,8 @@ def audit(release:bool=False,expected_date:str|None=None)->int:
             chunk=json.loads((DATA/name).read_text(encoding="utf-8"))
             if not isinstance(chunk,list): errors.append(f"{name} must contain a JSON list")
             else: bundled.extend(chunk)
-        if len(bundled)!=140: errors.append(f"story bundle total={len(bundled)} != 140")
-        if {x.get('url') for x in bundled}!={a.get('link') for a in articles}: errors.append("five story bundles do not exactly match the 140 general article URLs")
+        if len(bundled)!=150: errors.append(f"story bundle total={len(bundled)} != 150")
+        if {x.get('url') for x in bundled}!={a.get('link') for a in articles}: errors.append("five story bundles do not exactly match the 150 general article URLs")
 
     watch_file=DATA/"vision-research-watch.json"
     if not watch_file.exists(): errors.append("vision-research-watch.json missing")

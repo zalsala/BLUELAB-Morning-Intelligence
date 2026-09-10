@@ -174,9 +174,9 @@ def fetch_chapter_candidates(chapter_def: Dict[str, Any]) -> List[Dict[str, Any]
 
 
 def fetch_all_chapters_raw() -> Dict[str, List[Dict[str, Any]]]:
-    """14개 전 챕터에 대한 원시 기사 수집 및 필터링 실행"""
+    """15개 전 챕터에 대한 원시 기사 수집 및 필터링 실행"""
     print("=" * 70)
-    print(" [Step 1] 14개 챕터별 실시간 RSS 뉴스 수집 및 품질 필터링 시작")
+    print(" [Step 1] 15개 챕터별 실시간 RSS 뉴스 수집 및 품질 필터링 시작")
     print("=" * 70)
     
     all_raw_data: Dict[str, List[Dict[str, Any]]] = {}
@@ -185,7 +185,7 @@ def fetch_all_chapters_raw() -> Dict[str, List[Dict[str, Any]]]:
     for idx, chapter in enumerate(CHAPTER_DEFINITIONS, 1):
         c_id = chapter["id"]
         c_name = chapter["name"]
-        print(f"  ({idx:02d}/14) [{c_name}] 뉴스 수집 중...", end=" ", flush=True)
+        print(f"  ({idx:02d}/15) [{c_name}] 뉴스 수집 중...", end=" ", flush=True)
         
         candidates = fetch_chapter_candidates(chapter)
         all_raw_data[c_id] = candidates
