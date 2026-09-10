@@ -1,0 +1,57 @@
+name: Add Vision Specialist Freshness Rescue
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/vision_freshness_rescue_patch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Patch specialist freshness policy
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('pipeline/snapshot_arbiter.py'); t=p.read_text(encoding='utf-8')
+          if 'SPECIALIST_MAX_AGE_DAYS' not in t:
+              t=t.replace('MAX_AGE_DAYS = 3\n', 'MAX_AGE_DAYS = 3\nSPECIALIST_MAX_AGE_DAYS = {"vision-optometry-ophthalmology": 7}\n')
+          old='''def _fresh_articles(raw_articles: List[Dict[str, Any]]) -> List[Dict[str, Any]]:\n    now = datetime.now(timezone.utc)\n    return [a for a in raw_articles if (age := article_age_days(a, now)) is not None and -0.25 <= age <= MAX_AGE_DAYS]'''
+          new='''def _fresh_articles(raw_articles: List[Dict[str, Any]]) -> List[Dict[str, Any]]:\n    now = datetime.now(timezone.utc)\n    out = []\n    for article in raw_articles:\n        age = article_age_days(article, now)\n        chapter_id = article.get("chapter_id", "")\n        max_age = SPECIALIST_MAX_AGE_DAYS.get(chapter_id, MAX_AGE_DAYS)\n        if age is not None and -0.25 <= age <= max_age:\n            out.append(article)\n    return out'''
+          if old not in t: raise SystemExit('freshness base marker missing')
+          t=t.replace(old,new,1); p.write_text(t,encoding='utf-8')
+
+          p=Path('pipeline/scarcity_snapshot_arbiter.py'); t=p.read_text(encoding='utf-8')
+          old='''EXTRA_FRESHNESS_QUERIES = {\n    "realestate-construction": [\n        "서울 아파트", "수도권 아파트", "부동산 정책", "주택 공급",\n        "재건축 재개발", "아파트 분양 청약", "부동산 PF 건설", "국토교통부 주택",\n    ]\n}'''
+          new='''EXTRA_FRESHNESS_QUERIES = {\n    "realestate-construction": [\n        "서울 아파트", "수도권 아파트", "부동산 정책", "주택 공급",\n        "재건축 재개발", "아파트 분양 청약", "부동산 PF 건설", "국토교통부 주택",\n    ],\n    "vision-optometry-ophthalmology": [\n        "안과 신약 승인", "안과 임상시험", "망막 녹내장 백내장 치료",\n        "근시관리 어린이 안경렌즈", "콘택트렌즈 FDA", "검안사 시기능",\n        "ophthalmology FDA eye treatment", "optometry myopia control",\n        "contact lens myopia children", "retina glaucoma cataract ophthalmology",\n        "EssilorLuxottica myopia lens", "CooperVision myopia contact lens",\n    ],\n}'''
+          if old not in t: raise SystemExit('extra query marker missing')
+          t=t.replace(old,new,1)
+          old='''        fresh_q = q if "when:" in q else f"{q} when:3d"'''
+          new='''        days = 7 if chapter.get("id") == "vision-optometry-ophthalmology" else 3\n        fresh_q = q if "when:" in q else f"{q} when:{days}d"'''
+          if old not in t: raise SystemExit('query freshness marker missing')
+          t=t.replace(old,new,1)
+          t=t.replace('print(f"    └─ [{chapter[\'name\']}] when:3d freshness rescue collected={len(out)} fresh={len(base._fresh_articles(out))}")', 'days = 7 if chapter.get("id") == "vision-optometry-ophthalmology" else 3\n    print(f"    └─ [{chapter[\'name\']}] when:{days}d freshness rescue collected={len(out)} fresh={len(base._fresh_articles(out))}")')
+          p.write_text(t,encoding='utf-8')
+          print('VISION_SPECIALIST_FRESHNESS=7D_WITH_PRIMARY_TOPIC_EXPANSION')
+          PY
+      - name: Install and test
+        run: |
+          pip install -r requirements.txt
+          pytest -q tests/
+          python -m compileall -q pipeline
+      - name: Commit
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add pipeline/snapshot_arbiter.py pipeline/scarcity_snapshot_arbiter.py
+          git commit -m "fix: expand specialist vision freshness rescue to seven days"
+          git pull --rebase origin main
+          git push origin main
