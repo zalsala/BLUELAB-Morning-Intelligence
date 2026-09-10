@@ -67,12 +67,15 @@ jobs:
           chapters=data.get('chapters',[])
           vision=[c for c in chapters if c.get('id')=='vision-research-watch']
           general=[c for c in chapters if c.get('id')!='vision-research-watch']
-          if len(general) != 14:
-              errors.append(f'general chapter count={len(general)} != 14')
+          general_vision=[c for c in general if c.get('id')=='vision-optometry-ophthalmology']
+          if len(general) != 15:
+              errors.append(f'general chapter count={len(general)} != 15')
+          if len(general_vision) != 1:
+              errors.append(f'general vision/optometry/ophthalmology chapter count={len(general_vision)} != 1')
           if len(vision) != 1:
               errors.append(f'vision research chapter count={len(vision)} != 1')
-          if len(chapters) != 15:
-              errors.append(f'total rendered chapter count={len(chapters)} != 15')
+          if len(chapters) != 16:
+              errors.append(f'total rendered chapter count={len(chapters)} != 16')
           for ch in general:
               if len(ch.get('articles',[])) < 10:
                   errors.append(f"{ch.get('name')}: rendered items={len(ch.get('articles',[]))} < 10")
@@ -80,10 +83,10 @@ jobs:
               errors.append(f"VISION RESEARCH WATCH rendered items={len(vision[0].get('articles',[]))} != 10")
           general_articles=[a for ch in general for a in ch.get('articles',[])]
           all_articles=general_articles + (vision[0].get('articles',[]) if vision else [])
-          if len(general_articles) != 140:
-              errors.append(f'general article count={len(general_articles)} != 140')
-          if len(all_articles) != 150:
-              errors.append(f'total rendered article count={len(all_articles)} != 150')
+          if len(general_articles) != 150:
+              errors.append(f'general article count={len(general_articles)} != 150')
+          if len(all_articles) != 160:
+              errors.append(f'total rendered article count={len(all_articles)} != 160')
           article_urls=[a.get('link','') for a in all_articles]
           if len(article_urls) != len(set(article_urls)):
               errors.append('cross-chapter exact URL duplicates remain')
@@ -108,9 +111,21 @@ jobs:
           weather=data.get('weather') or {}
           if not weather.get('source') or not weather.get('source_level'):
               errors.append('weather source/source_level missing')
+          if not data.get('market'):
+              errors.append('market snapshot missing')
+          if len(data.get('next_signals',[])) < 3:
+              errors.append('NEXT SIGNALS must contain at least 3 items')
           story_files=data.get('metadata',{}).get('story_files',[])
-          if story_files != [f'stories-{i}.json' for i in range(1,6)]:
+          expected_story_files=[f'stories-{i}.json' for i in range(1,6)]
+          if story_files != expected_story_files:
               errors.append('exactly five active story bundles are required')
+          for story_file in expected_story_files:
+              rows=json.loads((Path('public/data')/story_file).read_text(encoding='utf-8'))
+              if len(rows) != 30:
+                  errors.append(f'{story_file}: story count={len(rows)} != 30')
+              unresolved=[r for r in rows if r.get('freshness_note')=='발행일 확인 필요']
+              if unresolved:
+                  errors.append(f'{story_file}: unresolved freshness labels={len(unresolved)}')
           if vision:
               domains=set()
               for a in vision[0].get('articles',[]):
@@ -125,7 +140,7 @@ jobs:
               print('PRE_SEND_QA=FAIL')
               for e in errors: print(' -',e)
               raise SystemExit(2)
-          print('PRE_SEND_QA=PASS')
+          print('PRE_SEND_QA=PASS general=150 vision_watch=10 total=160 bundles=30x5')
           PY
       - name: Commit and push updated briefing data
         run: |
