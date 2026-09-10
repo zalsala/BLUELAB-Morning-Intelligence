@@ -1,0 +1,109 @@
+name: Run Expanded Morning Intelligence Production V2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/run_expanded_daily_once_v2.yml'
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  produce:
+    runs-on: ubuntu-latest
+    env: {TZ: Asia/Seoul}
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11', cache: pip}
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Regression tests
+        run: pytest -v tests/
+      - name: Run master pipeline
+        run: python run_pipeline.py
+      - name: Strict source QA
+        run: python scripts/validate_sources.py --strict
+      - name: Release contract
+        run: python scripts/validate_release_contract.py --release --expected-today-kst
+      - name: Publication manifest
+        run: python scripts/validate_publication_manifest.py --expected-date "$(TZ=Asia/Seoul date +%F)"
+      - name: Expanded PRE-SEND
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          from urllib.parse import urlparse
+          from datetime import datetime
+          from zoneinfo import ZoneInfo
+          d=json.loads(Path('public/data/today.json').read_text(encoding='utf-8')); e=[]; m=d.get('metadata',{})
+          expected=datetime.now(ZoneInfo('Asia/Seoul')).strftime('%Y-%m-%d')
+          chapters=d.get('chapters',[]); watch=[c for c in chapters if c.get('id')=='vision-research-watch']; general=[c for c in chapters if c.get('id')!='vision-research-watch']
+          if m.get('date')!=expected:e.append('edition date mismatch')
+          if len(general)!=15:e.append(f'general chapters={len(general)}')
+          if len([c for c in general if c.get('id')=='vision-optometry-ophthalmology'])!=1:e.append('general vision chapter missing')
+          if len(watch)!=1:e.append('research watch missing')
+          if len(chapters)!=16:e.append(f'total chapters={len(chapters)}')
+          for c in general:
+              if len(c.get('articles',[]))!=10:e.append(f"{c.get('name')}: {len(c.get('articles',[]))} articles")
+          ga=[a for c in general for a in c.get('articles',[])]; wa=watch[0].get('articles',[]) if watch else []; aa=ga+wa
+          if len(ga)!=150:e.append(f'general articles={len(ga)}')
+          if len(wa)!=10:e.append(f'watch articles={len(wa)}')
+          if len(aa)!=160:e.append(f'total articles={len(aa)}')
+          urls=[a.get('link','') for a in aa]
+          if len(urls)!=len(set(urls)):e.append('duplicate URLs')
+          if any(urlparse(u).netloc.lower().endswith('news.google.com') for u in urls):e.append('Google News relay URL')
+          if len(d.get('top_5_highlights',[]))!=5:e.append('TOP5 != 5')
+          if len(d.get('trending_keywords',[])) not in (0,20):e.append('Trends must be 0 or 20')
+          vids=d.get('youtube_hot_issues',[])
+          if len(vids)<10 or len({v.get('channel') for v in vids if v.get('channel')})<4:e.append('YouTube gate')
+          if len(d.get('three_line_summary',[]))!=3:e.append('3-line summary gate')
+          if not d.get('market'):e.append('market missing')
+          if len(d.get('next_signals',[]))<3:e.append('NEXT SIGNALS missing')
+          w=d.get('weather') or {}
+          if not w.get('source') or not w.get('source_level'):e.append('weather provenance missing')
+          files=[f'stories-{i}.json' for i in range(1,6)]
+          if m.get('story_files')!=files:e.append('story_files mismatch')
+          for fn in files:
+              rows=json.loads((Path('public/data')/fn).read_text(encoding='utf-8'))
+              if len(rows)!=30:e.append(f'{fn} != 30')
+              unresolved=sum(r.get('freshness_note')=='발행일 확인 필요' for r in rows)
+              if unresolved:e.append(f'{fn} unresolved freshness={unresolved}')
+          domains=set()
+          for a in wa:
+              rw=a.get('research_watch') or {}
+              for k in ('evidence_type','study_design','clinical_meaning_ko','limitations_conflicts_ko','exact_source_url'):
+                  if not rw.get(k):e.append(f'watch missing {k}')
+              h=urlparse(rw.get('exact_source_url') or a.get('link','')).hostname
+              if h:domains.add(h.lower().removeprefix('www.'))
+          if len(domains)<5:e.append(f'watch domains={len(domains)}')
+          if e:
+              print('EXPANDED_PRE_SEND_QA=FAIL'); [print(' -',x) for x in e]; raise SystemExit(2)
+          print('EXPANDED_PRE_SEND_QA=PASS general=150 watch=10 total=160 bundles=30x5')
+          PY
+      - name: Commit production data
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add public/data/
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(briefing): expanded daily morning intelligence update [$(date +'%Y-%m-%d')]"
+            git pull --rebase origin main
+            git push origin main
+          fi
+      - uses: actions/configure-pages@v5
+        with: {enablement: true}
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: ./public}
+  deploy:
+    needs: produce
+    runs-on: ubuntu-latest
+    environment: {name: github-pages, url: '${{ steps.deployment.outputs.page_url }}'}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deployment
