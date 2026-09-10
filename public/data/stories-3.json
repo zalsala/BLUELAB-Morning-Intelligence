@@ -1,43 +1,13 @@
 [
   {
-    "section": "인공지능 & 딥테크",
-    "title": "[단독] 고려대, 생성형 AI 통합 플랫폼 열었다…챗GPT·클로드를 한 곳에서 무료로",
-    "summary": "매일경제 보도에 따르면, ‘고려대, 생성형 AI 통합 플랫폼 열었다…챗GPT·클로드를 한 곳에서 무료로’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "매일경제",
-    "url": "https://www.mk.co.kr/news/society/12148248",
-    "date": "Wed, 09 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "인공지능 & 딥테크",
-    "title": "모니터랩, 생성형 AI 보안 전면에…EDR 사업화는 내년 상반기로",
-    "summary": "전자신문 보도에 따르면, ‘모니터랩, 생성형 AI 보안 전면에…EDR 사업화는 내년 상반기로’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "전자신문",
-    "url": "https://www.etnews.com/20260909000324",
-    "date": "Wed, 09 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "인공지능 & 딥테크",
-    "title": "강원대, 외국인 유학생 25명 'AI 크리에이터'로 양성한다",
-    "summary": "연합뉴스 보도에 따르면, ‘강원대, 외국인 유학생 25명 'AI 크리에이터'로 양성한다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "section": "반도체 & 첨단제조",
+    "title": "NH아문디운용 \"Fn K-반도체 ETF, 연초 이후 수익률 181%로 1위\"",
+    "summary": "연합뉴스 보도에 따르면, ‘NH아문디운용 \"Fn K-반도체 ETF, 연초 이후 수익률 181%로 1위\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "연합뉴스",
-    "url": "https://www.yna.co.kr/view/AKR20260909134000062",
-    "date": "Wed, 09 Se",
+    "url": "https://www.yna.co.kr/view/AKR20260910031800008",
+    "date": "Thu, 10 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "인공지능 & 딥테크",
-    "title": "제로트러스트·N2SF 장착한 모니터랩…`통제 가능한 AI` 전략 강화",
-    "summary": "디지털데일리 원문에 따르면, 제로트러스트·N2SF 장착한 모니터랩…'통제 가능한 AI' 전략 강화 이광후 모니터랩 대표가 9월9일 서울 여의도 콘래드 호텔에서 기자 간담회를 열고 사업 전략을 소개하고 있다.",
-    "source": "디지털데일리",
-    "url": "https://www.ddaily.co.kr/page/view/2026090912181659948",
-    "date": "Wed, 09 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "반도체 & 첨단제조",
@@ -47,17 +17,7 @@
     "url": "https://www.yna.co.kr/view/AKR20260909164000008",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "반도체 & 첨단제조",
-    "title": "삼성·SK하이닉스, 국제물주간 첫 출격…반도체 '물 혁신' 전면에",
-    "summary": "전자신문 보도에 따르면, ‘삼성·SK하이닉스, 국제물주간 첫 출격…반도체 '물 혁신' 전면에’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "전자신문",
-    "url": "https://www.etnews.com/20260909000304",
-    "date": "Wed, 09 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "반도체 & 첨단제조",
@@ -67,27 +27,17 @@
     "url": "https://www.ytn.co.kr/_ln/0134_202609092150133371",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "뉴욕증시 하락에도 코스피 7천선 탈환...반도체 강세",
-    "summary": "YTN 보도에 따르면, ‘뉴욕증시 하락에도 코스피 7천선 탈환...반도체 강세’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "YTN",
-    "url": "https://www.ytn.co.kr/_ln/0102_202609091812528868",
-    "date": "Wed, 09 Se",
+    "title": "의사보다 삼전닉스 취업?…SKY 수시지원 '반도체↑·의대↓'",
+    "summary": "뉴시스 보도에 따르면, ‘의사보다 삼전닉스 취업?…SKY 수시지원 '반도체↑·의대↓'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴시스",
+    "url": "https://www.newsis.com/view/NISX20260910_0003783620",
+    "date": "Thu, 10 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "반도체 & 첨단제조",
-    "title": "‘아스트라 효과’에 반도체株 불기둥…삼성전자·SK하이닉스 4% 안팎↑[마켓시그널]",
-    "summary": "서울경제 보도에 따르면, ‘‘아스트라 효과’에 반도체株 불기둥…삼성전자·SK하이닉스 4% 안팎↑[마켓시그널]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "서울경제",
-    "url": "https://www.sedaily.com/article/20087776",
-    "date": "Sun, 06 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "반도체 & 첨단제조",
@@ -97,7 +47,7 @@
     "url": "https://www.businesspost.co.kr/BP?command=article_view&num=446780",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "반도체 & 첨단제조",
@@ -107,7 +57,7 @@
     "url": "https://www.chosun.com/kid/kid_economy/kid_honeybee/2026/09/08/E4GE4WVXINAK3KPGFKVUB2VVYU/",
     "date": "Tue, 08 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "반도체 & 첨단제조",
@@ -117,7 +67,7 @@
     "url": "https://v.daum.net/v/20260909174404484",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "반도체 & 첨단제조",
@@ -126,18 +76,28 @@
     "source": "뉴스핌",
     "url": "https://www.newspim.com/news/view/20260909000552",
     "date": "Wed, 09 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "日 상장하는 ‘한국 반도체 ETF’…삼성전자·SK하이닉스에 50% 투자 - dailysportshankook.co.kr",
-    "summary": "원문 매체 보도에 따르면, ‘日 상장하는 ‘한국 반도체 ETF’…삼성전자·SK하이닉스에 50% 투자’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "dailysportshankook.co.kr",
-    "url": "https://www.dailysportshankook.co.kr/news/articleView.html?idxno=433354",
-    "date": "Tue, 08 Se",
+    "title": "[김세형칼럼] 내년 반도체 성과급 10억 맞나",
+    "summary": "원문 매체 보도에 따르면, ‘내년 반도체 성과급 10억 맞나’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "v.daum.net",
+    "url": "https://v.daum.net/v/20260909175408974",
+    "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "반도체 호황에 韓기업 영업이익률 역대 최고…'삼전닉스' 빼면 11%p 하락",
+    "summary": "마켓인 보도에 따르면, ‘반도체 호황에 韓기업 영업이익률 역대 최고…'삼전닉스' 빼면 11%p 하락’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "마켓인",
+    "url": "https://marketin.edaily.co.kr/News/ReadE?newsId=03493206645578480",
+    "date": "Wed, 09 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -147,7 +107,7 @@
     "url": "https://pharm.edaily.co.kr/News/Read?newsId=04605126645578480",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -157,7 +117,7 @@
     "url": "https://www.sedaily.com/article/20088969",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -167,17 +127,7 @@
     "url": "http://www.kmkj.kr/news/articleView.html?idxno=132587",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "바이오솔루션·헬릭스미스, UAE 의약품청과 첨단바이오 협력 논의",
-    "summary": "한국경제 보도에 따르면, ‘바이오솔루션·헬릭스미스, UAE 의약품청과 첨단바이오 협력 논의’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "한국경제",
-    "url": "https://www.hankyung.com/article/202609093099i",
-    "date": "Wed, 09 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -187,17 +137,17 @@
     "url": "https://pharm.edaily.co.kr/news/read?newsId=04470646645578480",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
-    "title": "[美특징주]타이라바이오사이언시스, 방광암 신약 임상 실망에 주가 21%↓",
-    "summary": "이데일리 보도에 따르면, ‘타이라바이오사이언시스, 방광암 신약 임상 실망에 주가 21%↓’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "edaily.co.kr",
-    "url": "https://www.edaily.co.kr/News/Read?newsId=01344806645578808&mediaCodeNo=257",
+    "title": "바이오솔루션·헬릭스미스, UAE 의약품청과 첨단바이오 협력 논의",
+    "summary": "한국경제 보도에 따르면, ‘바이오솔루션·헬릭스미스, UAE 의약품청과 첨단바이오 협력 논의’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한국경제",
+    "url": "https://www.hankyung.com/article/202609093099i",
     "date": "Wed, 09 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -207,7 +157,7 @@
     "url": "https://www.biotimes.co.kr/news/articleView.html?idxno=34329",
     "date": "Tue, 08 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -217,7 +167,27 @@
     "url": "https://news.mtn.co.kr/news-detail/2026090815422322075",
     "date": "Tue, 08 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "바이오 & 헬스케어",
+    "title": "타이라 주가 20% 급락…방광암 신약 '완전 관해' 기대 못 미쳐",
+    "summary": "바이오북미디어 보도에 따르면, ‘타이라 주가 20% 급락…방광암 신약 '완전 관해' 기대 못 미쳐’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "바이오북미디어",
+    "url": "https://www.biobookmedia.com/articles/6993",
+    "date": "Wed, 09 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "바이오 & 헬스케어",
+    "title": "[주식] 국내 신약 44호 허가됐는데...지엘팜텍 14%↓",
+    "summary": "원문 매체 보도에 따르면, ‘국내 신약 44호 허가됐는데...지엘팜텍 14%↓’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "hitnews.co.kr",
+    "url": "https://www.hitnews.co.kr/news/articleView.html?idxno=79026",
+    "date": "Wed, 09 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -227,27 +197,7 @@
     "url": "https://www.kmpnews.co.kr/news/articleView.html?idxno=73036",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "[주식] 국내 신약 44호 허가됐는데...지엘팜텍 14%↓",
-    "summary": "히트뉴스 보도에 따르면, ‘국내 신약 44호 허가됐는데...지엘팜텍 14%↓’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "히트뉴스",
-    "url": "https://www.hitnews.co.kr/news/articleView.html?idxno=79026",
-    "date": "Wed, 09 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "[테크 차이나] 리오토, 자체 개발 배터리 본격 탑재…中 전기차 '자체 개발 시대' 가속",
-    "summary": "전자신문 보도에 따르면, ‘리오토, 자체 개발 배터리 본격 탑재…中 전기차 '자체 개발 시대' 가속’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "전자신문",
-    "url": "https://www.etnews.com/20260909000366",
-    "date": "Wed, 09 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "에너지 & 모빌리티",
@@ -257,7 +207,7 @@
     "url": "https://www.autodaily.co.kr/news/articleView.html?idxno=600282",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "에너지 & 모빌리티",
@@ -267,7 +217,7 @@
     "url": "https://www.meconomynews.com/news/articleView.html?idxno=201439",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "에너지 & 모빌리티",
@@ -277,6 +227,76 @@
     "url": "https://www.hankyung.com/article/2026090819621",
     "date": "Tue, 08 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "[테크 차이나] 리오토, 자체 개발 배터리 본격 탑재…中 전기차 '자체 개발 시대' 가속",
+    "summary": "전자신문 보도에 따르면, ‘리오토, 자체 개발 배터리 본격 탑재…中 전기차 '자체 개발 시대' 가속’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "etnews.com",
+    "url": "https://www.etnews.com/20260909000366",
+    "date": "Wed, 09 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "메르세데스-벤츠 코리아, 국내 스타트업 4곳과 기술 검증…자율주행·전기차 무선충전 협업",
+    "summary": "이투데이 보도에 따르면, ‘메르세데스-벤츠 코리아, 국내 스타트업 4곳과 기술 검증…자율주행·전기차 무선충전 협업’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "이투데이",
+    "url": "https://www.etoday.co.kr/news/view/2623890?trc=main_list_news",
+    "date": "Thu, 10 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "[단독] 현대차그룹, 휘발유·HEV용 자율주행차 개발",
+    "summary": "한국경제 보도에 따르면, ‘현대차그룹, 휘발유·HEV용 자율주행차 개발’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한국경제",
+    "url": "https://www.hankyung.com/article/202609081368i",
+    "date": "Tue, 08 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "“라스베이거스에 로보택시 8천대 풀린다”..수혜자는 테슬라(?)",
+    "summary": "원문 매체 보도에 따르면, ‘“라스베이거스에 로보택시 8천대 풀린다”..수혜자는 테슬라(?)’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "dailycar.co.kr",
+    "url": "https://www.dailycar.co.kr/content/news.html?type=view&autoId=62521",
+    "date": "Wed, 09 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "'우버 반값' 테슬라 사이버캡 美서 '시동'…규제·안전성 검증 과제도",
+    "summary": "Nate News 보도에 따르면, ‘'우버 반값' 테슬라 사이버캡 美서 '시동'…규제·안전성 검증 과제도’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "Nate News",
+    "url": "https://news.nate.com/view/20260909n32209",
+    "date": "Wed, 09 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "마일레, 전동화 대응 첫 ‘HD 브레이크 디스크’ 공개⋯테슬라·벤츠 정비 솔루션 확대",
+    "summary": "엠투데이 보도에 따르면, ‘마일레, 전동화 대응 첫 ‘HD 브레이크 디스크’ 공개⋯테슬라·벤츠 정비 솔루션 확대’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "엠투데이",
+    "url": "https://www.autodaily.co.kr/news/articleView.html?idxno=600292",
+    "date": "Wed, 09 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "[모빌리티핫이슈] 테슬라 사이버캡 드디어 달린다…전기차 배터리 최강자는?",
+    "summary": "Nate News 보도에 따르면, ‘테슬라 사이버캡 드디어 달린다…전기차 배터리 최강자는?’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "Nate News",
+    "url": "https://news.nate.com/view/20260909n04557",
+    "date": "Tue, 08 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
   }
 ]

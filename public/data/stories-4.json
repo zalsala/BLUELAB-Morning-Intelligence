@@ -1,65 +1,5 @@
 [
   {
-    "section": "에너지 & 모빌리티",
-    "title": "[단독] 현대차그룹, 휘발유·HEV용 자율주행차 개발",
-    "summary": "한국경제 보도에 따르면, ‘현대차그룹, 휘발유·HEV용 자율주행차 개발’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "한국경제",
-    "url": "https://www.hankyung.com/article/202609081368i",
-    "date": "Tue, 08 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "“라스베이거스에 로보택시 8천대 풀린다”..수혜자는 테슬라(?)",
-    "summary": "원문 매체 보도에 따르면, ‘“라스베이거스에 로보택시 8천대 풀린다”..수혜자는 테슬라(?)’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "dailycar.co.kr",
-    "url": "https://www.dailycar.co.kr/content/news.html?type=view&autoId=62521",
-    "date": "Wed, 09 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "'우버 반값' 테슬라 사이버캡 美서 '시동'…규제·안전성 검증 과제도",
-    "summary": "Nate News 보도에 따르면, ‘'우버 반값' 테슬라 사이버캡 美서 '시동'…규제·안전성 검증 과제도’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "Nate News",
-    "url": "https://news.nate.com/view/20260909n32209",
-    "date": "Wed, 09 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "마일레, 전동화 대응 첫 ‘HD 브레이크 디스크’ 공개⋯테슬라·벤츠 정비 솔루션 확대",
-    "summary": "엠투데이 보도에 따르면, ‘마일레, 전동화 대응 첫 ‘HD 브레이크 디스크’ 공개⋯테슬라·벤츠 정비 솔루션 확대’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "엠투데이",
-    "url": "https://www.autodaily.co.kr/news/articleView.html?idxno=600292",
-    "date": "Wed, 09 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "[모빌리티핫이슈] 테슬라 사이버캡 드디어 달린다…전기차 배터리 최강자는?",
-    "summary": "Nate News 보도에 따르면, ‘테슬라 사이버캡 드디어 달린다…전기차 배터리 최강자는?’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "Nate News",
-    "url": "https://news.nate.com/view/20260909n04557",
-    "date": "Tue, 08 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "[TECH한주] 중국 전기차 공세를 꺾는 K-섀시의 안전 갑옷… ‘HL만도’가 완성한 바이와이어 혁신",
-    "summary": "테크월드 보도에 따르면, ‘중국 전기차 공세를 꺾는 K-섀시의 안전 갑옷… ‘HL만도’가 완성한 바이와이어 혁신’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "테크월드",
-    "url": "https://www.epnc.co.kr/news/articleView.html?idxno=406571",
-    "date": "Sun, 06 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
     "section": "부동산 & 건설",
     "title": "‘전세 종말론’ 현실화 되나…서울 아파트 단기계약 6개월 연속 감소세",
     "summary": "매일경제 보도에 따르면, ‘‘전세 종말론’ 현실화 되나…서울 아파트 단기계약 6개월 연속 감소세’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
@@ -67,7 +7,7 @@
     "url": "https://www.mk.co.kr/news/realestate/12147970",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "부동산 & 건설",
@@ -77,7 +17,7 @@
     "url": "https://mobile.newsis.com/view_amp.html?ar_id=NISX20260909_0003782341",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "부동산 & 건설",
@@ -87,7 +27,7 @@
     "url": "https://www.news1.kr/amp/finance/general-finance/6284728",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "부동산 & 건설",
@@ -97,7 +37,17 @@
     "url": "https://www.yonhapnewstv.co.kr/news/AKR20260909102332Opf",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "부동산 & 건설",
+    "title": "\"비싸서 못 산다\" 곡소리나더니…20억 아파트도 싹 다 팔렸다 [시장톡]",
+    "summary": "한국경제 보도에 따르면, \"비싸서 못 산다\" 곡소리나더니…20억 아파트도 싹 다 팔렸다",
+    "source": "한국경제",
+    "url": "https://www.hankyung.com/article/2026090932026",
+    "date": "Wed, 09 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "부동산 & 건설",
@@ -107,17 +57,17 @@
     "url": "https://mobile.newsis.com/view_amp.html?ar_id=NISX20260909_0003782374",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "부동산 & 건설",
-    "title": "여야 7개 정당, 오늘 부동산 정책 토론회 개최…민주 민병덕, 국힘 김은혜 참여",
-    "summary": "KBS 뉴스 보도에 따르면, ‘여야 7개 정당, 오늘 부동산 정책 토론회 개최…민주 민병덕, 국힘 김은혜 참여’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "KBS 뉴스",
-    "url": "https://news.kbs.co.kr/news/view.do?ncd=8658560",
-    "date": "Wed, 09 Se",
+    "title": "李 대통령 '픽'한 부동산 전문가마저…이광수 \"이대로면 폭등\"",
+    "summary": "한국경제 보도에 따르면, ‘李 대통령 '픽'한 부동산 전문가마저…이광수 \"이대로면 폭등\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한국경제",
+    "url": "https://www.hankyung.com/article/2026091055456",
+    "date": "Thu, 10 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "부동산 & 건설",
@@ -127,27 +77,17 @@
     "url": "https://news.kbs.co.kr/news/view.do?ncd=8658795",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "부동산 & 건설",
-    "title": "‘대통령 픽’ 이광수도 돌아섰다 “부동산 폭등 우려, 정부 굉장히 안이”",
-    "summary": "중앙일보 보도에 따르면, ‘‘대통령 픽’ 이광수도 돌아섰다 “부동산 폭등 우려, 정부 굉장히 안이”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "중앙일보",
-    "url": "https://www.joongang.co.kr/article/25460536",
-    "date": "Wed, 09 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "부동산 & 건설",
-    "title": "‘李 픽’ 이광수도 돌아섰다…“이대로면 부동산 폭등, 정부 안이”",
-    "summary": "중앙일보 보도에 따르면, ‘‘李 픽’ 이광수도 돌아섰다…“이대로면 부동산 폭등, 정부 안이”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "중앙일보",
-    "url": "https://www.joongang.co.kr/article/25460362",
+    "title": "여야 7개 정당, 오늘 부동산 정책 토론회 개최…민주 민병덕, 국힘 김은혜 참여",
+    "summary": "KBS 뉴스 보도에 따르면, ‘여야 7개 정당, 오늘 부동산 정책 토론회 개최…민주 민병덕, 국힘 김은혜 참여’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "KBS 뉴스",
+    "url": "https://news.kbs.co.kr/news/view.do?ncd=8658560",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "부동산 & 건설",
@@ -157,7 +97,17 @@
     "url": "https://www.mt.co.kr/amp/finance/2026/09/09/2026090910133728586",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "유통 & 소비재",
+    "title": "월급 그대로인데 물가는 28% 껑충…美 소비자 '부글'",
+    "summary": "한국경제 보도에 따르면, ‘월급 그대로인데 물가는 28% 껑충…美 소비자 '부글'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한국경제",
+    "url": "https://www.hankyung.com/article/202609105494i",
+    "date": "Wed, 09 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "유통 & 소비재",
@@ -167,7 +117,7 @@
     "url": "https://www.yna.co.kr/view/AKR20260909093700009",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "유통 & 소비재",
@@ -177,7 +127,7 @@
     "url": "https://www.news1.kr/world/northeast-asia/6284901",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "유통 & 소비재",
@@ -186,8 +136,8 @@
     "source": "뉴시스",
     "url": "https://www.newsis.com/view/NISX20260909_0003782480",
     "date": "Wed, 09 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "유통 & 소비재",
@@ -197,7 +147,7 @@
     "url": "https://mobile.newsis.com/view_amp.html?ar_id=NISX20260909_0003782274",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "유통 & 소비재",
@@ -207,7 +157,7 @@
     "url": "https://www.sentv.co.kr/article/view/sentv202609090034",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "유통 & 소비재",
@@ -217,7 +167,7 @@
     "url": "https://www.sedaily.com/article/20089122",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "유통 & 소비재",
@@ -227,7 +177,7 @@
     "url": "https://www.seoultimes.news/news/article.html?no=2000099362",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "유통 & 소비재",
@@ -237,7 +187,7 @@
     "url": "https://www.sedaily.com/article/20088999",
     "date": "Wed, 09 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "유통 & 소비재",
@@ -247,17 +197,7 @@
     "url": "https://www.news1.kr/amp/economy/trend/6283603",
     "date": "Tue, 08 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
-  },
-  {
-    "section": "유통 & 소비재",
-    "title": "7만명 찾은 파리 한류축제…K푸드, 유럽시장 공략 속도",
-    "summary": "전자신문 보도에 따르면, ‘7만명 찾은 파리 한류축제…K푸드, 유럽시장 공략 속도’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "전자신문",
-    "url": "https://www.etnews.com/20260909000288",
-    "date": "Wed, 09 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "사회 & 노동/환경",
@@ -267,16 +207,96 @@
     "url": "https://www.yna.co.kr/amp/view/AKR20260909081600057",
     "date": "Wed, 09 Se",
     "status": "CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "사회 & 노동/환경",
-    "title": "\"AI 대전환 따른 새 사회계약 필요\"…노동부, '녹서' 만든다",
-    "summary": "뉴시스 보도에 따르면, ‘\"AI 대전환 따른 새 사회계약 필요\"…노동부, '녹서' 만든다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "title": "“스타트업 올가미 10년째 여전…규제 완화·공정한 경쟁 환경 필요”",
+    "summary": "서울경제 보도에 따르면, ‘“스타트업 올가미 10년째 여전…규제 완화·공정한 경쟁 환경 필요”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "서울경제",
+    "url": "https://www.sedaily.com/article/20089033",
+    "date": "Wed, 09 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "사회 & 노동/환경",
+    "title": "조원식 미래고용분석과장, 26년 8월 고용행정 통계로 본 노동시장 동향 발표",
+    "summary": "뉴시스 보도에 따르면, ‘조원식 미래고용분석과장, 26년 8월 고용행정 통계로 본 노동시장 동향 발표’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "뉴시스",
-    "url": "https://www.newsis.com/view/NISX20260908_0003781222",
+    "url": "https://www.newsis.com/view/NISI20260907_0021426448",
+    "date": "Mon, 07 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "사회 & 노동/환경",
+    "title": "\"청년만 줄었다\"…고용보험 가입자 48개월째 '역주행'",
+    "summary": "한국경제 보도에 따르면, ‘\"청년만 줄었다\"…고용보험 가입자 48개월째 '역주행'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한국경제",
+    "url": "https://www.hankyung.com/article/202609078187i",
+    "date": "Mon, 07 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "사회 & 노동/환경",
+    "title": "고용보험 상시가입자 8개월 연속 20만명대 증가…제조업도 15개월 만에↑ - 머니투데이",
+    "summary": "머니투데이 보도에 따르면, ‘고용보험 상시가입자 8개월 연속 20만명대 증가…제조업도 15개월 만에↑’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "머니투데이",
+    "url": "https://www.mt.co.kr/index.php/amp/economy/2026/09/07/2026090711281046040",
+    "date": "Mon, 07 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "사회 & 노동/환경",
+    "title": "고용보험 가입자 27.8만명↑…제조업 15개월 만에 반등",
+    "summary": "뉴시스 보도에 따르면, ‘고용보험 가입자 27.8만명↑…제조업 15개월 만에 반등’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴시스",
+    "url": "https://mobile.newsis.com/view_amp.html?ar_id=NISX20260907_0003779033",
+    "date": "Mon, 07 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "사회 & 노동/환경",
+    "title": "청년고용정책 대상 29→34세 이하로 확대…노동시장 진입지원 강화",
+    "summary": "매일경제 마켓 보도에 따르면, ‘청년고용정책 대상 29→34세 이하로 확대…노동시장 진입지원 강화’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "매일경제 마켓",
+    "url": "https://stock.mk.co.kr/news/view/1155190",
+    "date": "Tue, 08 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "사회 & 노동/환경",
+    "title": "창녕군, 4년간 700억원 투입…지역사회 복지안전망 강화",
+    "summary": "신아일보 보도에 따르면, ‘창녕군, 4년간 700억원 투입…지역사회 복지안전망 강화’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "신아일보",
+    "url": "https://www.shinailbo.co.kr/news/articleView.html?idxno=5060107",
+    "date": "Wed, 09 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "사회 & 노동/환경",
+    "title": "최동식 경기도의원, 취약계층 주거 복지 감액 지적…“재정 악화 핑계로 사회안전망 구축 역행해선 안 돼”",
+    "summary": "서울Pn 보도에 따르면, ‘최동식 경기도의원, 취약계층 주거 복지 감액 지적…“재정 악화 핑계로 사회안전망 구축 역행해선 안 돼”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "서울Pn",
+    "url": "https://go.seoul.co.kr/news/newsView.php?id=20260909500110",
+    "date": "Wed, 09 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "사회 & 노동/환경",
+    "title": "[논설위원의 단도직입]“청년고용 부진 고착화…‘경력 사다리’ 끊기지 않게 정부가 지원해야”",
+    "summary": "원문 매체 보도에 따르면, ‘“청년고용 부진 고착화…‘경력 사다리’ 끊기지 않게 정부가 지원해야”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "v.daum.net",
+    "url": "https://v.daum.net/v/20260908201645446",
     "date": "Tue, 08 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "발행일 확인 필요"
+    "freshness_note": "최근 3일 보완"
   }
 ]
