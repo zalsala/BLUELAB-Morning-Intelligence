@@ -1,0 +1,108 @@
+name: Expand Vision General News Contract V3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/vision_general_contract_patch_v3.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-contract:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Patch code and data contracts only
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          def read(p): return Path(p).read_text(encoding='utf-8')
+          def write(p,t): Path(p).write_text(t,encoding='utf-8')
+
+          p='pipeline/schema.py'; t=read(p)
+          if '"id": "vision-optometry-ophthalmology"' not in t:
+              marker='    {\n        "id": "science-future",'
+              block='''    {\n        "id": "vision-optometry-ophthalmology",\n        "name": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",\n        "name_en": "Vision / Optometry / Ophthalmology",\n        "icon": "👓",\n        "description": "안경렌즈·콘택트렌즈 산업, 검안·시과학, 근시관리, 안과 임상·규제·제품 및 전문기관 동향",\n        "queries": ["안경 안경렌즈 신제품", "콘택트렌즈 시력 FDA 승인", "근시 억제 근시관리 렌즈", "검안 시과학 양안시 사시", "안과 망막 녹내장 백내장 각막", "myopia control optometry ophthalmology contact lens"],\n        "rss_topics": [],\n    },\n'''
+              if marker not in t: raise SystemExit('schema marker missing')
+              t=t.replace(marker,block+marker,1); write(p,t)
+
+          p='pipeline/content_quality.py'; t=read(p)
+          if '"vision-optometry-ophthalmology": {' not in t:
+              marker='    "science-future": {'
+              block='''    "vision-optometry-ophthalmology": {\n        "positive": ["안경", "안경렌즈", "콘택트렌즈", "근시", "근시관리", "검안", "안과", "시과학", "시력", "망막", "각막", "녹내장", "백내장", "사시", "양안시", "조절", "폭주", "myopia", "optometry", "ophthalmology", "contact lens", "vision science"],\n        "negative": ["카메라 렌즈", "스마트폰 렌즈", "아이돌", "아파트", "야구", "반도체 공정"],\n    },\n'''
+              if marker not in t: raise SystemExit('relevance marker missing')
+              t=t.replace(marker,block+marker,1); write(p,t)
+
+          p='pipeline/story_bundle_writer.py'; t=read(p)
+          if 'from email.utils import parsedate_to_datetime' not in t: t=t.replace('from datetime import datetime','from datetime import datetime\nfrom email.utils import parsedate_to_datetime')
+          for a,b in [('140 general-news records','150 general-news records'),('len(articles) != 140','len(articles) != 150'),('exactly 140 general articles','exactly 150 general articles'),('len({s["url"] for s in stories}) != 140','len({s["url"] for s in stories}) != 150'),('requires 140 unique general article URLs','requires 150 unique general article URLs'),('idx * 28:(idx + 1) * 28','idx * 30:(idx + 1) * 30'),('len(chunk) != 28','len(chunk) != 30'),('expected 28 records','expected 30 records'),('28 x 5 = 140 general stories','30 x 5 = 150 general stories'),('len(today_urls) != 140 or len(set(today_urls)) != 140','len(today_urls) != 150 or len(set(today_urls)) != 150'),('today.json must contain 140 unique general article URLs','today.json must contain 150 unique general article URLs'),('len(rows) != 28','len(rows) != 30'),('expected list of 28 stories','expected list of 30 stories'),('len(bundle_urls) != 140 or len(set(bundle_urls)) != 140','len(bundle_urls) != 150 or len(set(bundle_urls)) != 150'),('story bundles must contain 140 unique URLs','story bundles must contain 150 unique URLs'),('general_records=140 unique_urls=140','general_records=150 unique_urls=150')]: t=t.replace(a,b)
+          old='''def _freshness(article: Any, edition_date: str) -> str:\n    published = (getattr(article, "published_at", "") or "")[:10]\n    try:\n        age = (datetime.fromisoformat(edition_date).date() - datetime.fromisoformat(published).date()).days\n    except Exception:\n        return "발행일 확인 필요"\n    if age <= 1:\n        return "NEW SINCE LAST BRIEFING"\n    if age <= 3:\n        return "최근 3일 보완"\n    if age <= 7:\n        return "최근 7일 보완"\n    return "전문분야 최근 30일 보완"'''
+          new='''def _freshness(article: Any, edition_date: str) -> str:\n    raw = (getattr(article, "published_at", "") or "").strip()\n    try:\n        published = datetime.fromisoformat(raw.replace("Z", "+00:00"))\n    except Exception:\n        try:\n            published = parsedate_to_datetime(raw)\n        except Exception:\n            return "발행일 확인 필요"\n    age = (datetime.fromisoformat(edition_date).date() - published.date()).days\n    if age <= 1:\n        return "NEW SINCE LAST BRIEFING"\n    if age <= 3:\n        return "최근 3일 보완"\n    if age <= 7:\n        return "최근 7일 보완"\n    return "전문분야 최근 30일 보완"'''
+          if old not in t: raise SystemExit('freshness marker missing')
+          t=t.replace(old,new,1); write(p,t)
+
+          p='run_pipeline.py'; t=read(p)
+          old='''        bundle.metadata["general_chapters"]=14; bundle.metadata["general_articles"]=140\n        bundle.metadata["total_chapters"]=15; bundle.metadata["total_articles"]=150'''; new='''        bundle.metadata["general_chapters"]=len(bundle.chapters)-1; bundle.metadata["general_articles"]=len(articles)\n        bundle.metadata["total_chapters"]=len(bundle.chapters); bundle.metadata["total_articles"]=len(articles)+10'''
+          if old not in t: raise SystemExit('pipeline metadata marker missing')
+          t=t.replace(old,new,1)
+          old='''        content_counts={"total_chapters":len(bundle.chapters),"total_articles":150,"general_chapters":14,"general_articles":140,"vision_research_watch":10,'''; new='''        content_counts={"total_chapters":len(bundle.chapters),"total_articles":len(articles)+10,"general_chapters":len(bundle.chapters)-1,"general_articles":len(articles),"vision_research_watch":10,'''
+          if old not in t: raise SystemExit('pipeline counts marker missing')
+          t=t.replace(old,new,1).replace('일반 14개/140기사 + Vision Research Watch 10건','일반 15개/150기사 + Vision Research Watch 10건'); write(p,t)
+
+          p='scripts/qa_gate.py'; t=read(p)
+          for a,b in [('EXPECTED_GENERAL_CHAPTERS=14','EXPECTED_GENERAL_CHAPTERS=15'),('EXPECTED_GENERAL_ARTICLES=140','EXPECTED_GENERAL_ARTICLES=150'),('general chapter count={len(general)} != 14','general chapter count={len(general)} != 15'),('if vision_enabled and len(chapters)!=15:','if vision_enabled and len(chapters)!=16:'),('rendered chapter count={len(chapters)} != 15','rendered chapter count={len(chapters)} != 16'),('if not vision_enabled and len(chapters)!=14:','if not vision_enabled and len(chapters)!=15:'),('chapter count={len(chapters)} != 14','chapter count={len(chapters)} != 15'),('general articles={len(general_articles)} != 140','general articles={len(general_articles)} != 150'),('expected_total=150 if vision_enabled else 140','expected_total=160 if vision_enabled else 150'),('canonical 140 general-story snapshot','canonical 150 general-story snapshot'),('general_chapters=14 general_articles=140','general_chapters=15 general_articles=150')]: t=t.replace(a,b)
+          write(p,t)
+
+          p='scripts/validate_sources.py'; t=read(p).replace('len(expected_sections)!=14','len(expected_sections)!=15').replace('expected 14 named chapters','expected 15 named chapters').replace('len(stories)!=140','len(stories)!=150').replace('story bundle count={len(stories)} != 140','story bundle count={len(stories)} != 150'); write(p,t)
+
+          p='scripts/validate_release_contract.py'; t=read(p)
+          for a,b in [('if len(general)!=14:','if len(general)!=15:'),('general chapter count={len(general)} != 14','general chapter count={len(general)} != 15'),('if len(articles)!=140:','if len(articles)!=150:'),('general rendered article total={len(articles)} != 140','general rendered article total={len(articles)} != 150'),('if vision and len(chapters)!=15:','if vision and len(chapters)!=16:'),('total rendered chapter count={len(chapters)} != 15','total rendered chapter count={len(chapters)} != 16'),('if len(bundled)!=140:','if len(bundled)!=150:'),('story bundle total={len(bundled)} != 140','story bundle total={len(bundled)} != 150'),('the 140 general article URLs','the 150 general article URLs')]: t=t.replace(a,b)
+          write(p,t)
+
+          p='scripts/validate_publication_manifest.py'; t=read(p).replace('expected_chapters=15 if vision_declared else 14','expected_chapters=16 if vision_declared else 15').replace('expected_articles=150 if vision_declared else 140','expected_articles=160 if vision_declared else 150').replace('counts.get("general_chapters")!=14','counts.get("general_chapters")!=15').replace("content_counts.general_chapters={counts.get('general_chapters')} != 14","content_counts.general_chapters={counts.get('general_chapters')} != 15").replace('counts.get("general_articles")!=140','counts.get("general_articles")!=150').replace("content_counts.general_articles={counts.get('general_articles')} != 140","content_counts.general_articles={counts.get('general_articles')} != 150"); write(p,t)
+
+          p='public/index.html'; t=read(p).replace('14개 챕터 140개 인텔리전스 뉴스','15개 챕터 150개 인텔리전스 뉴스').replace('14개 챕터 인텔리전스 (140)','15개 챕터 인텔리전스 (150)').replace('140 Intelligence Nodes','150 Intelligence Nodes').replace('전체 챕터 (140)','전체 챕터 (150)').replace('140 Curated Intelligence Articles','150 Curated Intelligence Articles'); write(p,t)
+
+          for p in ['tests/test_qa_gate_contract.py','tests/test_release_pipeline.py']:
+              t=read(p)
+              if '"vision-optometry-ophthalmology"' not in t:
+                  t=t.replace('"culture-entertainment", "science-future",','"culture-entertainment", "vision-optometry-ophthalmology", "science-future",').replace('"society-environment", "culture-entertainment", "science-future"','"society-environment", "culture-entertainment", "vision-optometry-ophthalmology", "science-future"')
+              t=t.replace('"total_chapters": 14','"total_chapters": 15').replace('"total_articles": 140','"total_articles": 150'); write(p,t)
+
+          for p in ['pipeline/fetch_and_filter.py','pipeline/scarcity_snapshot_arbiter.py','pipeline/snapshot_arbiter.py']:
+              t=read(p).replace('14개 챕터','15개 챕터').replace('14개 전 챕터','15개 전 챕터').replace('({idx:02d}/14)','({idx:02d}/15)'); write(p,t)
+          print('CODE_CONTRACT_PATCH=APPLIED')
+          PY
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Regression tests
+        run: pytest -q tests/
+      - name: Static contract checks
+        run: |
+          python -m compileall -q pipeline scripts run_pipeline.py
+          python - <<'PY'
+          from pipeline.schema import CHAPTER_DEFINITIONS
+          from pipeline.content_quality import CHAPTER_RELEVANCE
+          assert len(CHAPTER_DEFINITIONS)==15
+          assert 'vision-optometry-ophthalmology' in CHAPTER_RELEVANCE
+          print('STATIC_CONTRACT=PASS')
+          PY
+      - name: Commit code contract
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add pipeline/ scripts/ tests/ run_pipeline.py public/index.html
+          git commit -m "feat: add independent vision optometry ophthalmology news chapter"
+          git pull --rebase origin main
+          git push origin main
