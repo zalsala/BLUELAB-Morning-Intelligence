@@ -24,6 +24,7 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 MAX_AGE_DAYS = 3
+SPECIALIST_MAX_AGE_DAYS = {"vision-optometry-ophthalmology": 7}
 MAX_PER_PUBLISHER = 2
 MIN_UNIQUE_PUBLISHERS = 5
 DECODE_WORKERS = 6
@@ -101,7 +102,14 @@ def score_article(article: Dict[str, Any]) -> float:
 
 def _fresh_articles(raw_articles: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     now = datetime.now(timezone.utc)
-    return [a for a in raw_articles if (age := article_age_days(a, now)) is not None and -0.25 <= age <= MAX_AGE_DAYS]
+    out = []
+    for article in raw_articles:
+        age = article_age_days(article, now)
+        chapter_id = article.get("chapter_id", "")
+        max_age = SPECIALIST_MAX_AGE_DAYS.get(chapter_id, MAX_AGE_DAYS)
+        if age is not None and -0.25 <= age <= max_age:
+            out.append(article)
+    return out
 
 
 def deduplicate_and_rank_chapter(raw_articles: List[Dict[str, Any]], prior_global_titles: Set[str], target_count: int = 10) -> List[Dict[str, Any]]:

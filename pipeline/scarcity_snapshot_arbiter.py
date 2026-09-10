@@ -24,7 +24,14 @@ EXTRA_FRESHNESS_QUERIES = {
     "realestate-construction": [
         "서울 아파트", "수도권 아파트", "부동산 정책", "주택 공급",
         "재건축 재개발", "아파트 분양 청약", "부동산 PF 건설", "국토교통부 주택",
-    ]
+    ],
+    "vision-optometry-ophthalmology": [
+        "안과 신약 승인", "안과 임상시험", "망막 녹내장 백내장 치료",
+        "근시관리 어린이 안경렌즈", "콘택트렌즈 FDA", "검안사 시기능",
+        "ophthalmology FDA eye treatment", "optometry myopia control",
+        "contact lens myopia children", "retina glaucoma cataract ophthalmology",
+        "EssilorLuxottica myopia lens", "CooperVision myopia contact lens",
+    ],
 }
 CORROBORATION_CANDIDATES_PER_ARTICLE = 3
 CORROBORATION_URLS_PER_ARTICLE = 2
@@ -49,7 +56,8 @@ def _freshness_queries(chapter: Dict[str, Any]) -> List[str]:
         q = (q or "").strip()
         if not q:
             continue
-        fresh_q = q if "when:" in q else f"{q} when:3d"
+        days = 7 if chapter.get("id") == "vision-optometry-ophthalmology" else 3
+        fresh_q = q if "when:" in q else f"{q} when:{days}d"
         if fresh_q not in seen:
             seen.add(fresh_q)
             out.append(fresh_q)
@@ -72,7 +80,8 @@ def _freshness_rescue(chapter: Dict[str, Any]) -> List[Dict[str, Any]]:
             row["chapter_id"] = chapter["id"]
             row["chapter_name"] = chapter["name"]
             out.append(row)
-    print(f"    └─ [{chapter['name']}] when:3d freshness rescue collected={len(out)} fresh={len(base._fresh_articles(out))}")
+    days = 7 if chapter.get("id") == "vision-optometry-ophthalmology" else 3
+    print(f"    └─ [{chapter['name']}] when:{days}d freshness rescue collected={len(out)} fresh={len(base._fresh_articles(out))}")
     return out
 
 
