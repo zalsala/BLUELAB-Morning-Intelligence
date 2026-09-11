@@ -1,0 +1,103 @@
+name: Live QA 2026-09-11
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/live_qa_20260911.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      BASE_URL: https://bluelab-morning-intelligence.zalsala82.workers.dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify production identity
+        run: |
+          python - <<'PY'
+          import json, urllib.request
+          from pathlib import Path
+          base='https://bluelab-morning-intelligence.zalsala82.workers.dev'
+          local=json.loads(Path('public/data/publication_manifest.json').read_text(encoding='utf-8'))
+          remote=json.loads(urllib.request.urlopen(urllib.request.Request(base+'/data/publication_manifest.json',headers={'Cache-Control':'no-cache','User-Agent':'BLUELAB-QA'}),timeout=20).read().decode())
+          today=json.loads(urllib.request.urlopen(urllib.request.Request(base+'/data/today.json',headers={'Cache-Control':'no-cache','User-Agent':'BLUELAB-QA'}),timeout=20).read().decode())
+          assert local['edition_date']=='2026-09-11'
+          assert remote['edition_date']==local['edition_date']
+          assert remote['fingerprints']['production_fingerprint_sha256']==local['fingerprints']['production_fingerprint_sha256']
+          assert today['metadata']['date']=='2026-09-11'
+          assert today['metadata']['story_files']==[f'stories-{i}.json' for i in range(1,6)]
+          assert len(today.get('three_line_summary',[]))==3
+          assert len(today.get('top_5_highlights',[]))==5
+          assert len(today.get('chapters',[]))==16
+          assert sum(len(c.get('articles',[])) for c in today['chapters'])==160
+          print('CLOUDFLARE_READBACK=PASS')
+          print('EDITION=2026-09-11')
+          print('PRODUCTION_SHA='+local['fingerprints']['production_fingerprint_sha256'])
+          PY
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Browser top middle bottom interaction QA
+        run: |
+          cat > /tmp/liveqa.mjs <<'JS'
+          import { chromium } from 'playwright';
+          const base=process.env.BASE_URL;
+          const browser=await chromium.launch({headless:true});
+          for (const p of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844}]) {
+            const page=await browser.newPage({viewport:{width:p.width,height:p.height}});
+            const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
+            const resp=await page.goto(base,{waitUntil:'domcontentloaded',timeout:60000});
+            if(!resp?.ok()) throw new Error(`${p.name} HTTP ${resp?.status()}`);
+            await page.waitForFunction(()=>document.querySelectorAll('.article-row').length>=160,{timeout:60000});
+            const state=await page.evaluate(()=>({
+              date:document.querySelector('#headerDateText')?.textContent||'',
+              rows:document.querySelectorAll('.article-row').length,
+              tabs:document.querySelectorAll('.chapter-tab').length,
+              cards:document.querySelectorAll('[id^="chapter-block-"]').length,
+              width:document.documentElement.scrollWidth,
+              client:document.documentElement.clientWidth,
+              text:document.body.innerText
+            }));
+            if(!state.date.includes('2026년 09월 11일')) throw new Error(`${p.name} wrong date: ${state.date}`);
+            if(state.rows!==160) throw new Error(`${p.name} rows=${state.rows}`);
+            if(state.tabs<17) throw new Error(`${p.name} tabs=${state.tabs}`);
+            if(state.cards!==16) throw new Error(`${p.name} cards=${state.cards}`);
+            if(state.width>state.client+2) throw new Error(`${p.name} horizontal overflow`);
+            for(const needle of ['인천 서구 검단','NEXT SIGNALS']) if(!state.text.includes(needle)) throw new Error(`${p.name} missing ${needle}`);
+            if(errors.length) throw new Error(`${p.name} pageerror ${errors.join(' | ')}`);
+            const first=page.locator('.article-row').first();
+            const detail=first.locator('.editorial-content').first();
+            const header=first.locator(':scope > div').first();
+            if(await detail.isVisible()) throw new Error(`${p.name} detail initially open`);
+            await header.click(); await page.waitForTimeout(200);
+            if(!(await detail.isVisible())) throw new Error(`${p.name} detail did not open`);
+            const links=page.locator('.article-row a[href]');
+            const hrefs=await links.evaluateAll(ns=>ns.map(n=>n.href));
+            if(hrefs.length<160) throw new Error(`${p.name} links=${hrefs.length}`);
+            if(hrefs.some(u=>!/^https?:\/\//.test(u)||u.includes('news.google.com'))) throw new Error(`${p.name} bad link`);
+            await header.click(); await page.waitForTimeout(100);
+            if(await detail.isVisible()) throw new Error(`${p.name} detail did not close`);
+            const summary=await page.evaluate(async()=>await (await fetch('/data/today.json',{cache:'no-store'})).json());
+            if(summary.three_line_summary.length!==3) throw new Error(`${p.name} summary count`);
+            for(const line of summary.three_line_summary) if(!state.text.includes(line)) throw new Error(`${p.name} summary not rendered`);
+            await page.evaluate(()=>scrollTo(0,0));
+            const top=await page.locator('body').innerText(); if(!top) throw new Error(`${p.name} top empty`);
+            await page.evaluate(()=>scrollTo(0,Math.floor(document.documentElement.scrollHeight/2))); await page.waitForTimeout(100);
+            await page.evaluate(()=>scrollTo(0,document.documentElement.scrollHeight)); await page.waitForTimeout(100);
+            console.log(`${p.name.toUpperCase()}_QA=PASS rows=${state.rows} cards=${state.cards} links=${hrefs.length}`);
+            await page.close();
+          }
+          await browser.close();
+          console.log('CLOUDFLARE_BROWSER_QA=PASS');
+          JS
+          node /tmp/liveqa.mjs
