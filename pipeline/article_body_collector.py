@@ -230,9 +230,15 @@ def _fetch_one(article: Dict[str, Any]) -> Dict[str, Any]:
     except requests.Timeout:
         status["status"] = "TIMEOUT"
     except requests.RequestException as exc:
-        status["status"] = type(exc).__name__
+        # Normalize transport failures so the QA contract does not depend on
+        # requests' exception class names. This remains explicitly non-grounded.
+        status["status"] = "NETWORK_ERROR"
+        status["error_type"] = type(exc).__name__
     except Exception as exc:
-        status["status"] = f"PARSE_{type(exc).__name__}"
+        # Parsing/runtime failures are also retained as fail-closed provenance;
+        # they can never be used as validated body evidence.
+        status["status"] = "PARSE_ERROR"
+        status["error_type"] = type(exc).__name__
 
     fact["body_validation"] = status
     out["fact_check"] = fact
