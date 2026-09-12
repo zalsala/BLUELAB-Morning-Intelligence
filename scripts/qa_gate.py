@@ -19,11 +19,12 @@ EXPECTED_GENERAL_ARTICLES=150
 EXPECTED_TOP5_COUNT=5
 VISION_ID="vision-research-watch"
 # Article-body verification is fail-closed: only a positively validated body can
-# be used as grounding. HTTP/network states below are retained explicitly so a
-# transient publisher response never becomes fabricated evidence. They are
-# acceptable as provenance states because the article itself remains governed
-# by its fact-check status and cannot masquerade as body-validated evidence.
-ALLOWED_BODY_VALIDATION_STATES={"VALIDATED","EVENT_MISMATCH","NO_QUALIFIED_BODY","HTTP_403","HTTP_404","HTTP_429","TIMEOUT"}
+# be used as grounding. HTTP/network/content-type states below are retained
+# explicitly so an inaccessible or non-HTML publisher response never becomes
+# fabricated evidence. They are acceptable as provenance states because the
+# article itself remains governed by its fact-check status and cannot masquerade
+# as body-validated evidence.
+ALLOWED_BODY_VALIDATION_STATES={"VALIDATED","EVENT_MISMATCH","NO_QUALIFIED_BODY","HTTP_403","HTTP_404","HTTP_429","TIMEOUT","NON_HTML"}
 
 
 def run_qa_gate(json_path:str="public/data/today.json")->bool:
