@@ -1,4 +1,5 @@
-from pipeline.article_body_collector import _extract_jsonld_body, _extract_article_body, _event_overlap
+import requests
+from pipeline.article_body_collector import _extract_jsonld_body, _extract_article_body, _event_overlap, _fetch_one
 from pipeline.fact_verifier import evaluate_article_fact_check
 from bs4 import BeautifulSoup
 
@@ -26,6 +27,24 @@ def test_body_event_overlap_requires_title_evidence():
     assert ok is True
     bad, _, _ = _event_overlap('원달러 환율 3거래일 연속 하락', '프로야구 경기에서 홈런이 나왔고 관중이 환호했다.')
     assert bad is False
+
+
+def test_request_exception_is_normalized_and_never_grounded(monkeypatch):
+    def fail_request(*args, **kwargs):
+        raise requests.ConnectionError("temporary transport failure")
+
+    monkeypatch.setattr(requests, "get", fail_request)
+    article = {
+        'title': '네트워크 오류 검증 기사',
+        'source': '테스트',
+        'link': 'https://example.com/article',
+        'fact_check': {'status': 'PARTIAL'},
+    }
+    result = _fetch_one(article)
+    body_validation = result['fact_check']['body_validation']
+    assert body_validation['status'] == 'NETWORK_ERROR'
+    assert body_validation['error_type'] == 'ConnectionError'
+    assert '_body_evidence_span' not in result
 
 
 def test_relay_domain_does_not_promote_multi_source():
