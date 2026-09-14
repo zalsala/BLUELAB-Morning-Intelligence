@@ -1,8 +1,8 @@
 {
   "schema_version": "vision-research-watch-v3",
-  "generated_at": "2026-09-14T23:07:53+00:00",
+  "generated_at": "2026-09-14T23:17:17+00:00",
   "window_days": 7,
-  "candidate_count": 282,
+  "candidate_count": 283,
   "eligible_count": 38,
   "reserve_count": 37,
   "selected_count": 10,
@@ -29,8 +29,8 @@
     "tandfonline.com"
   ],
   "reject_counts": {
-    "future_publication": 96,
-    "topic_irrelevant": 148
+    "future_publication": 95,
+    "topic_irrelevant": 150
   },
   "provider_errors": [],
   "selected": [

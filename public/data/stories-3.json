@@ -41,9 +41,19 @@
   },
   {
     "section": "반도체 & 첨단제조",
+    "title": "'SK하이닉스 독점' 끝난 한미반도체, 실적 성장 여지 더 커진 이유는",
+    "summary": "블로터 보도에 따르면, ‘'SK하이닉스 독점' 끝난 한미반도체, 실적 성장 여지 더 커진 이유는’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "블로터",
+    "url": "https://www.bloter.net/news/articleView.html?idxno=673505",
+    "date": "Mon, 14 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "반도체 & 첨단제조",
     "title": "[비즈톡톡] ‘메모리 초호황기’에 D램 점유율 25%로 하락… ‘HBM 왕좌’ SK하이닉스의 고민 - 조선비즈",
-    "summary": "Chosunbiz 보도에 따르면, ‘‘메모리 초호황기’에 D램 점유율 25%로 하락… ‘HBM 왕좌’ SK하이닉스의 고민 - 조선비즈’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "Chosunbiz",
+    "summary": "원문 매체 보도에 따르면, ‘‘메모리 초호황기’에 D램 점유율 25%로 하락… ‘HBM 왕좌’ SK하이닉스의 고민 - 조선비즈’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "biz.chosun.com",
     "url": "https://biz.chosun.com/it-science/ict/2026/09/14/KFV5V4V6CFCIHBEMKKFNV2F25A/",
     "date": "Sun, 13 Se",
     "status": "PARTIALLY CONFIRMED",
@@ -81,22 +91,22 @@
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "美반도체 장중 5% 급락…외국인 '삼전·하닉' 2.9조 매도 이어질까",
-    "summary": "녹색경제신문 보도에 따르면, ‘美반도체 장중 5% 급락…외국인 '삼전·하닉' 2.9조 매도 이어질까’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "녹색경제신문",
-    "url": "https://www.greened.kr/news/articleView.html?idxno=350053",
-    "date": "Mon, 14 Se",
+    "title": "믿었던 HBM 마저…중국이 다 쫓아왔다 [中반도체 공습]",
+    "summary": "중앙일보 보도에 따르면, 믿었던 HBM 마저…중국이 다 쫓아왔다",
+    "source": "중앙일보",
+    "url": "https://www.joongang.co.kr/article/25461527",
+    "date": "Sun, 13 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
+    "freshness_note": "최근 3일 보완"
   },
   {
-    "section": "반도체 & 첨단제조",
-    "title": "이상일 “용인 반도체 산단에 삼성전자·SK하이닉스 1600조원 투자 전망”",
-    "summary": "용인일보 보도에 따르면, ‘이상일 “용인 반도체 산단에 삼성전자·SK하이닉스 1600조원 투자 전망”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "용인일보",
-    "url": "https://www.yonginilbo.co.kr/news/articleView.html?idxno=105235",
+    "section": "바이오 & 헬스케어",
+    "title": "[K바이오 돈의 경로] 5000억 배곧 투자…바이오 신약 승부｜종근당②",
+    "summary": "블로터 보도에 따르면, ‘5000억 배곧 투자…바이오 신약 승부｜종근당②’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "블로터",
+    "url": "https://www.bloter.net/news/articleViewAmp.html?idxno=673427",
     "date": "Mon, 14 Se",
-    "status": "CONFIRMED",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
@@ -128,16 +138,6 @@
     "date": "Sat, 12 Se",
     "status": "CONFIRMED",
     "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "[K바이오 돈의 경로] 5000억 배곧 투자…바이오 신약 승부｜종근당②",
-    "summary": "원문 매체 보도에 따르면, ‘5000억 배곧 투자…바이오 신약 승부｜종근당②’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "bloter.net",
-    "url": "https://www.bloter.net/news/articleViewAmp.html?idxno=673427",
-    "date": "Mon, 14 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -201,16 +201,6 @@
   },
   {
     "section": "에너지 & 모빌리티",
-    "title": "\"자율주행 최강자\"라더니…뒤통수 맞은 테슬라 차주들 [이슈+]",
-    "summary": "한국경제 보도에 따르면, ‘\"자율주행 최강자\"라더니…뒤통수 맞은 테슬라 차주들 [이슈+]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "한국경제",
-    "url": "https://www.hankyung.com/article/202609142445g",
-    "date": "Mon, 14 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "에너지 & 모빌리티",
     "title": "[현장] 폭스바겐 상용차 고향 하노버의 위기…중국 전기 자율주행 트럭의 역습",
     "summary": "한겨레 보도에 따르면, ‘폭스바겐 상용차 고향 하노버의 위기…중국 전기 자율주행 트럭의 역습’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "한겨레",
@@ -228,6 +218,16 @@
     "date": "Sun, 13 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "\"자율주행 최강자\"라더니…뒤통수 맞은 테슬라 차주들 [이슈+]",
+    "summary": "한국경제 보도에 따르면, ‘\"자율주행 최강자\"라더니…뒤통수 맞은 테슬라 차주들 [이슈+]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "hankyung.com",
+    "url": "https://www.hankyung.com/article/202609142445g",
+    "date": "Mon, 14 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "에너지 & 모빌리티",
@@ -251,9 +251,19 @@
   },
   {
     "section": "에너지 & 모빌리티",
+    "title": "\"자율주행 없는 차는 팔기 어려워진다\"⋯박민우 사장이 그리는 현대차그룹의 승부수",
+    "summary": "원문 매체 보도에 따르면, ‘\"자율주행 없는 차는 팔기 어려워진다\"⋯박민우 사장이 그리는 현대차그룹의 승부수’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "autodaily.co.kr",
+    "url": "https://www.autodaily.co.kr/news/articleView.html?idxno=600386",
+    "date": "Sun, 13 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "에너지 & 모빌리티",
     "title": "전기차 키운 중국, 이제는 정리한다⋯BYD·지리 더 강해지나",
-    "summary": "엠투데이 보도에 따르면, ‘전기차 키운 중국, 이제는 정리한다⋯BYD·지리 더 강해지나’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "엠투데이",
+    "summary": "원문 매체 보도에 따르면, ‘전기차 키운 중국, 이제는 정리한다⋯BYD·지리 더 강해지나’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "autodaily.co.kr",
     "url": "https://www.autodaily.co.kr/news/articleView.html?idxno=600411",
     "date": "Mon, 14 Se",
     "status": "PARTIALLY CONFIRMED",
@@ -262,9 +272,9 @@
   {
     "section": "에너지 & 모빌리티",
     "title": "하정우 부위원장 \"AI 경쟁은 에너지 경쟁\"… 제주서 청정전력·자율주행 GX 해법 제시",
-    "summary": "파이낸셜뉴스 보도에 따르면, ‘하정우 부위원장 \"AI 경쟁은 에너지 경쟁\"… 제주서 청정전력·자율주행 GX 해법 제시’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "파이낸셜뉴스",
-    "url": "https://www.fnnews.com/news/202609131331283675",
+    "summary": "원문 매체 보도에 따르면, ‘하정우 부위원장 \"AI 경쟁은 에너지 경쟁\"… 제주서 청정전력·자율주행 GX 해법 제시’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "v.daum.net",
+    "url": "https://v.daum.net/v/20260913134811683",
     "date": "Sun, 13 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
@@ -272,8 +282,8 @@
   {
     "section": "에너지 & 모빌리티",
     "title": "“엔비디아로 양산, 아트리아로 내재화”… 현대차그룹, 자율주행 ‘투 트랙’ 가동",
-    "summary": "IT조선 보도에 따르면, ‘“엔비디아로 양산, 아트리아로 내재화”… 현대차그룹, 자율주행 ‘투 트랙’ 가동’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "IT조선",
+    "summary": "원문 매체 보도에 따르면, ‘“엔비디아로 양산, 아트리아로 내재화”… 현대차그룹, 자율주행 ‘투 트랙’ 가동’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "it.chosun.com",
     "url": "https://it.chosun.com/news/articleView.html?idxno=2023092169961",
     "date": "Sun, 13 Se",
     "status": "CONFIRMED",
@@ -281,19 +291,9 @@
   },
   {
     "section": "에너지 & 모빌리티",
-    "title": "“서두르는 것보다 확실하게”…현대차그룹이 밝힌 자율주행 개발 전략은",
-    "summary": "엠투데이 보도에 따르면, ‘“서두르는 것보다 확실하게”…현대차그룹이 밝힌 자율주행 개발 전략은’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "엠투데이",
-    "url": "https://www.autodaily.co.kr/news/articleView.html?idxno=600388",
-    "date": "Sun, 13 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "에너지 & 모빌리티",
     "title": "자율주행 첫 공개한 현대차그룹, 2028년 양산 시동",
-    "summary": "동행미디어 시대 보도에 따르면, ‘자율주행 첫 공개한 현대차그룹, 2028년 양산 시동’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "동행미디어 시대",
+    "summary": "원문 매체 보도에 따르면, ‘자율주행 첫 공개한 현대차그룹, 2028년 양산 시동’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "sidae.com",
     "url": "https://www.sidae.com/article/2026091108505814901",
     "date": "Sun, 13 Se",
     "status": "CONFIRMED",

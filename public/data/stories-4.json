@@ -11,22 +11,22 @@
   },
   {
     "section": "부동산 & 건설",
-    "title": "월세도 비싼데 보증금까지…서울 아파트 월세 보증금 6개월째 상승",
-    "summary": "동아일보 보도에 따르면, ‘월세도 비싼데 보증금까지…서울 아파트 월세 보증금 6개월째 상승’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "동아일보",
-    "url": "https://www.donga.com/news/Economy/article/all/20260914/134663697/1",
-    "date": "Mon, 14 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "부동산 & 건설",
     "title": "[MAI부동산] 압구정 현대1차 80억·청담 현대한강빌라 67억… 서울 아파트 고가 거래",
     "summary": "매일경제 보도에 따르면, ‘압구정 현대1차 80억·청담 현대한강빌라 67억… 서울 아파트 고가 거래’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "매일경제",
     "url": "https://www.mk.co.kr/news/realestate/12152417",
     "date": "Mon, 14 Se",
     "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "부동산 & 건설",
+    "title": "건축비 또 올라…공공분양도 국평 7억~8억원대",
+    "summary": "중앙일보 보도에 따르면, ‘건축비 또 올라…공공분양도 국평 7억~8억원대’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "중앙일보",
+    "url": "https://www.joongang.co.kr/article/25461657",
+    "date": "Mon, 14 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
@@ -45,6 +45,16 @@
     "summary": "디지털데일리 보도에 따르면, ‘분양가상한제 기본형건축비 4.07% 인상…㎡당 232만8000원’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "디지털데일리",
     "url": "https://www.ddaily.co.kr/page/view/2026091416135399070",
+    "date": "Mon, 14 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "부동산 & 건설",
+    "title": "기본형건축비 두달새 4% 쑥…강남·용산·3기 신도시 분양가 더 뛴다",
+    "summary": "서울경제 보도에 따르면, ‘기본형건축비 두달새 4% 쑥…강남·용산·3기 신도시 분양가 더 뛴다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "서울경제",
+    "url": "https://m.sedaily.com/amparticle/20090819",
     "date": "Mon, 14 Se",
     "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
@@ -71,30 +81,20 @@
   },
   {
     "section": "부동산 & 건설",
-    "title": "8월 서울 토지거래허가 신청 건수, 10개월 만의 최저",
-    "summary": "동아일보 보도에 따르면, ‘8월 서울 토지거래허가 신청 건수, 10개월 만의 최저’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "동아일보",
-    "url": "https://www.donga.com/news/amp/all/20260914/134664454/1",
-    "date": "Mon, 14 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "부동산 & 건설",
-    "title": "기본형건축비 두 달 만에 4%↑…강남·용산·3기 신도시, 분양가 또 오른다 [코주부]",
-    "summary": "서울경제 보도에 따르면, 기본형건축비 두 달 만에 4%↑…강남·용산·3기 신도시, 분양가 또 오른다",
-    "source": "서울경제",
-    "url": "https://www.sedaily.com/article/20090870",
-    "date": "Mon, 14 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "부동산 & 건설",
     "title": "[단독] 홍지선 장관후보도 쓴 ‘장모찬스’…주택구입 사적자금 13조 돌파",
     "summary": "매일경제 보도에 따르면, ‘홍지선 장관후보도 쓴 ‘장모찬스’…주택구입 사적자금 13조 돌파’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "매일경제",
     "url": "https://m.mk.co.kr/amp/12151873",
+    "date": "Mon, 14 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "부동산 & 건설",
+    "title": "청약홈 분양정보 청약 접수·당첨 발표 언제? 30건 일정 정리｜2026년 09월 15일 한국부동산원 기준",
+    "summary": "민심뉴스 보도에 따르면, 청약홈 분양정보 청약 접수·당첨 발표 언제?",
+    "source": "민심뉴스",
+    "url": "https://www.minsimnews.com/news/articleView.html?idxno=89018",
     "date": "Mon, 14 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
@@ -105,16 +105,6 @@
     "summary": "MBC 뉴스 보도에 따르면, ‘K푸드 수출, 253일 만에 100억 달러 돌파‥역대 최단 기간 달성’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "MBC 뉴스",
     "url": "https://imnews.imbc.com/news/2026/econo/article/6851754_36932.html",
-    "date": "Mon, 14 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "유통 & 소비재",
-    "title": "올해 K푸드 수출… 역대 최단기간 100억달러 돌파",
-    "summary": "동아일보 보도에 따르면, ‘올해 K푸드 수출… 역대 최단기간 100억달러 돌파’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "동아일보",
-    "url": "https://www.donga.com/news/Economy/article/all/20260914/134667434/2",
     "date": "Mon, 14 Se",
     "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
@@ -171,6 +161,16 @@
   },
   {
     "section": "유통 & 소비재",
+    "title": "인도 소비자물가지수 2026년 8월: 소매 인플레이션 4.82%, 식료품 인플레이션 5.95%로 상승 - 뉴스 및 통계",
+    "summary": "IndexBox 보도에 따르면, ‘인도 소비자물가지수 2026년 8월: 소매 인플레이션 4.82%, 식료품 인플레이션 5.95%로 상승 - 뉴스 및 통계’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "IndexBox",
+    "url": "https://www.indexbox.io/ko/blog/indias-retail-inflation-eases-to-482-in-august-2026/",
+    "date": "Mon, 14 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "유통 & 소비재",
     "title": "현대백화점 “K패션·K뷰티 잇는 K로컬 문화 전파 나선다”",
     "summary": "경향신문 보도에 따르면, ‘현대백화점 “K패션·K뷰티 잇는 K로컬 문화 전파 나선다”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "경향신문",
@@ -191,20 +191,10 @@
   },
   {
     "section": "유통 & 소비재",
-    "title": "K패션 다음은 지역 문화 … 현대백화점, K로컬 전파 앞장선다",
-    "summary": "한국경제 보도에 따르면, ‘K패션 다음은 지역 문화 … 현대백화점, K로컬 전파 앞장선다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "한국경제",
-    "url": "https://www.hankyung.com/article/202609141966P",
-    "date": "Sun, 13 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "사회 & 노동/환경",
-    "title": "네팔 홍수 등 기후변화 우려 커지는데… 美, 탄소배출 규제 폐지 추진",
-    "summary": "동아일보 보도에 따르면, ‘네팔 홍수 등 기후변화 우려 커지는데… 美, 탄소배출 규제 폐지 추진’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "동아일보",
-    "url": "https://www.donga.com/news/Inter/article/all/20260915/134668261/2",
+    "title": "[유통] 베트남 다카시마야 '10년 만의 결실'…영업이익 2,020억 동, 누적 적자 청산",
+    "summary": "굿모닝베트남미디어 보도에 따르면, ‘베트남 다카시마야 '10년 만의 결실'…영업이익 2,020억 동, 누적 적자 청산’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "굿모닝베트남미디어",
+    "url": "https://www.goodmorningvietnam.co.kr/news/article.html?no=83578",
     "date": "Mon, 14 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
@@ -251,10 +241,30 @@
   },
   {
     "section": "사회 & 노동/환경",
+    "title": "주간 전망: 미국 7월 비농업 고용 지표 주목; 팔란티어(PLTR), 샌디스크, AMD(AMD), 스페이스X 실적 발표 예정",
+    "summary": "TradingKey 보도에 따르면, ‘주간 전망: 미국 7월 비농업 고용 지표 주목; 팔란티어(PLTR), 샌디스크, AMD(AMD), 스페이스X 실적 발표 예정’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "TradingKey",
+    "url": "https://www.tradingkey.com/kr/analysis/stocks/us-stocks/262068825-weekly-preview-us-july-non-farm-payrolls-data-market-focus-pltr-sandisk-amd-spacex-earnings-reports-tradingkey",
+    "date": "Sun, 13 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "사회 & 노동/환경",
     "title": "전국 이주노동자들 “우리는 노예 아니고 노동자”…서울 복판서 한목소리",
     "summary": "한겨레 보도에 따르면, ‘전국 이주노동자들 “우리는 노예 아니고 노동자”…서울 복판서 한목소리’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "한겨레",
     "url": "https://www.hani.co.kr/arti/society/labor/1277574.html",
+    "date": "Sun, 13 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "사회 & 노동/환경",
+    "title": "성장세는 세계 1위, 청년 일자리는 외환위기 수준…‘고용 없는 성장’의 그늘",
+    "summary": "미주중앙일보 보도에 따르면, ‘성장세는 세계 1위, 청년 일자리는 외환위기 수준…‘고용 없는 성장’의 그늘’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "미주중앙일보",
+    "url": "https://www.koreadaily.com/article/20260913004933578",
     "date": "Sun, 13 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
@@ -288,15 +298,5 @@
     "date": "Sun, 13 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "사회 & 노동/환경",
-    "title": "수원시 권선구 서둔동, 복지 위기가구 발굴 위한 업무협약 체결",
-    "summary": "리버럴미디어 보도에 따르면, ‘수원시 권선구 서둔동, 복지 위기가구 발굴 위한 업무협약 체결’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "리버럴미디어",
-    "url": "https://liberalmedia.co.kr/news/article.html?no=380342",
-    "date": "Mon, 14 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
   }
 ]
