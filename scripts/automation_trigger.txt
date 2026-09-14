@@ -1,0 +1,2 @@
+BLUELAB Morning Intelligence production trigger marker.
+Last requested production date: 2026-09-15 KST
