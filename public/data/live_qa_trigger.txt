@@ -1,2 +1,2 @@
 BLUELAB Cloudflare live QA trigger.
-Edition: 2026-09-16
+Edition: 2026-09-17
