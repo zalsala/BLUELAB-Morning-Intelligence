@@ -1,111 +1,161 @@
 [
   {
     "section": "주요 헤드라인",
-    "title": "연임·공소취소 선 그은 이 대통령…김승원 임명은 “결론 못 내려”",
-    "summary": "한겨레 보도에 따르면, ‘연임·공소취소 선 그은 이 대통령…김승원 임명은 “결론 못 내려”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "한겨레",
-    "url": "https://www.hani.co.kr/arti/politics/bluehouse/1278543.html",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "주요 헤드라인",
-    "title": "李, 서울 집값 상승 오세훈 탓... 吳 \"대통령 머릿속부터 리셋해야\"",
-    "summary": "조선일보 보도에 따르면, ‘李, 서울 집값 상승 오세훈 탓... 吳 \"대통령 머릿속부터 리셋해야\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "조선일보",
-    "url": "https://www.chosun.com/national/national_general/2026/09/18/CSFGMINTMVEM5N3VJ2NEILCEZY/",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "주요 헤드라인",
-    "title": "이 대통령 아들 ‘코인업자 친분’ 의혹에…최길수 “조사할 것”",
-    "summary": "한겨레 보도에 따르면, ‘이 대통령 아들 ‘코인업자 친분’ 의혹에…최길수 “조사할 것”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "한겨레",
-    "url": "https://www.hani.co.kr/arti/society/society_general/1278508.html",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "주요 헤드라인",
-    "title": "이 대통령, 김성수 대법관 임명안 재가‥첫 대법관 임명",
-    "summary": "MBC 뉴스 보도에 따르면, ‘이 대통령, 김성수 대법관 임명안 재가‥첫 대법관 임명’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "MBC 뉴스",
-    "url": "https://imnews.imbc.com/news/2026/politics/article/6852872_36911.html",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "주요 헤드라인",
-    "title": "이 대통령 “농지전수조사, 투기세력 ‘강제 매각’ 선전은 진실 아냐…레버리지 ETF 부족함 있었다”",
-    "summary": "경향신문 보도에 따르면, ‘이 대통령 “농지전수조사, 투기세력 ‘강제 매각’ 선전은 진실 아냐…레버리지 ETF 부족함 있었다”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "경향신문",
-    "url": "https://www.khan.co.kr/article/202609181707011",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "주요 헤드라인",
-    "title": "100억대 사기 혐의 제넨셀 창립자, 22일 경기남부청 소환 조사",
-    "summary": "경향신문 보도에 따르면, ‘100억대 사기 혐의 제넨셀 창립자, 22일 경기남부청 소환 조사’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "경향신문",
-    "url": "https://www.khan.co.kr/article/202609182256001",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "주요 헤드라인",
-    "title": "\"여수섬박람회 700억 어디다 썼나\"…'유령 5명' 등장에 시끌",
-    "summary": "한국경제 보도에 따르면, ‘\"여수섬박람회 700억 어디다 썼나\"…'유령 5명' 등장에 시끌’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "한국경제",
-    "url": "https://www.hankyung.com/article/202609183948H",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "주요 헤드라인",
-    "title": "이 대통령, 조희대 '사법부 독립' 발언에 \"독립성 부여 이유 생각해야\"",
-    "summary": "MBC 뉴스 보도에 따르면, ‘이 대통령, 조희대 '사법부 독립' 발언에 \"독립성 부여 이유 생각해야\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "MBC 뉴스",
-    "url": "https://imnews.imbc.com/news/2026/politics/article/6852797_36911.html",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "주요 헤드라인",
-    "title": "[속보] 이 대통령, ‘호우 피해’ 전남 영광군 백수읍 특별재난지역 선포",
-    "summary": "매일경제 보도에 따르면, ‘이 대통령, ‘호우 피해’ 전남 영광군 백수읍 특별재난지역 선포’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "매일경제",
-    "url": "https://www.mk.co.kr/news/politics/12156083",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "주요 헤드라인",
-    "title": "‘15조 원대 담합’ 석유화학업체 경영진 2명 구속…6명은 기각",
-    "summary": "KBS 뉴스 보도에 따르면, ‘‘15조 원대 담합’ 석유화학업체 경영진 2명 구속…6명은 기각’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "title": "김승원 후보자 전격 사퇴…“정부에 부담 더해선 안돼”",
+    "summary": "KBS 뉴스 보도에 따르면, ‘김승원 후보자 전격 사퇴…“정부에 부담 더해선 안돼”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "KBS 뉴스",
-    "url": "https://news.kbs.co.kr/news/view.do?ncd=8667688",
-    "date": "Fri, 18 Se",
+    "url": "https://news.kbs.co.kr/news/view.do?ncd=8667879",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "주요 헤드라인",
+    "title": "이 대통령 “‘대통령 친구’의 거친 태도, 저를 곤경에 빠트려…혐오·비아냥 삼가길”",
+    "summary": "한겨레 보도에 따르면, ‘이 대통령 “‘대통령 친구’의 거친 태도, 저를 곤경에 빠트려…혐오·비아냥 삼가길”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한겨레",
+    "url": "https://www.hani.co.kr/arti/politics/bluehouse/1278626.html",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "주요 헤드라인",
+    "title": "이 대통령 “청년 전담조직 신설 고민…나도 청년인 가족 있어”",
+    "summary": "한겨레 보도에 따르면, ‘이 대통령 “청년 전담조직 신설 고민…나도 청년인 가족 있어”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한겨레",
+    "url": "https://www.hani.co.kr/arti/politics/bluehouse/1278600.html",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "주요 헤드라인",
+    "title": "백악관기자협회 \"CNN 등 출입금지, 수정헌법 1조 위반\"",
+    "summary": "연합뉴스TV 보도에 따르면, ‘백악관기자협회 \"CNN 등 출입금지, 수정헌법 1조 위반\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스TV",
+    "url": "https://www.yonhapnewstv.co.kr/news/AKR20260920041621h8r",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "주요 헤드라인",
+    "title": "이란과 전쟁에 62조 원 넘게 쓴 미국…계속 늘어날 듯",
+    "summary": "KBS 뉴스 보도에 따르면, ‘이란과 전쟁에 62조 원 넘게 쓴 미국…계속 늘어날 듯’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "KBS 뉴스",
+    "url": "https://news.kbs.co.kr/news/view.do?ncd=8667846",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "주요 헤드라인",
+    "title": "주유소 기름값 18주째 하락…최고가격제 영향에 1800원대 지속",
+    "summary": "경향신문 보도에 따르면, ‘주유소 기름값 18주째 하락…최고가격제 영향에 1800원대 지속’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "경향신문",
+    "url": "https://www.khan.co.kr/article/202609191335001",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "주요 헤드라인",
+    "title": "‘사이다’에서 “부족했다”까지…李 기자회견 살펴보니",
+    "summary": "동아일보 보도에 따르면, ‘‘사이다’에서 “부족했다”까지…李 기자회견 살펴보니’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "동아일보",
+    "url": "https://www.donga.com/news/Politics/article/all/20260919/134700870/1",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "주요 헤드라인",
+    "title": "후티 \"사우디 민감시설 공격\"…리야드 항공편 결항도 속출",
+    "summary": "연합뉴스TV 보도에 따르면, ‘후티 \"사우디 민감시설 공격\"…리야드 항공편 결항도 속출’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스TV",
+    "url": "https://www.yonhapnewstv.co.kr/news/AKR20260920044222eKL",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "주요 헤드라인",
+    "title": "계속되는 '수시 먹통' 형평성 논란…집회 이어 소송전 가나",
+    "summary": "연합뉴스 보도에 따르면, ‘계속되는 '수시 먹통' 형평성 논란…집회 이어 소송전 가나’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스",
+    "url": "https://www.yna.co.kr/view/AKR20260919051400530",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "주요 헤드라인",
+    "title": "안성 나눔장터 덮친 트럭에 자원봉사 나선 모자 참변(종합3보)",
+    "summary": "연합뉴스 보도에 따르면, ‘안성 나눔장터 덮친 트럭에 자원봉사 나선 모자 참변(종합3보)’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스",
+    "url": "https://www.yna.co.kr/view/AKR20260919037953061",
+    "date": "Sat, 19 Se",
     "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "정치 & 정책",
-    "title": "이 대통령 \"부동산 공급 매주 직접 챙겨\"‥레버리지 정책은 \"부족함 있었다\"",
-    "summary": "MBC 뉴스 보도에 따르면, ‘이 대통령 \"부동산 공급 매주 직접 챙겨\"‥레버리지 정책은 \"부족함 있었다\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "MBC 뉴스",
-    "url": "https://imnews.imbc.com/replay/2026/nwdesk/article/6852879_37004.html",
-    "date": "Fri, 18 Se",
+    "title": "날 세운 오세훈 “이 대통령, 전세난 책임져야···현 정책, 계속 부동산 가격 올릴 것”",
+    "summary": "경향신문 보도에 따르면, ‘날 세운 오세훈 “이 대통령, 전세난 책임져야···현 정책, 계속 부동산 가격 올릴 것”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "경향신문",
+    "url": "https://www.khan.co.kr/article/202609191937001",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "정치 & 정책",
+    "title": "이 대통령 “청년정책 전담 조직 신설 고민…현장 중심 노력”",
+    "summary": "KBS 뉴스 보도에 따르면, ‘이 대통령 “청년정책 전담 조직 신설 고민…현장 중심 노력”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "KBS 뉴스",
+    "url": "https://news.kbs.co.kr/news/view.do?ncd=8667849",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "정치 & 정책",
+    "title": "이 대통령 \"청년정책 총괄할 전담조직 고민…청년 문제 특정 집단의 문제 아냐\"",
+    "summary": "뉴시스 보도에 따르면, ‘이 대통령 \"청년정책 총괄할 전담조직 고민…청년 문제 특정 집단의 문제 아냐\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴시스",
+    "url": "https://mobile.newsis.com/view_amp.html?ar_id=NISX20260919_0003796650",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "정치 & 정책",
+    "title": "이재명 대통령, 청년의 날 맞아 \"청년정책 전담 조직 고민\" - 머니투데이",
+    "summary": "머니투데이 보도에 따르면, ‘이재명 대통령, 청년의 날 맞아 \"청년정책 전담 조직 고민\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "머니투데이",
+    "url": "https://www.mt.co.kr/amp/politics/2026/09/19/2026091913594721218",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "정치 & 정책",
+    "title": "[속보]李대통령 \"청년 정책 총괄할 별도 전담 조직 만들어야 되지 않을까 고민 중\"",
+    "summary": "뉴시스 보도에 따르면, ‘李대통령 \"청년 정책 총괄할 별도 전담 조직 만들어야 되지 않을까 고민 중\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴시스",
+    "url": "https://nwww.newsis.com/view/NISX20260919_0003796625",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "정치 & 정책",
+    "title": "李 “청년정책 전담조직 검토…필요한 정책 찾을 것”",
+    "summary": "서울경제 보도에 따르면, ‘李 “청년정책 전담조직 검토…필요한 정책 찾을 것”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "서울경제",
+    "url": "https://www.sedaily.com/article/20092936",
+    "date": "Sat, 19 Se",
     "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
@@ -116,8 +166,8 @@
     "source": "뉴스1",
     "url": "https://www.news1.kr/politics/president/6295779",
     "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
+    "status": "CONFIRMED",
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "정치 & 정책",
@@ -126,117 +176,57 @@
     "source": "JTBC",
     "url": "https://news.jtbc.co.kr/article/NB12318812",
     "date": "Thu, 17 Se",
-    "status": "CONFIRMED",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "정치 & 정책",
-    "title": "李대통령 “정책실장 어떤 분야로 할지 고심”…사회정책 강화·경제라인 재편 주목",
-    "summary": "이투데이 보도에 따르면, ‘李대통령 “정책실장 어떤 분야로 할지 고심”…사회정책 강화·경제라인 재편 주목’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "이투데이",
-    "url": "https://www.etoday.co.kr/news/view/2627270",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "정치 & 정책",
-    "title": "부동산 정책 수정보다 ‘강행’ 택한 대통령…전문가 “반발 커질 것”",
-    "summary": "마켓인 보도에 따르면, ‘부동산 정책 수정보다 ‘강행’ 택한 대통령…전문가 “반발 커질 것”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "마켓인",
-    "url": "https://marketin.edaily.co.kr/News/ReadE?newsId=04929846645581432",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "정치 & 정책",
-    "title": "[주요 발언으로 본 대통령 기자회견] ② “인사시스템 재점검할 것…정책실장은 고심 중”",
-    "summary": "강원도민일보 보도에 따르면, ‘② “인사시스템 재점검할 것…정책실장은 고심 중”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "강원도민일보",
-    "url": "https://www.kado.net/news/articleView.html?idxno=2073658",
-    "date": "Fri, 18 Se",
+    "title": "여야, 李대통령 민생·부동산 정책 공방...“체감 회복” vs “현실 외면”",
+    "summary": "M이코노미뉴스 보도에 따르면, ‘여야, 李대통령 민생·부동산 정책 공방...“체감 회복” vs “현실 외면”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "M이코노미뉴스",
+    "url": "https://www.m-economynews.com/news/article.html?no=70881",
+    "date": "Sat, 19 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "정치 & 정책",
-    "title": "李대통령 레버리지 ETF 정책, 불완전…부족함 있었다",
-    "summary": "아주경제 보도에 따르면, ‘李대통령 레버리지 ETF 정책, 불완전…부족함 있었다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "아주경제",
-    "url": "https://www.ajunews.com/view/20260918120402496",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "정치 & 정책",
-    "title": "李대통령 \"집값 평탄화\"…전문가들 \"규제 따른 수요 이동, 안정과는 달라\"",
-    "summary": "뉴스핌 보도에 따르면, ‘李대통령 \"집값 평탄화\"…전문가들 \"규제 따른 수요 이동, 안정과는 달라\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스핌",
-    "url": "https://vod.newspim.com/news/view/20260918001052",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "정치 & 정책",
-    "title": "\"투기근절·공급확대\" 재차 강조…李정부 부동산정책, 그대로 갈듯",
-    "summary": "원문 매체 보도에 따르면, ‘\"투기근절·공급확대\" 재차 강조…李정부 부동산정책, 그대로 갈듯’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "v.daum.net",
-    "url": "https://v.daum.net/v/20260918174644032",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "정치 & 정책",
-    "title": "[속보]李대통령, 정책실장 인선 \"사회정책 강화 방향으로 고심\"",
-    "summary": "아시아경제 보도에 따르면, ‘李대통령, 정책실장 인선 \"사회정책 강화 방향으로 고심\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "아시아경제",
-    "url": "https://www.asiae.co.kr/article/2026091811510045863",
-    "date": "Fri, 18 Se",
+    "title": "오세훈 \"부동산 정책이 대통령 지지율 하락 주요 원인...전세 실종에 책임져야\"",
+    "summary": "BBS불교방송 보도에 따르면, ‘오세훈 \"부동산 정책이 대통령 지지율 하락 주요 원인...전세 실종에 책임져야\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "BBS불교방송",
+    "url": "https://news.bbsi.co.kr/news/articleView.html?idxno=4107619",
+    "date": "Sat, 19 Se",
     "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "거시 경제 & 금융",
-    "title": "日, 오늘 기준금리 1.25%로 올리나…엔화 움직임에 원화·증시도 촉각",
-    "summary": "조선일보 보도에 따르면, ‘日, 오늘 기준금리 1.25%로 올리나…엔화 움직임에 원화·증시도 촉각’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "조선일보",
-    "url": "https://www.chosun.com/economy/economy_general/2026/09/18/CDPAEUYSWRDKXC5GU7CKNYXZA4/",
-    "date": "Thu, 17 Se",
+    "title": "뉴욕 증시, 국채 금리 상승·반도체주 강세에 혼조 마감",
+    "summary": "YTN 보도에 따르면, ‘뉴욕 증시, 국채 금리 상승·반도체주 강세에 혼조 마감’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "YTN",
+    "url": "https://www.ytn.co.kr/_ln/0104_202609190731076848",
+    "date": "Fri, 18 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "거시 경제 & 금융",
-    "title": "'마통' 연장하려니 금리 年11%에 화들짝 … 허리 휘는 가계대출 차주들",
-    "summary": "매일경제 보도에 따르면, ‘'마통' 연장하려니 금리 年11%에 화들짝 … 허리 휘는 가계대출 차주들’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "매일경제",
-    "url": "https://www.mk.co.kr/news/economy/12156742",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
+    "title": "일본 금리 올렸는데 엔화는 급락…당국 ‘레이트 체크’로 개입 경고",
+    "summary": "경향신문 보도에 따르면, ‘일본 금리 올렸는데 엔화는 급락…당국 ‘레이트 체크’로 개입 경고’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "경향신문",
+    "url": "https://www.khan.co.kr/article/202609192012001",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "거시 경제 & 금융",
-    "title": "외국인, 지난달 코스피 1조9000억원 순매수...올해 처음 국내 주식 ‘사자’",
-    "summary": "조선일보 보도에 따르면, ‘외국인, 지난달 코스피 1조9000억원 순매수...올해 처음 국내 주식 ‘사자’’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "조선일보",
-    "url": "https://www.chosun.com/economy/stock-finance/2026/09/18/YR7WKC5TPBHXVOO6ZAT4GH3RPM/",
-    "date": "Thu, 17 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "거시 경제 & 금융",
-    "title": "뉴욕증시, 美 국채금리 상승에도 기술주 강세…혼조 마감",
-    "summary": "KBS 뉴스 보도에 따르면, ‘뉴욕증시, 美 국채금리 상승에도 기술주 강세…혼조 마감’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "KBS 뉴스",
-    "url": "https://news.kbs.co.kr/news/view.do?ncd=8667710",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
+    "title": "예금금리도 4% 눈앞…돌아오는 '예테크족'[긴축이 온다②]",
+    "summary": "뉴시스 보도에 따르면, ‘예금금리도 4% 눈앞…돌아오는 '예테크족'[긴축이 온다②]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴시스",
+    "url": "https://www.newsis.com/view/NISX20260918_0003795616",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
@@ -247,7 +237,7 @@
     "url": "https://www.newsis.com/view/NISX20260918_0003796280",
     "date": "Fri, 18 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "거시 경제 & 금융",
@@ -257,7 +247,27 @@
     "url": "https://www.ytn.co.kr/_ln/0104_202609181200193255",
     "date": "Fri, 18 Se",
     "status": "CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "거시 경제 & 금융",
+    "title": "日기준금리인상에 시중은행 예대금리↑…가계상환 부담 커질듯",
+    "summary": "연합뉴스 보도에 따르면, ‘日기준금리인상에 시중은행 예대금리↑…가계상환 부담 커질듯’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스",
+    "url": "https://www.yna.co.kr/view/AKR20260919038400073",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "거시 경제 & 금융",
+    "title": "일본은행, 3개월만에 또 금리인상…1.25%로 31년만에 최고(종합2보)",
+    "summary": "연합뉴스 보도에 따르면, ‘일본은행, 3개월만에 또 금리인상…1.25%로 31년만에 최고(종합2보)’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스",
+    "url": "https://www.yna.co.kr/view/AKR20260918089052073",
+    "date": "Fri, 18 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "거시 경제 & 금융",
@@ -267,36 +277,26 @@
     "url": "https://www.yonhapnewstv.co.kr/news/MYH20260918165708Je8",
     "date": "Fri, 18 Se",
     "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "거시 경제 & 금융",
-    "title": "일본은행, 3개월만 기준금리 1.25%로 인상…31년만 최고",
-    "summary": "연합뉴스 보도에 따르면, ‘일본은행, 3개월만 기준금리 1.25%로 인상…31년만 최고’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합뉴스",
-    "url": "https://www.yna.co.kr/view/AKR20260918089000073",
+    "title": "일본은행, 1.25%로 기준금리 인상…31년만 최고치",
+    "summary": "동아일보 보도에 따르면, ‘일본은행, 1.25%로 기준금리 인상…31년만 최고치’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "동아일보",
+    "url": "https://www.donga.com/news/Inter/article/all/20260918/134695144/1",
     "date": "Fri, 18 Se",
     "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "거시 경제 & 금융",
-    "title": "일본은행, 기준금리 1.25%로 올려...\"시장 예상대로\"",
-    "summary": "YTN 보도에 따르면, ‘일본은행, 기준금리 1.25%로 올려...\"시장 예상대로\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "YTN",
-    "url": "https://www.ytn.co.kr/_cs/_ln_0104_202609181448422129_005.html",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "거시 경제 & 금융",
-    "title": "코스피, 美·日 기준금리 인상 소화하며 2.6% 반등 마감",
-    "summary": "한국경제 보도에 따르면, ‘코스피, 美·日 기준금리 인상 소화하며 2.6% 반등 마감’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "한국경제",
-    "url": "https://www.hankyung.com/article/2026091841056",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
+    "title": "[이호연의 D톡스] 돌아온 금리인상 공포…대출금리 ‘꿈틀’, 中企가 더 아프다",
+    "summary": "디지털데일리 보도에 따르면, ‘돌아온 금리인상 공포…대출금리 ‘꿈틀’, 中企가 더 아프다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "디지털데일리",
+    "url": "https://www.ddaily.co.kr/page/view/2026091815283170031",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   }
 ]
