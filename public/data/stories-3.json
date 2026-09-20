@@ -1,11 +1,41 @@
 [
   {
     "section": "반도체 & 첨단제조",
-    "title": "AI 속도조절론에도…\"올해 반도체시장 1.6조달러로 성장 가속\"",
-    "summary": "매일경제 마켓 보도에 따르면, ‘AI 속도조절론에도…\"올해 반도체시장 1.6조달러로 성장 가속\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "매일경제 마켓",
-    "url": "https://stock.mk.co.kr/news/view/1162382",
+    "title": "“삼성전자 DDR5 외주물량 싹쓸이?”…나흘새 23% 뛴 SFA반도체 [이주의 Bull기둥]",
+    "summary": "매일경제 보도에 따르면, ‘“삼성전자 DDR5 외주물량 싹쓸이?”…나흘새 23% 뛴 SFA반도체 [이주의 Bull기둥]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "매일경제",
+    "url": "https://www.mk.co.kr/news/stock/12157285",
     "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "CXMT, 5세대 D램 공정 양산 돌입…삼성·하이닉스 추격 가속",
+    "summary": "연합뉴스 보도에 따르면, ‘CXMT, 5세대 D램 공정 양산 돌입…삼성·하이닉스 추격 가속’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스",
+    "url": "https://www.yna.co.kr/view/AKR20260920036700009",
+    "date": "Sun, 20 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "반도체 성과급이 끌어올린 임금…경총 \"상반기 임금 상승분 3분의 1, 반도체 성과급 효과\"",
+    "summary": "조선일보 보도에 따르면, ‘반도체 성과급이 끌어올린 임금…경총 \"상반기 임금 상승분 3분의 1, 반도체 성과급 효과\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "조선일보",
+    "url": "https://www.chosun.com/economy/industry-company/2026/09/20/CXJYPJTSXNHP7MCWJ2OFEYDSLI/",
+    "date": "Sun, 20 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "반도체 소부장의 시간…코스닥 시총 톱10 중 절반 차지",
+    "summary": "한국경제 보도에 따르면, ‘반도체 소부장의 시간…코스닥 시총 톱10 중 절반 차지’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한국경제",
+    "url": "https://www.hankyung.com/article/2026092062901",
+    "date": "Sun, 20 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
@@ -17,17 +47,7 @@
     "url": "https://www.news1.kr/amp/finance/general-stock/6294633",
     "date": "Thu, 17 Se",
     "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "반도체 & 첨단제조",
-    "title": "반도체 불붙자 코스피 6900선 돌파…SK하이닉스 6.4% 급등",
-    "summary": "디지털데일리 보도에 따르면, ‘반도체 불붙자 코스피 6900선 돌파…SK하이닉스 6.4% 급등’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "디지털데일리",
-    "url": "https://www.ddaily.co.kr/page/view/2026091816050834238",
-    "date": "Fri, 18 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
+    "freshness_note": "최근 7일 보완"
   },
   {
     "section": "반도체 & 첨단제조",
@@ -41,33 +61,33 @@
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "美 반도체 투자 확대 요구에...이 대통령 \"기업 판단·국익 고려\"",
-    "summary": "지디넷코리아 보도에 따르면, ‘美 반도체 투자 확대 요구에...이 대통령 \"기업 판단·국익 고려\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "지디넷코리아",
-    "url": "https://zdnet.co.kr/view/?no=20260918123545",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "반도체 & 첨단제조",
-    "title": "D램은 중국에, HBM은 미국에…협공 당하는 K-메모리",
-    "summary": "매일경제 마켓 보도에 따르면, ‘D램은 중국에, HBM은 미국에…협공 당하는 K-메모리’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "매일경제 마켓",
-    "url": "https://stock.mk.co.kr/news/view/1162258",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "반도체 & 첨단제조",
-    "title": "외국인 ‘금융·에너지’ 담고 기관 ‘한미반도체’ 픽…개인은 삼전·하닉 2.8조 샀다",
-    "summary": "뉴스투데이 보도에 따르면, ‘외국인 ‘금융·에너지’ 담고 기관 ‘한미반도체’ 픽…개인은 삼전·하닉 2.8조 샀다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스투데이",
-    "url": "https://www.news2day.co.kr/article/20260920500003",
+    "title": "‘HBM 더 높이’ 속도전에도…SK하이닉스 “하이브리드 본딩 수율 90% 포기 못해” [칩칩팹팹]",
+    "summary": "원문 매체 보도에 따르면, ‘‘HBM 더 높이’ 속도전에도…SK하이닉스 “하이브리드 본딩 수율 90% 포기 못해” [칩칩팹팹]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "v.daum.net",
+    "url": "https://v.daum.net/v/zcweY8B3Xi",
     "date": "Sat, 19 Se",
     "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "상반기 임금 3.1% 올라… 반도체 성과급발 ‘착시’ - 조선비즈",
+    "summary": "Chosunbiz 보도에 따르면, ‘상반기 임금 3.1% 올라… 반도체 성과급발 ‘착시’ - 조선비즈’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "Chosunbiz",
+    "url": "https://biz.chosun.com/industry/company/2026/09/20/KXOORPIDURAMDNKSC54NTOBNWE/",
+    "date": "Sun, 20 Se",
+    "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "반도체 산업 일자리 15% 늘었지만, 신규채용은 22% 감소",
+    "summary": "원문 매체 보도에 따르면, ‘반도체 산업 일자리 15% 늘었지만, 신규채용은 22% 감소’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "busan.com",
+    "url": "https://www.busan.com/view/busan/view.php?code=2026092008283582030",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "반도체 & 첨단제조",
@@ -80,22 +100,22 @@
     "freshness_note": "최근 3일 보완"
   },
   {
-    "section": "반도체 & 첨단제조",
-    "title": "용인 반도체 산단 '물길' 뚫는다…하루 107만톤 공급망 구축 본격화",
-    "summary": "전자신문 보도에 따르면, ‘용인 반도체 산단 '물길' 뚫는다…하루 107만톤 공급망 구축 본격화’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "전자신문",
-    "url": "https://www.etnews.com/20260918000006",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
+    "section": "바이오 & 헬스케어",
+    "title": "SK바이오팜, 파킨슨병 신약 품었다…오름은 BMS 임상 중단 [바이오 주간 결산]",
+    "summary": "팜이데일리 보도에 따르면, ‘SK바이오팜, 파킨슨병 신약 품었다…오름은 BMS 임상 중단 [바이오 주간 결산]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "팜이데일리",
+    "url": "https://pharm.edaily.co.kr/News/Read?newsId=01167686645582088",
+    "date": "Sat, 19 Se",
+    "status": "CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
-    "section": "반도체 & 첨단제조",
-    "title": "\"AI·반도체 주도주 2개면 충분\"…압축형 상품 '봇물' [이수의 ETF줌인]",
-    "summary": "한국경제 보도에 따르면, ‘\"AI·반도체 주도주 2개면 충분\"…압축형 상품 '봇물' [이수의 ETF줌인]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "hankyung.com",
-    "url": "https://www.hankyung.com/article/2026091842676",
-    "date": "Sat, 19 Se",
+    "section": "바이오 & 헬스케어",
+    "title": "현금창출력 日바이오 업계 최강, 배당 늘리고 신약 키운다",
+    "summary": "한국경제 보도에 따르면, ‘현금창출력 日바이오 업계 최강, 배당 늘리고 신약 키운다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한국경제",
+    "url": "https://www.hankyung.com/article/202609205876i",
+    "date": "Sun, 20 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
@@ -107,75 +127,55 @@
     "url": "https://www.newsis.com/view/NISX20260918_0003795654",
     "date": "Sat, 19 Se",
     "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "바이오 & 헬스케어",
+    "title": "글로벌 바이오 신약 지형 흔드는 중국…미국 안보 규제망·생물보안법과 충돌",
+    "summary": "글로벌이코노믹 보도에 따르면, ‘글로벌 바이오 신약 지형 흔드는 중국…미국 안보 규제망·생물보안법과 충돌’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "글로벌이코노믹",
+    "url": "https://www.g-enews.com/article/Global-Biz/2026/09/202609192124039421fda4f5ab74_1",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "바이오 & 헬스케어",
+    "title": "현금 쌓이는 SK바이오팜…엑스코프리로 번 돈 신약에 잇단 ‘베팅’",
+    "summary": "원문 매체 보도에 따르면, ‘현금 쌓이는 SK바이오팜…엑스코프리로 번 돈 신약에 잇단 ‘베팅’’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "v.daum.net",
+    "url": "https://v.daum.net/v/20260921050044870",
+    "date": "Sun, 20 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
-    "title": "SK바이오팜, 파킨슨병 치료제 신약 도입…최대 4308억 규모",
-    "summary": "뉴스1 보도에 따르면, ‘SK바이오팜, 파킨슨병 치료제 신약 도입…최대 4308억 규모’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스1",
-    "url": "https://www.news1.kr/bio/pharmaceutical-bio/6294042",
-    "date": "Thu, 17 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
+    "title": "[바이오 판 흔드는 AI] 신약개발 전주기 파고든다… 기업 경쟁력 가르는 승부수",
+    "summary": "아주경제 보도에 따르면, ‘신약개발 전주기 파고든다… 기업 경쟁력 가르는 승부수’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "아주경제",
+    "url": "https://www.ajunews.com/view/20260915162651453",
+    "date": "Sun, 20 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
-    "title": "SK바이오팜, 파킨슨병 신약후보 도입…최대 4천308억원 규모",
-    "summary": "연합뉴스 보도에 따르면, ‘SK바이오팜, 파킨슨병 신약후보 도입…최대 4천308억원 규모’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합뉴스",
-    "url": "https://www.yna.co.kr/view/AKR20260917138700017",
-    "date": "Thu, 17 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
+    "title": "중국, 글로벌 혁신신약 주도국으로…바이오 ‘양적 성장’서 ‘질적 패권’ 선언",
+    "summary": "헤럴드경제 보도에 따르면, ‘중국, 글로벌 혁신신약 주도국으로…바이오 ‘양적 성장’서 ‘질적 패권’ 선언’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "헤럴드경제",
+    "url": "https://biz.heraldcorp.com/article/10879482",
+    "date": "Sun, 20 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
-    "title": "SK바이오팜, 최대 4308억 규모 파킨슨병 신약 후보물질 도입",
-    "summary": "동아일보 보도에 따르면, ‘SK바이오팜, 최대 4308억 규모 파킨슨병 신약 후보물질 도입’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "동아일보",
-    "url": "https://www.donga.com/news/Economy/article/all/20260917/134689413/1",
-    "date": "Thu, 17 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "SK바이오팜, 퍼스트바이오 파킨슨병 신약 후보 도입…최대 4308억 규모 - 머니투데이",
-    "summary": "머니투데이 보도에 따르면, ‘SK바이오팜, 퍼스트바이오 파킨슨병 신약 후보 도입…최대 4308억 규모’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "머니투데이",
-    "url": "https://www.mt.co.kr/thebio/2026/09/17/2026091714525152134",
-    "date": "Thu, 17 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "SK바이오팜, 파킨슨 신약 4308억 도입…오픈이노베이션 첫 사례",
-    "summary": "서울경제TV 보도에 따르면, ‘SK바이오팜, 파킨슨 신약 4308억 도입…오픈이노베이션 첫 사례’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "서울경제TV",
-    "url": "https://www.sentv.co.kr/article/view/sentv202609170199",
-    "date": "Thu, 17 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "SK바이오팜, 파킨슨병 신약 개발…최대 4천308억원 규모",
-    "summary": "SBS Biz 보도에 따르면, ‘SK바이오팜, 파킨슨병 신약 개발…최대 4천308억원 규모’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "SBS Biz",
-    "url": "https://biz.sbs.co.kr/article/20000335305",
-    "date": "Thu, 17 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "중국, 2030년 글로벌 ‘퍼스트 인 클래스’ 신약 25% 목표",
-    "summary": "헬스이슈앤뉴스 보도에 따르면, ‘중국, 2030년 글로벌 ‘퍼스트 인 클래스’ 신약 25% 목표’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "헬스이슈앤뉴스",
-    "url": "https://www.hin.company/news/articleView.html?idxno=44660",
-    "date": "Sat, 19 Se",
+    "title": "바이넥스, ‘알짜 의약품’에 바이오 CDMO까지…두 엔진이 뛴다",
+    "summary": "핀포인트뉴스 보도에 따르면, ‘바이넥스, ‘알짜 의약품’에 바이오 CDMO까지…두 엔진이 뛴다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "핀포인트뉴스",
+    "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=488836",
+    "date": "Sun, 20 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
@@ -191,12 +191,22 @@
   },
   {
     "section": "바이오 & 헬스케어",
-    "title": "SK바이오팜 OIC 첫 성과…퍼스트바이오 파킨슨병 신약 품었다",
-    "summary": "팜이데일리 보도에 따르면, ‘SK바이오팜 OIC 첫 성과…퍼스트바이오 파킨슨병 신약 품었다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "팜이데일리",
-    "url": "https://pharm.edaily.co.kr/News/Read?newsId=04601846645581104",
-    "date": "Thu, 17 Se",
-    "status": "CONFIRMED",
+    "title": "중국, 2030년 글로벌 ‘퍼스트 인 클래스’ 신약 25% 목표",
+    "summary": "헬스이슈앤뉴스 보도에 따르면, ‘중국, 2030년 글로벌 ‘퍼스트 인 클래스’ 신약 25% 목표’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "헬스이슈앤뉴스",
+    "url": "https://www.hin.company/news/articleView.html?idxno=44660",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "\"현대차밖에 없다\" 구글 러브콜…수만대 만드는 '이 차' 정체",
+    "summary": "한국경제 보도에 따르면, ‘\"현대차밖에 없다\" 구글 러브콜…수만대 만드는 '이 차' 정체’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한국경제",
+    "url": "https://www.hankyung.com/article/2026091844851",
+    "date": "Fri, 18 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
@@ -211,13 +221,33 @@
   },
   {
     "section": "에너지 & 모빌리티",
-    "title": "현대차, 美 전기차 둔화에 로보택시로 대응…조지아 공장 양산",
-    "summary": "디지털투데이 보도에 따르면, ‘현대차, 美 전기차 둔화에 로보택시로 대응…조지아 공장 양산’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "디지털투데이",
-    "url": "https://www.digitaltoday.co.kr/news/articleView.html?idxno=701882",
-    "date": "Sat, 19 Se",
+    "title": "자율주행 경쟁서 살아남기 위한 현대차그룹이 해야 하는 선택은[주末머니]",
+    "summary": "원문 매체 보도에 따르면, ‘자율주행 경쟁서 살아남기 위한 현대차그룹이 해야 하는 선택은[주末머니]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "core.asiae.co.kr",
+    "url": "https://core.asiae.co.kr/article/2026091715410631044",
+    "date": "Sun, 20 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "한·중 미래차 협력, 전기차 넘어 AI·자율주행으로…“새 협력길 찾자”",
+    "summary": "뉴스아이이에스 보도에 따르면, ‘한·중 미래차 협력, 전기차 넘어 AI·자율주행으로…“새 협력길 찾자”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴스아이이에스",
+    "url": "http://www.newsiesports.com/news/articleView.html?idxno=45751",
+    "date": "Sun, 20 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "현대차, 전기차 둔화 돌파구 로보택시…무뇨스 “이미 수익사업”",
+    "summary": "글로벌이코노믹 보도에 따르면, ‘현대차, 전기차 둔화 돌파구 로보택시…무뇨스 “이미 수익사업”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "글로벌이코노믹",
+    "url": "https://www.g-enews.com/article/Global-Biz/2026/09/2026092008233776379a1f309431_1",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "에너지 & 모빌리티",
@@ -227,25 +257,15 @@
     "url": "https://www.digitaltoday.co.kr/news/articleView.html?idxno=701870",
     "date": "Sat, 19 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "테슬라·폭스바겐 긴장했다…중국 샤오펑, 75% 고마진 'AI·자율주행' 글로벌 판다",
-    "summary": "글로벌이코노믹 보도에 따르면, ‘테슬라·폭스바겐 긴장했다…중국 샤오펑, 75% 고마진 'AI·자율주행' 글로벌 판다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "글로벌이코노믹",
-    "url": "https://www.g-enews.com/article/Global-Biz/2026/09/2026091807435837062bd56fbc3c_1",
-    "date": "Thu, 17 Se",
-    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "에너지 & 모빌리티",
-    "title": "中 전기차, 가격 넘어 기술까지 판다…현대·기아 SDV 긴장",
-    "summary": "딜사이트 보도에 따르면, ‘中 전기차, 가격 넘어 기술까지 판다…현대·기아 SDV 긴장’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "딜사이트",
-    "url": "https://dealsite.co.kr/articles/169299",
-    "date": "Fri, 18 Se",
+    "title": "현대차, 美 전기차 둔화에 로보택시로 대응…조지아 공장 양산",
+    "summary": "디지털투데이 보도에 따르면, ‘현대차, 美 전기차 둔화에 로보택시로 대응…조지아 공장 양산’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "디지털투데이",
+    "url": "https://www.digitaltoday.co.kr/news/articleView.html?idxno=701882",
+    "date": "Sat, 19 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
@@ -266,36 +286,16 @@
     "source": "아주경제",
     "url": "https://www.ajunews.com/view/20260918204118517",
     "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "\"현대차밖에 없다\" 구글 러브콜…수만대 만드는 '이 차' 정체",
-    "summary": "한국경제 보도에 따르면, ‘\"현대차밖에 없다\" 구글 러브콜…수만대 만드는 '이 차' 정체’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "hankyung.com",
-    "url": "https://www.hankyung.com/article/2026091844851",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
+    "status": "CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "에너지 & 모빌리티",
     "title": "中 전기차 파상공세에 \"맞설 곳 맞서고, 배울 건 배워야\"",
-    "summary": "뉴스핌 보도에 따르면, ‘中 전기차 파상공세에 \"맞설 곳 맞서고, 배울 건 배워야\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스핌",
+    "summary": "원문 매체 보도에 따르면, ‘中 전기차 파상공세에 \"맞설 곳 맞서고, 배울 건 배워야\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "newspim.com",
     "url": "https://www.newspim.com/news/view/20260918000879",
     "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "전기차·자율주행차 확산에 MLCC도 뜬다…관련주에 매수세 몰리네",
-    "summary": "핀포인트뉴스 보도에 따르면, ‘전기차·자율주행차 확산에 MLCC도 뜬다…관련주에 매수세 몰리네’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "핀포인트뉴스",
-    "url": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=488050",
-    "date": "Thu, 17 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   }
