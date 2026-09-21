@@ -1,13 +1,73 @@
 [
   {
     "section": "문화 & 미디어/엔터",
-    "title": "도쿄 가는 127개 게임사…넥슨·엔씨 등 일본서 신작 승부",
-    "summary": "서울경제TV 보도에 따르면, ‘도쿄 가는 127개 게임사…넥슨·엔씨 등 일본서 신작 승부’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "title": "웹툰 엔터, 신작 9개 언어 동시 공개…‘글로벌 드롭’ 첫 가동",
+    "summary": "서울경제TV 보도에 따르면, ‘웹툰 엔터, 신작 9개 언어 동시 공개…‘글로벌 드롭’ 첫 가동’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "서울경제TV",
-    "url": "https://www.sentv.co.kr/article/view/sentv202609180122",
-    "date": "Sat, 19 Se",
+    "url": "https://www.sentv.co.kr/article/view/sentv202609210162",
+    "date": "Mon, 21 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "문화 & 미디어/엔터",
+    "title": "태풍에 문 닫은 도쿄게임쇼…엔씨, 신작 상영회 온라인으로 돌렸다…엔씨 '아스트라에 오라티오' 상영회 온라인 전환",
+    "summary": "뉴시스 보도에 따르면, ‘태풍에 문 닫은 도쿄게임쇼…엔씨, 신작 상영회 온라인으로 돌렸다…엔씨 '아스트라에 오라티오' 상영회 온라인 전환’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴시스",
+    "url": "https://mobile.newsis.com/view_amp.html?ar_id=NISX20260921_0003798033",
+    "date": "Mon, 21 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "문화 & 미디어/엔터",
+    "title": "네이버웹툰, 9개 언어로 신작 동시에 푼다…'글로벌 드롭' 첫 가동",
+    "summary": "뉴시스 보도에 따르면, ‘네이버웹툰, 9개 언어로 신작 동시에 푼다…'글로벌 드롭' 첫 가동’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴시스",
+    "url": "https://www.newsis.com/view/NISX20260921_0003797637",
+    "date": "Mon, 21 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "문화 & 미디어/엔터",
+    "title": "[더벨]SAMG엔터테인먼트, ‘캐치! 티니핑’ 시즌7 11월 방송 - 머니투데이",
+    "summary": "머니투데이 보도에 따르면, SAMG엔터테인먼트, ‘캐치!",
+    "source": "머니투데이",
+    "url": "https://www.mt.co.kr/amp/stock/2026/09/21/2026092110389693115",
+    "date": "Mon, 21 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "문화 & 미디어/엔터",
+    "title": "라인게임즈, 협동 SF 호러 신작 '코드엑시트' 스팀 테스트 참가자 모집",
+    "summary": "지디넷코리아 보도에 따르면, ‘라인게임즈, 협동 SF 호러 신작 '코드엑시트' 스팀 테스트 참가자 모집’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "지디넷코리아",
+    "url": "https://zdnet.co.kr/view/?no=20260921172522",
+    "date": "Mon, 21 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "문화 & 미디어/엔터",
+    "title": "라인게임즈, 협동 SF 호러 신작 'CODE EXIT' 스팀 플레이테스트 진행",
+    "summary": "전자신문 보도에 따르면, ‘라인게임즈, 협동 SF 호러 신작 'CODE EXIT' 스팀 플레이테스트 진행’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "전자신문",
+    "url": "https://www.etnews.com/20260921000317",
+    "date": "Mon, 21 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "문화 & 미디어/엔터",
+    "title": "“추석엔 웹툰 정주행”…네이버웹툰·시리즈·문피아 혜택 총출동",
+    "summary": "서울경제TV 보도에 따르면, ‘“추석엔 웹툰 정주행”…네이버웹툰·시리즈·문피아 혜택 총출동’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "서울경제TV",
+    "url": "https://www.sentv.co.kr/article/view/sentv202609210143",
+    "date": "Mon, 21 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "문화 & 미디어/엔터",
@@ -17,87 +77,47 @@
     "url": "https://www.ddaily.co.kr/page/view/2026092010554473068",
     "date": "Sun, 20 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "문화 & 미디어/엔터",
-    "title": "'글로벌 음원킹' 방탄소년단 정국, 유튜브 뮤직 5억 플레이 트랙 총 4개 달성",
-    "summary": "원문 매체 보도에 따르면, ‘'글로벌 음원킹' 방탄소년단 정국, 유튜브 뮤직 5억 플레이 트랙 총 4개 달성’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "starnewskorea.com",
-    "url": "https://www.starnewskorea.com/music/2026/09/21/2026092107134790086",
-    "date": "Sun, 20 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "문화 & 미디어/엔터",
-    "title": "한국보다 일본서 먼저 공개…K게임 신작 데뷔무대 된 도쿄게임쇼",
-    "summary": "MTN 머니투데이방송 보도에 따르면, ‘한국보다 일본서 먼저 공개…K게임 신작 데뷔무대 된 도쿄게임쇼’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "MTN 머니투데이방송",
-    "url": "https://news.mtn.co.kr/news-detail/2026092010183896367",
-    "date": "Sun, 20 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "문화 & 미디어/엔터",
-    "title": "'2026 K-코믹스 오리진 LA: 한국 웹툰 체험 전시'",
-    "summary": "미주조선일보 보도에 따르면, ‘'2026 K-코믹스 오리진 LA: 한국 웹툰 체험 전시'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "미주조선일보",
-    "url": "https://chosundaily.com/bbs/board.php?bo_table=hotclick&wr_id=34974&sst=wr_datetime&sod=desc&sop=and&page=21&device=pc",
-    "date": "Sat, 19 Se",
-    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "문화 & 미디어/엔터",
-    "title": "BTS 정국, 유튜브 뮤직 5억 플레이 트랙만 4곡…솔로 음원 파워 과시",
-    "summary": "톱스타뉴스 보도에 따르면, ‘BTS 정국, 유튜브 뮤직 5억 플레이 트랙만 4곡…솔로 음원 파워 과시’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "톱스타뉴스",
-    "url": "https://www.topstarnews.net/news/articleView.html?idxno=16203266",
-    "date": "Sun, 20 Se",
+    "title": "연재 시차 없애 '불법 유통' 잡는다… 웹툰엔터, 9개국 동시 연재",
+    "summary": "IT조선 보도에 따르면, ‘연재 시차 없애 '불법 유통' 잡는다… 웹툰엔터, 9개국 동시 연재’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "IT조선",
+    "url": "https://it.chosun.com/news/articleView.html?idxno=2023092170571",
+    "date": "Mon, 21 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "문화 & 미디어/엔터",
+    "title": "웹툰 엔터테인먼트, 글로벌 드롭 첫 주자 용사의 발라드 9개 언어 동시 런칭",
+    "summary": "아주경제 보도에 따르면, ‘웹툰 엔터테인먼트, 글로벌 드롭 첫 주자 용사의 발라드 9개 언어 동시 런칭’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "아주경제",
+    "url": "https://www.ajunews.com/amp/20260921095622165",
+    "date": "Mon, 21 Se",
     "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
-    "section": "문화 & 미디어/엔터",
-    "title": "[SBS 인기가요 라이브 인 도쿄] K-POP부터 J-POP까지 한자리에…9월 22·23일 일본 베루나 돔 개최",
-    "summary": "경기평화신문 보도에 따르면, ‘K-POP부터 J-POP까지 한자리에…9월 22·23일 일본 베루나 돔 개최’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "경기평화신문",
-    "url": "https://www.ggpyeonghwa.com/612549",
+    "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
+    "title": "\"소아근시, 단순 시력 문제 아닌 공공보건 의제… 국가 차원 관리 시급\"",
+    "summary": "지디넷코리아 보도에 따르면, ‘\"소아근시, 단순 시력 문제 아닌 공공보건 의제… 국가 차원 관리 시급\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "지디넷코리아",
+    "url": "https://zdnet.co.kr/view/?no=20260921085033",
     "date": "Sun, 20 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "문화 & 미디어/엔터",
-    "title": "23년 만에 다시 펼친 19금 '스캔들'…손예진·지창욱·나나, 새 도전 [OTT 화제작]",
-    "summary": "뉴스1 보도에 따르면, ‘23년 만에 다시 펼친 19금 '스캔들'…손예진·지창욱·나나, 새 도전 [OTT 화제작]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스1",
-    "url": "https://www.news1.kr/amp/entertain/broadcast-tv/6295906",
-    "date": "Sat, 19 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
-    "section": "문화 & 미디어/엔터",
-    "title": "[도쿄게임쇼 2026] 넷마블 ‘나혼렙: 카르마’…\"성진우의 27년 전쟁, 로그라이트로 풀었다\" : 네이버 블로그",
-    "summary": "Naver Blog 보도에 따르면, ‘넷마블 ‘나혼렙: 카르마’…\"성진우의 27년 전쟁, 로그라이트로 풀었다\" : 네이버 블로그’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "Naver Blog",
-    "url": "https://blog.naver.com/PostView.naver?blogId=dealsite&logNo=224417971181&redirect=Dlog",
-    "date": "Sun, 20 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "문화 & 미디어/엔터",
-    "title": "[게임위드인] K게임의 도쿄게임쇼 키워드는…모바일·서브컬처",
-    "summary": "연합뉴스 보도에 따르면, ‘K게임의 도쿄게임쇼 키워드는…모바일·서브컬처’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합뉴스",
-    "url": "https://www.yna.co.kr/amp/view/AKR20260918170400017",
-    "date": "Sat, 19 Se",
+    "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
+    "title": "에실로코리아, 대한검안학회 25주년 워크숍서 근시 억제 안경렌즈 ‘에실로 스텔리스트’ 기술·임상 근거 공유",
+    "summary": "기업경제뉴스 보도에 따르면, ‘에실로코리아, 대한검안학회 25주년 워크숍서 근시 억제 안경렌즈 ‘에실로 스텔리스트’ 기술·임상 근거 공유’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "기업경제뉴스",
+    "url": "https://www.corporateeconomic.com/news/articleView.html?idxno=69637",
+    "date": "Mon, 21 Se",
     "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
@@ -107,6 +127,26 @@
     "url": "https://v.daum.net/v/20260920195950595?f=p",
     "date": "Sun, 20 Se",
     "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
+    "title": "에실로코리아, 대한검안학회서 ‘스텔리스트’ 소아근시 관리 임상 데이터 공유",
+    "summary": "뉴스탭 보도에 따르면, ‘에실로코리아, 대한검안학회서 ‘스텔리스트’ 소아근시 관리 임상 데이터 공유’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴스탭",
+    "url": "https://www.newstap.co.kr/news/articleView.html?idxno=334428",
+    "date": "Mon, 21 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
+    "title": "에실로코리아, 근시 억제 렌즈 임상 결과 공유",
+    "summary": "원문 매체 보도에 따르면, ‘에실로코리아, 근시 억제 렌즈 임상 결과 공유’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "hansbiz.co.kr",
+    "url": "http://www.hansbiz.co.kr/news/articleView.html?idxno=867054",
+    "date": "Mon, 21 Se",
+    "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
@@ -131,13 +171,23 @@
   },
   {
     "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
-    "title": "초등학생 시력저하 빨라지는 시기, 안과 드림렌즈 통한 근시 진행 억제 고려해야",
-    "summary": "메디소비자뉴스 보도에 따르면, ‘초등학생 시력저하 빨라지는 시기, 안과 드림렌즈 통한 근시 진행 억제 고려해야’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "메디소비자뉴스",
-    "url": "https://www.medisobizanews.com/news/articleView.html?idxno=141690",
-    "date": "Fri, 18 Se",
+    "title": "위고비 시력 손상 소송 확산…부작용 검증 미흡에 사전 예방책도 '구멍'",
+    "summary": "더쎈뉴스 보도에 따르면, ‘위고비 시력 손상 소송 확산…부작용 검증 미흡에 사전 예방책도 '구멍'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "더쎈뉴스",
+    "url": "https://www.mhns.co.kr/news/articleView.html?idxno=761151",
+    "date": "Mon, 21 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
+    "title": "S-Alpha Therapeutics wins domestic approval for pediatric myopia inhibition digital therapeutic device ‘MyoHabit’",
+    "summary": "더바이오 원문에 따르면, \"We have obtained domestic regulatory approval for our digital therapeutic device designed to slow the progression of pediatric myopia following a phased clinical development program.",
+    "source": "더바이오",
+    "url": "https://www.thebionews.net/news/articleView.html?idxno=28349",
+    "date": "Mon, 21 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
@@ -147,57 +197,27 @@
     "url": "https://v.daum.net/v/20260918172904381",
     "date": "Fri, 18 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
-    "title": "새빛안과병원, 고양시 3개 노동조합과 의료 협력",
-    "summary": "보건신문 보도에 따르면, ‘새빛안과병원, 고양시 3개 노동조합과 의료 협력’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "보건신문",
-    "url": "http://www.bokuennews.com/news/article.html?no=284336",
-    "date": "Wed, 16 Se",
-    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 7일 보완"
   },
   {
-    "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
-    "title": "에스알파테라퓨틱스, 소아 근시 진행억제 DTx 식약처 품목허가 획득∙∙∙48주 확증임상서 유효성∙안전성 확인",
-    "summary": "바이오타임즈 보도에 따르면, ‘에스알파테라퓨틱스, 소아 근시 진행억제 DTx 식약처 품목허가 획득∙∙∙48주 확증임상서 유효성∙안전성 확인’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "바이오타임즈",
-    "url": "https://www.biotimes.co.kr/news/articleView.html?idxno=34515",
-    "date": "Wed, 16 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 7일 보완"
+    "section": "과학 & 미래기술",
+    "title": "백악관 어깃장에 정신 번쩍…EU, ‘우주 독립’ 가속도 올린다",
+    "summary": "한겨레 보도에 따르면, ‘백악관 어깃장에 정신 번쩍…EU, ‘우주 독립’ 가속도 올린다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한겨레",
+    "url": "https://www.hani.co.kr/arti/science/science_general/1278769.html",
+    "date": "Mon, 21 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
-    "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
-    "title": "강남케이안과, 10월 6일 개원…각막부터 망막까지 통합 진료 시스템 구축",
-    "summary": "바이오타임즈 보도에 따르면, ‘강남케이안과, 10월 6일 개원…각막부터 망막까지 통합 진료 시스템 구축’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "바이오타임즈",
-    "url": "https://www.biotimes.co.kr/news/articleView.html?idxno=34513",
-    "date": "Wed, 16 Se",
+    "section": "과학 & 미래기술",
+    "title": "[단독]“휴대폰 등장 뒤 전화번호 못 외우듯, AI 의존땐 연구 능력 잃어”",
+    "summary": "동아일보 보도에 따르면, ‘“휴대폰 등장 뒤 전화번호 못 외우듯, AI 의존땐 연구 능력 잃어”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "동아일보",
+    "url": "https://www.donga.com/news/Economy/article/all/20260922/134715212/2",
+    "date": "Mon, 21 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 7일 보완"
-  },
-  {
-    "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
-    "title": "다비치안경, 한국호야렌즈와 어린이 근시관리 협력 : 네이버 블로그",
-    "summary": "Naver Blog 보도에 따르면, ‘다비치안경, 한국호야렌즈와 어린이 근시관리 협력 : 네이버 블로그’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "Naver Blog",
-    "url": "https://blog.naver.com/PostView.naver?blogId=adevent&logNo=224414482228&redirect=Dlog",
-    "date": "Wed, 16 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 7일 보완"
-  },
-  {
-    "section": "안경 · 콘택트렌즈 · 안과 · 검안 · 시과학 · 근시관리",
-    "title": "\"5년 뒤, 또 5년 뒤\"… '실명 위기' 망막색소변성증, 오가노이드로 해법 찾는다",
-    "summary": "아이알팜 보도에 따르면, ‘\"5년 뒤, 또 5년 뒤\"… '실명 위기' 망막색소변성증, 오가노이드로 해법 찾는다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "아이알팜",
-    "url": "https://www.irpharm.com/news/articleView.html?idxno=3602",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "과학 & 미래기술",
@@ -207,7 +227,47 @@
     "url": "https://www.donga.com/news/Politics/article/all/20260920/134705289/1",
     "date": "Sun, 20 Se",
     "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "과학 & 미래기술",
+    "title": "[박형주의 세나수 세상에 나쁜 수학은 없다]인간 없는 과학이 온다",
+    "summary": "경향신문 보도에 따르면, ‘인간 없는 과학이 온다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "경향신문",
+    "url": "https://www.khan.co.kr/article/202609212008005",
+    "date": "Mon, 21 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "과학 & 미래기술",
+    "title": "대기업 병역특례 14년 만에 부활…삼성·LG 등 AI 연구소 9곳 첫 추천",
+    "summary": "지디넷코리아 보도에 따르면, ‘대기업 병역특례 14년 만에 부활…삼성·LG 등 AI 연구소 9곳 첫 추천’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "지디넷코리아",
+    "url": "https://zdnet.co.kr/view/?no=20260920113337",
+    "date": "Sun, 20 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "과학 & 미래기술",
+    "title": "‘132년에 한 번 있을 충돌’…불과 2년 전 달에 지름 222m 구덩이 생겼다 [후암동 논문 연구소]",
+    "summary": "원문 매체 보도에 따르면, ‘132년에 한 번 있을 충돌’…불과 2년 전 달에 지름 222m 구덩이 생겼다",
+    "source": "v.daum.net",
+    "url": "https://v.daum.net/v/20260921201217216",
+    "date": "Mon, 21 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "과학 & 미래기술",
+    "title": "세계 최초 ‘소리의 양자 도약’ 실시간 관측 성공",
+    "summary": "지디넷코리아 보도에 따르면, ‘세계 최초 ‘소리의 양자 도약’ 실시간 관측 성공’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "지디넷코리아",
+    "url": "https://zdnet.co.kr/view/?no=20260919073005",
+    "date": "Sat, 19 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "과학 & 미래기술",
@@ -217,85 +277,25 @@
     "url": "https://www.hani.co.kr/arti/science/science_general/1278637.html",
     "date": "Sun, 20 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "과학 & 미래기술",
-    "title": "\"미국에 못 맡긴다\"...유럽, 독자 위성망 구축에 27조원 투입",
-    "summary": "원문 매체 보도에 따르면, ‘\"미국에 못 맡긴다\"...유럽, 독자 위성망 구축에 27조원 투입’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "v.daum.net",
-    "url": "https://v.daum.net/v/4t0dQd8Bcp",
-    "date": "Sat, 19 Se",
-    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "과학 & 미래기술",
-    "title": "국가R&D 연구비 정산 간소화…'연구수당 쏠림'도 손본다",
-    "summary": "뉴스1 보도에 따르면, ‘국가R&D 연구비 정산 간소화…'연구수당 쏠림'도 손본다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스1",
-    "url": "https://www.news1.kr/it-science/general-science/6294677",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "과학 & 미래기술",
-    "title": "33년간 남극·북극 얼음바다 누볐다… \"극지는 요충지, 우리 기술로 연구를\"",
-    "summary": "조선일보 보도에 따르면, ‘33년간 남극·북극 얼음바다 누볐다… \"극지는 요충지, 우리 기술로 연구를\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "조선일보",
-    "url": "https://www.chosun.com/national/weekend/2026/09/19/UKMJXJRB6RDMLGOQHI2EV4ZNVY/",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "과학 & 미래기술",
-    "title": "24시간 신약 찾는 연구원 3만7000명… ‘AI 제약사’ 현실로 성큼",
-    "summary": "조선일보 보도에 따르면, ‘24시간 신약 찾는 연구원 3만7000명… ‘AI 제약사’ 현실로 성큼’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "조선일보",
-    "url": "https://www.chosun.com/economy/science/2026/09/18/E2RZIQGHY5AS5NJVRK2YFZXIOY/",
-    "date": "Fri, 18 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "과학 & 미래기술",
-    "title": "우주항공수도 사천시, 2026 전국 청소년 물로켓 대회 개최",
-    "summary": "원문 매체 보도에 따르면, ‘우주항공수도 사천시, 2026 전국 청소년 물로켓 대회 개최’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "gukjenews.com",
-    "url": "https://www.gukjenews.com/news/articleView.html?idxno=3701225",
+    "title": "사천시-우주항공청, ‘2026 전국 청소년 물로켓 대회’ 개최",
+    "summary": "메트로신문 원문에 따르면, 사천시는 지난 19일 사천종합운동장에서 전국 초·중·고등학생 200여 명이 참가한 가운데 '2026 사천시 전국 청소년 물로켓 대회'를 열었다.",
+    "source": "메트로신문",
+    "url": "https://www.metroseoul.co.kr/article/20260920500330",
     "date": "Sun, 20 Se",
     "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "과학 & 미래기술",
-    "title": "경남 사천서 전국 청소년 200여명 물로켓 발사···우주항공 미래 인재 꿈 키워",
-    "summary": "더경남뉴스 보도에 따르면, ‘경남 사천서 전국 청소년 200여명 물로켓 발사···우주항공 미래 인재 꿈 키워’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "더경남뉴스",
-    "url": "https://thegnnews.com/View.aspx?No=4235337",
-    "date": "Sun, 20 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "과학 & 미래기술",
-    "title": "사천시, 2026 전국 청소년 물로켓 대회 성료… ‘누리호 5차 성공 기원’",
-    "summary": "경남저널 원문에 따르면, 사천시는 19일 사천종합운동장에서 전국 초·중·고등학생 200여 명이 참가한 가운데 '2026 사천시 전국 청소년 물로켓 대회'를 개최했다.",
-    "source": "경남저널",
-    "url": "http://www.gnjnews.co.kr/news/articleViewAmp.html?idxno=127008",
-    "date": "Sun, 20 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "과학 & 미래기술",
-    "title": "물로켓에 담은 우주 향한 꿈···사천에 전국 청소년 200여 명 집결",
-    "summary": "경남탑뉴스 보도에 따르면, ‘물로켓에 담은 우주 향한 꿈···사천에 전국 청소년 200여 명 집결’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "경남탑뉴스",
-    "url": "https://www.topnews24.kr/news/articleViewAmp.html?idxno=80009",
-    "date": "Sun, 20 Se",
+    "title": "직접 만든 물로켓 쏘며 우주항공 인재 꿈 키웠죠",
+    "summary": "경남매일 보도에 따르면, ‘직접 만든 물로켓 쏘며 우주항공 인재 꿈 키웠죠’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "경남매일",
+    "url": "https://www.gnmaeil.com/news/articleView.html?idxno=595266",
+    "date": "Mon, 21 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   }
