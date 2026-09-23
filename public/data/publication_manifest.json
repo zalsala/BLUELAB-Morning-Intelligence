@@ -1,14 +1,14 @@
 {
   "schema_version": "publication-manifest-v1",
-  "edition": "daily-2026-09-23",
-  "edition_date": "2026-09-23",
+  "edition": "daily-2026-09-24",
+  "edition_date": "2026-09-24",
   "timezone": "Asia/Seoul",
   "source_main_sha": "44d568f03028ce4b35deda7660f69deeb92d3e70",
-  "release_sha": "bad276659d96c13040e0ce734e8d408119999972",
+  "release_sha": "0d20b1ae61d6323b97e69abcf5bec838f62f567b",
   "fingerprints": {
-    "snapshot_fingerprint_sha256": "49040630a03a94a7e25408bb7ddbffa4913dab21957740e0fe5a6b4665952583",
-    "editorial_fingerprint_sha256": "7d03b251a70889468be48526e23a7f5f503d81da4a6bdb0dd7dfe6f2003191b0",
-    "production_fingerprint_sha256": "0fbf07c4e0b31cae6c3e3a19b5c528585bbf05bda48379917c7ef79996912dfe"
+    "snapshot_fingerprint_sha256": "09f4b2819635fc87730f4a680d5e93732a299a019a78cef87d069c4d845e9c93",
+    "editorial_fingerprint_sha256": "7305f0b519df738cdc5c8ece1a720a912a9ba1508921ea9857d5f49c96b9dc93",
+    "production_fingerprint_sha256": "5b7382b1f81e588fb0c252067cdc90514aea791104a1981bdc70ff7754633d20"
   },
   "content_counts": {
     "total_chapters": 16,
@@ -36,6 +36,6 @@
     "GOOGLE_TRENDS_GATE": "WITHHELD_POLICY_COMPLIANT"
   },
   "canonical_status": "CANONICAL_PASS",
-  "created_at": "2026-09-23T08:06:47.313937+09:00",
-  "manifest_sha256": "dd4530a261d6a735681d6c9a504eee17f07a2311e8e7236bb7c8c3641495a993"
+  "created_at": "2026-09-24T08:04:27.078368+09:00",
+  "manifest_sha256": "df4632d376b0afb6ae4a4342adc52146e8bd1a6cb8f5d048c3572a1e75c9bb43"
 }
