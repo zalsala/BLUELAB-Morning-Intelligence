@@ -1,13 +1,33 @@
 [
   {
     "section": "글로벌 국제 정세",
-    "title": "이란 대통령, 뉴욕 한복판서 유엔 연설 \"우린 美·이스라엘 테러 희생자\"",
-    "summary": "조선일보 보도에 따르면, ‘이란 대통령, 뉴욕 한복판서 유엔 연설 \"우린 美·이스라엘 테러 희생자\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "조선일보",
-    "url": "https://www.chosun.com/international/international_general/2026/09/24/O722BJBOKZCF3GVGNL3JC7HGQI/",
-    "date": "Thu, 24 Se",
+    "title": "러 총선 집권당 의석 80% 육박‥우크라이나전 참전 46명 당선",
+    "summary": "MBC 뉴스 보도에 따르면, ‘러 총선 집권당 의석 80% 육박‥우크라이나전 참전 46명 당선’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "MBC 뉴스",
+    "url": "https://imnews.imbc.com/news/2026/world/article/6854111_36925.html",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "글로벌 국제 정세",
+    "title": "주중 미국대사 “트럼프, 시진핑에 ‘중국 이란 지원 용납 못 해’ 전달”",
+    "summary": "KBS 뉴스 보도에 따르면, ‘주중 미국대사 “트럼프, 시진핑에 ‘중국 이란 지원 용납 못 해’ 전달”’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "KBS 뉴스",
+    "url": "https://news.kbs.co.kr/news/view.do?ncd=8671757",
+    "date": "Fri, 25 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "글로벌 국제 정세",
+    "title": "“대북제재 하든 말든”…中, 올해 北에 제재물품 29만 달러 수출",
+    "summary": "매일경제 보도에 따르면, ‘“대북제재 하든 말든”…中, 올해 北에 제재물품 29만 달러 수출’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "매일경제",
+    "url": "https://www.mk.co.kr/news/world/12161260",
+    "date": "Thu, 24 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "글로벌 국제 정세",
@@ -17,115 +37,65 @@
     "url": "https://imnews.imbc.com/news/2026/world/article/6854024_36925.html",
     "date": "Thu, 24 Se",
     "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "글로벌 국제 정세",
+    "title": "주일 중국대사 \"대만 문제, 핵심이익 중의 핵심\"",
+    "summary": "연합뉴스TV 보도에 따르면, ‘주일 중국대사 \"대만 문제, 핵심이익 중의 핵심\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스TV",
+    "url": "https://www.yonhapnewstv.co.kr/news/AKR20260925143206mrk",
+    "date": "Fri, 25 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "글로벌 국제 정세",
-    "title": "\"세계 석유 60% 가졌다\"…유엔총회 선 트럼프의 '허풍'",
-    "summary": "한국경제 보도에 따르면, ‘\"세계 석유 60% 가졌다\"…유엔총회 선 트럼프의 '허풍'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "title": "중국, 남중국해서 필리핀 선박 물자 보급 막아",
+    "summary": "KBS 뉴스 보도에 따르면, ‘중국, 남중국해서 필리핀 선박 물자 보급 막아’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "KBS 뉴스",
+    "url": "https://news.kbs.co.kr/news/view.do?ncd=8671642",
+    "date": "Fri, 25 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "글로벌 국제 정세",
+    "title": "젤렌스키 \"美, UAE서 3자 회담 재개 제안…일정 대기 중\"",
+    "summary": "뉴스1 보도에 따르면, ‘젤렌스키 \"美, UAE서 3자 회담 재개 제안…일정 대기 중\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴스1",
+    "url": "https://www.news1.kr/world/europe/6301735",
+    "date": "Fri, 25 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "글로벌 국제 정세",
+    "title": "트럼프 \"인공지능(AI) 대신 수퍼지능(SI) 호칭 합의\" 강조 [이상은의 워싱턴나우]",
+    "summary": "한국경제 보도에 따르면, ‘트럼프 \"인공지능(AI) 대신 수퍼지능(SI) 호칭 합의\" 강조 [이상은의 워싱턴나우]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "한국경제",
-    "url": "https://www.hankyung.com/article/2026092447637",
-    "date": "Thu, 24 Se",
+    "url": "https://www.hankyung.com/article/202609266129i",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "글로벌 국제 정세",
-    "title": "’이란 전쟁’ 지지하는 美공화당원, 반년새 13%p ’뚝’",
-    "summary": "연합뉴스TV 보도에 따르면, ‘’이란 전쟁’ 지지하는 美공화당원, 반년새 13%p ’뚝’’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합뉴스TV",
-    "url": "https://www.yonhapnewstv.co.kr/news/AKR20260923100818Aoq",
-    "date": "Wed, 23 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "글로벌 국제 정세",
-    "title": "이란 학생들, 전쟁 아픔 딛고 7개월만에 등교 재개",
-    "summary": "연합뉴스TV 보도에 따르면, ‘이란 학생들, 전쟁 아픔 딛고 7개월만에 등교 재개’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합뉴스TV",
-    "url": "https://www.yonhapnewstv.co.kr/news/AKR20260923224815fub",
-    "date": "Wed, 23 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "글로벌 국제 정세",
-    "title": "[속보] 트럼프 \"시진핑과 안보·기술·슈퍼지능 논의‥평화·번영 증진\"",
-    "summary": "MBC 뉴스 보도에 따르면, ‘트럼프 \"시진핑과 안보·기술·슈퍼지능 논의‥평화·번영 증진\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "MBC 뉴스",
-    "url": "https://imnews.imbc.com/news/2026/world/article/6853999_36925.html",
-    "date": "Thu, 24 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "글로벌 국제 정세",
-    "title": "네타냐후 유엔 연설에 중동·아랍국들 '집단 퇴장' 항의사태",
-    "summary": "연합뉴스 보도에 따르면, ‘네타냐후 유엔 연설에 중동·아랍국들 '집단 퇴장' 항의사태’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합뉴스",
-    "url": "https://www.yna.co.kr/view/AKR20260925007700072",
-    "date": "Thu, 24 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "글로벌 국제 정세",
-    "title": "트럼프 \"AI 규제 더 안 한다\"… 시진핑 \"인간이 통제해야\"",
-    "summary": "조선일보 보도에 따르면, ‘트럼프 \"AI 규제 더 안 한다\"… 시진핑 \"인간이 통제해야\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "title": "시진핑 환영식 맨 앞줄 선 트럼프 외손녀… 9년 전 중국어 노래 불렀던 그 소녀",
+    "summary": "조선일보 보도에 따르면, ‘시진핑 환영식 맨 앞줄 선 트럼프 외손녀… 9년 전 중국어 노래 불렀던 그 소녀’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "조선일보",
-    "url": "https://www.chosun.com/international/international_general/2026/09/25/W7B7F4TGYREYRJCKZQI2UJRROM/",
+    "url": "https://www.chosun.com/international/international_general/2026/09/25/MEVXJ3ODM5ENVKTXZJISA2XQTI/",
     "date": "Thu, 24 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "글로벌 국제 정세",
-    "title": "“시진핑 지휘에 단호히 복종” ‘중국군 이인자 제명’에 기관지 사설 게재",
-    "summary": "KBS 뉴스 보도에 따르면, ‘“시진핑 지휘에 단호히 복종” ‘중국군 이인자 제명’에 기관지 사설 게재’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "KBS 뉴스",
-    "url": "https://news.kbs.co.kr/news/view.do?ncd=8670345",
-    "date": "Wed, 23 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "글로벌 국제 정세",
-    "title": "“행동으로 국제사회 신뢰 얻어야”…중국, 다카이치 ‘적국 조항’ 삭제 요구 반대",
-    "summary": "KBS 뉴스 보도에 따르면, ‘“행동으로 국제사회 신뢰 얻어야”…중국, 다카이치 ‘적국 조항’ 삭제 요구 반대’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "KBS 뉴스",
-    "url": "https://news.kbs.co.kr/news/view.do?ncd=8670506",
-    "date": "Wed, 23 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "테크 & IT 산업",
-    "title": "지역 반발에 93조원 개발 차질…빅테크, 데이터센터 ‘물·전기’ 해명｜Global Money Club",
-    "summary": "중앙일보 보도에 따르면, ‘지역 반발에 93조원 개발 차질…빅테크, 데이터센터 ‘물·전기’ 해명｜Global Money Club’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "중앙일보",
-    "url": "https://www.joongang.co.kr/gmc/article/25464596",
-    "date": "Wed, 23 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "테크 & IT 산업",
-    "title": "“모나리자 옆에 내 그림 좀”… 유럽 박물관이 ‘보안 구멍’에 몸살 앓는 이유",
-    "summary": "조선일보 보도에 따르면, ‘“모나리자 옆에 내 그림 좀”… 유럽 박물관이 ‘보안 구멍’에 몸살 앓는 이유’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "조선일보",
-    "url": "https://www.chosun.com/international/europe/2026/09/24/S3ZKVPGQCRBKRJ47XOTGGUG7SE/",
+    "title": "아이스크림 먹던 3세 참변 “제발 사형해라”…‘대낮 음주운전’에 분노 터진 일본인들",
+    "summary": "서울경제 보도에 따르면, ‘아이스크림 먹던 3세 참변 “제발 사형해라”…‘대낮 음주운전’에 분노 터진 일본인들’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "서울경제",
+    "url": "https://www.sedaily.com/article/20094805",
     "date": "Thu, 24 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "테크 & IT 산업",
-    "title": "구글북 899달러, 원가 구조에 물음표... \"이게 되나?\"",
-    "summary": "지디넷코리아 보도에 따르면, ‘구글북 899달러, 원가 구조에 물음표... \"이게 되나?\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "지디넷코리아",
-    "url": "https://zdnet.co.kr/view/?no=20260923140658",
-    "date": "Wed, 23 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
@@ -137,7 +107,17 @@
     "url": "https://www.khan.co.kr/article/202609241702001",
     "date": "Thu, 24 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "테크 & IT 산업",
+    "title": "“모나리자 옆에 내 그림 좀”… 유럽 박물관이 ‘보안 구멍’에 몸살 앓는 이유",
+    "summary": "조선일보 보도에 따르면, ‘“모나리자 옆에 내 그림 좀”… 유럽 박물관이 ‘보안 구멍’에 몸살 앓는 이유’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "조선일보",
+    "url": "https://www.chosun.com/international/europe/2026/09/24/S3ZKVPGQCRBKRJ47XOTGGUG7SE/",
+    "date": "Thu, 24 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "테크 & IT 산업",
@@ -147,7 +127,27 @@
     "url": "https://zdnet.co.kr/view/?no=20260924075558",
     "date": "Thu, 24 Se",
     "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "테크 & IT 산업",
+    "title": "[빅테크칼럼] 애플이 카메라 탑재 AI 핀 개발을 중단한 이유…\"워치·에어팟·안경으로” AI 웨어러블 전략의 재설계",
+    "summary": "뉴스스페이스 보도에 따르면, ‘애플이 카메라 탑재 AI 핀 개발을 중단한 이유…\"워치·에어팟·안경으로” AI 웨어러블 전략의 재설계’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴스스페이스",
+    "url": "https://www.newsspace.kr/news/article.html?no=15853",
+    "date": "Fri, 25 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "테크 & IT 산업",
+    "title": "\"스마트폰 다음은 XR\"…퀄컴·삼성·구글, 차세대 폼팩터 3자 연합 구축",
+    "summary": "지디넷코리아 보도에 따르면, ‘\"스마트폰 다음은 XR\"…퀄컴·삼성·구글, 차세대 폼팩터 3자 연합 구축’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "지디넷코리아",
+    "url": "https://zdnet.co.kr/view/?no=20260924053226",
+    "date": "Wed, 23 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "테크 & IT 산업",
@@ -156,25 +156,15 @@
     "source": "디지털데일리",
     "url": "https://www.ddaily.co.kr/page/view/2026092313264679073",
     "date": "Wed, 23 Se",
-    "status": "CONFIRMED",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "테크 & IT 산업",
-    "title": "\"제미나이 4 조기 출시\"… 구글 딥마인드 수장, 첫 인터뷰서 공식화",
-    "summary": "원문 매체 보도에 따르면, ‘\"제미나이 4 조기 출시\"… 구글 딥마인드 수장, 첫 인터뷰서 공식화’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "aitimes.com",
-    "url": "https://www.aitimes.com/news/articleView.html?idxno=215646",
-    "date": "Thu, 24 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "테크 & IT 산업",
-    "title": "카메라·배터리 진화한 아이폰 18 프로… 손목과 지갑엔 부담",
-    "summary": "조선일보 보도에 따르면, ‘카메라·배터리 진화한 아이폰 18 프로… 손목과 지갑엔 부담’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "조선일보",
-    "url": "https://www.chosun.com/economy/tech_it/2026/09/24/YBDPRHT4RNEBJF7NFRHVZ7VNXY/",
+    "title": "지역 반발에 93조원 개발 차질…빅테크, 데이터센터 ‘물·전기’ 해명｜Global Money Club",
+    "summary": "원문 매체 보도에 따르면, ‘지역 반발에 93조원 개발 차질…빅테크, 데이터센터 ‘물·전기’ 해명｜Global Money Club’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "joongang.co.kr",
+    "url": "https://www.joongang.co.kr/gmc/article/25464596",
     "date": "Wed, 23 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
@@ -186,18 +176,58 @@
     "source": "edaily.co.kr",
     "url": "https://www.edaily.co.kr/News/Read?newsId=03384966645583400&mediaCodeNo=257",
     "date": "Thu, 24 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "테크 & IT 산업",
+    "title": "\"제미나이 4 조기 출시\"… 구글 딥마인드 수장, 첫 인터뷰서 공식화",
+    "summary": "AI타임스 보도에 따르면, ‘\"제미나이 4 조기 출시\"… 구글 딥마인드 수장, 첫 인터뷰서 공식화’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "AI타임스",
+    "url": "https://www.aitimes.com/news/articleView.html?idxno=215646",
+    "date": "Thu, 24 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "테크 & IT 산업",
+    "title": "[신약개발 나선 빅테크 上] 구글, 빅테크 최초 '직접 임상' 나선다…신약개발 판도 흔들까",
+    "summary": "이데일리 보도에 따르면, ‘구글, 빅테크 최초 '직접 임상' 나선다…신약개발 판도 흔들까’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "edaily.co.kr",
+    "url": "https://www.edaily.co.kr/News/Read?newsId=01968006645583400&mediaCodeNo=257",
+    "date": "Thu, 24 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "인공지능 & 딥테크",
+    "title": "[AI픽] 챗GPT 다음은 클로드…국내 AI앱 2위 굳혀",
+    "summary": "매일경제 마켓 보도에 따르면, ‘챗GPT 다음은 클로드…국내 AI앱 2위 굳혀’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "매일경제 마켓",
+    "url": "https://stock.mk.co.kr/news/view/1165028",
+    "date": "Fri, 25 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "인공지능 & 딥테크",
+    "title": "AI에 답 맡기는 학생들…교육 현장, AI 활용 원칙 세운다",
+    "summary": "지디넷코리아 보도에 따르면, ‘AI에 답 맡기는 학생들…교육 현장, AI 활용 원칙 세운다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "지디넷코리아",
+    "url": "https://zdnet.co.kr/view/?no=20260923165837",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
-    "section": "테크 & IT 산업",
-    "title": "HT로보틱스, 수주잔고 1조 넘어서나··글로벌 빅테크 AI데이터센터 공급망 올라탔다",
-    "summary": "원문 매체 보도에 따르면, ‘HT로보틱스, 수주잔고 1조 넘어서나··글로벌 빅테크 AI데이터센터 공급망 올라탔다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "datatooza.com",
-    "url": "https://www.datatooza.com/article/20260923133226922e80ea65769_80",
-    "date": "Wed, 23 Se",
+    "section": "인공지능 & 딥테크",
+    "title": "식당 광고에 AI 음식 사진 썼다가 역풍…\"입맛 떨어진다\"",
+    "summary": "지디넷코리아 보도에 따르면, ‘식당 광고에 AI 음식 사진 썼다가 역풍…\"입맛 떨어진다\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "지디넷코리아",
+    "url": "https://zdnet.co.kr/view/?no=20260925104931",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "인공지능 & 딥테크",
@@ -207,16 +237,16 @@
     "url": "https://www.ddaily.co.kr/page/view/2026092504560815481",
     "date": "Thu, 24 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "인공지능 & 딥테크",
-    "title": "日연구진 \"AI 설득에 30% 판단 번복…사람보다 설득력 높아\"",
-    "summary": "연합뉴스 보도에 따르면, ‘日연구진 \"AI 설득에 30% 판단 번복…사람보다 설득력 높아\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합뉴스",
-    "url": "https://www.yna.co.kr/view/AKR20260923141300009",
-    "date": "Thu, 24 Se",
-    "status": "CONFIRMED",
+    "title": "'KB AI' 출시....KB국민은행, 생성형 AI부터 임베디드금융까지",
+    "summary": "웹이코노미 보도에 따르면, ‘'KB AI' 출시....KB국민은행, 생성형 AI부터 임베디드금융까지’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "웹이코노미",
+    "url": "https://www.webeconomy.co.kr/news/articleView.html?idxno=2317295",
+    "date": "Fri, 25 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
@@ -227,45 +257,35 @@
     "url": "https://www.newsis.com/view/NISX20260921_0003798066",
     "date": "Thu, 24 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "인공지능 & 딥테크",
-    "title": "미국인 10명 중 9명, AI에 \"기대보다 우려\"…규제 강화 요구",
-    "summary": "연합뉴스 보도에 따르면, ‘미국인 10명 중 9명, AI에 \"기대보다 우려\"…규제 강화 요구’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "연합뉴스",
-    "url": "https://www.yna.co.kr/view/AKR20260924049100009",
-    "date": "Thu, 24 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "인공지능 & 딥테크",
-    "title": "[신간] 인공지능의 법과 정책...각계 전문가 34명 저술",
-    "summary": "지디넷코리아 보도에 따르면, ‘인공지능의 법과 정책...각계 전문가 34명 저술’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "지디넷코리아",
-    "url": "https://zdnet.co.kr/view/?no=20260924113916",
-    "date": "Thu, 24 Se",
+    "title": "【미술 기획】 AI 시대, 세상을 보듬는 부드러운 영웅… 유하라 개인전 《ME:Dia Hero Universe》",
+    "summary": "원문 매체 보도에 따르면, ‘【미술 기획】 AI 시대, 세상을 보듬는 부드러운 영웅… 유하라 개인전 《ME:Dia Hero Universe》’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "c1news.kr",
+    "url": "https://www.c1news.kr/news/articleView.html?idxno=201501",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "인공지능 & 딥테크",
-    "title": "속도조절하자더니 이중 행보…앤트로픽·오픈AI, 새 모델 공개",
-    "summary": "전자신문 보도에 따르면, ‘속도조절하자더니 이중 행보…앤트로픽·오픈AI, 새 모델 공개’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "전자신문",
-    "url": "https://www.etnews.com/20260924000033",
-    "date": "Thu, 24 Se",
+    "title": "AI 투자 2023년 1500억→올해 7350억달러…한국도 AI 투자 사이클 영향",
+    "summary": "아주경제 보도에 따르면, ‘AI 투자 2023년 1500억→올해 7350억달러…한국도 AI 투자 사이클 영향’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "아주경제",
+    "url": "https://www.ajunews.com/view/20260925114703853",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "인공지능 & 딥테크",
-    "title": "노후 산단 3곳, '청년·AI 첨단 거점'으로 대전환…제주·완주·원주 문막 선정",
-    "summary": "헬로티 보도에 따르면, ‘노후 산단 3곳, '청년·AI 첨단 거점'으로 대전환…제주·완주·원주 문막 선정’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "헬로티",
-    "url": "https://www.hellot.net/news/article.html?no=115139",
-    "date": "Thu, 24 Se",
+    "title": "[특집: 한국에서 AI 출현으로 없어지는 직업① 콜센터 상담원] “사람 대신 AI가 전화를 받는다”…상담업계 덮친 음성봇 혁명",
+    "summary": "코리아포스트 한글판 보도에 따르면, ‘[특집: 한국에서 AI 출현으로 없어지는 직업① 콜센터 상담원] “사람 대신 AI가 전화를 받는다”…상담업계 덮친 음성봇 혁명’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "코리아포스트 한글판",
+    "url": "https://www.koreapost.co.kr/news/articleView.html?idxno=89128",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
@@ -278,25 +298,5 @@
     "date": "Wed, 23 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "인공지능 & 딥테크",
-    "title": "구리시 경기도 인공지능 데이터 정책 우수 사례 발표대회 우수상 수상 > 뉴스",
-    "summary": "더코리아 보도에 따르면, ‘구리시 경기도 인공지능 데이터 정책 우수 사례 발표대회 우수상 수상 > 뉴스’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "더코리아",
-    "url": "http://www.thekorea.kr/bbs/board.php?bo_table=news&wr_id=556577",
-    "date": "Thu, 24 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "인공지능 & 딥테크",
-    "title": "AI 워터마크 과태료 3000만원, 개인 유튜버는 0원",
-    "summary": "매일신문 보도에 따르면, ‘AI 워터마크 과태료 3000만원, 개인 유튜버는 0원’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "매일신문",
-    "url": "https://www.imaeil.com/page/view/2026092412193369072",
-    "date": "Thu, 24 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
   }
 ]

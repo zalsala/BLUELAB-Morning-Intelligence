@@ -1,31 +1,21 @@
 [
   {
     "section": "반도체 & 첨단제조",
-    "title": "삼성전자·삼성전기 담고 SK하이닉스 던졌다…초고수, 20% 뛴 반도체주도 정리[주식 초고수는 지금]",
-    "summary": "매일경제 보도에 따르면, ‘삼성전자·삼성전기 담고 SK하이닉스 던졌다…초고수, 20% 뛴 반도체주도 정리[주식 초고수는 지금]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "매일경제",
-    "url": "https://www.mk.co.kr/news/stock/12159078",
-    "date": "Tue, 22 Se",
+    "title": "마이크론, '역대 최대' 실적 경신 임박…AI메모리 수요 굳건",
+    "summary": "지디넷코리아 보도에 따르면, ‘마이크론, '역대 최대' 실적 경신 임박…AI메모리 수요 굳건’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "지디넷코리아",
+    "url": "https://zdnet.co.kr/view/?no=20260925161629",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "반도체 & 첨단제조",
-    "title": "삼성전자·SK하이닉스, HBM 이어 낸드도 웃는다…기업용 SSD 4분기 가격 23~28% 급등 전망",
-    "summary": "중앙이코노미뉴스 보도에 따르면, ‘삼성전자·SK하이닉스, HBM 이어 낸드도 웃는다…기업용 SSD 4분기 가격 23~28% 급등 전망’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "중앙이코노미뉴스",
-    "url": "https://www.joongangenews.com/news/articleView.html?idxno=550504",
-    "date": "Thu, 24 Se",
-    "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "\"귀성길 대신 출근길\"…반도체·제철·석화공장 추석에도 24시간 가동",
-    "summary": "뉴스1 보도에 따르면, ‘\"귀성길 대신 출근길\"…반도체·제철·석화공장 추석에도 24시간 가동’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스1",
-    "url": "https://www.news1.kr/industry/general-industry/6300906",
-    "date": "Thu, 24 Se",
+    "title": "반도체 투톱 '63만전자·430만닉스' 전망 나오는데…어디까지 갈까[추석 이후 내 돈은③]",
+    "summary": "뉴시스 보도에 따르면, ‘반도체 투톱 '63만전자·430만닉스' 전망 나오는데…어디까지 갈까[추석 이후 내 돈은③]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "뉴시스",
+    "url": "https://www.newsis.com/view/NISX20260923_0003801303",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
@@ -41,16 +31,6 @@
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "\"AI칩 주문 쏟아진다\"…삼전·닉스, 추석 연휴도 반도체 공장 '풀가동'",
-    "summary": "뉴시스 보도에 따르면, ‘\"AI칩 주문 쏟아진다\"…삼전·닉스, 추석 연휴도 반도체 공장 '풀가동'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴시스",
-    "url": "https://www.newsis.com/view/NISX20260921_0003798200",
-    "date": "Thu, 24 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "반도체 & 첨단제조",
     "title": "코스피, 반도체 훈풍에 7000포인트 안착…삼성전자 3%대 강세",
     "summary": "매일경제 보도에 따르면, ‘코스피, 반도체 훈풍에 7000포인트 안착…삼성전자 3%대 강세’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "매일경제",
@@ -61,42 +41,82 @@
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "[반도체포커스] SK하이닉스, 中과 ‘초격차’ 3D D램 2029년 출격 추진…HBM3 대역폭 115배",
-    "summary": "이코노미트리뷴 보도에 따르면, ‘SK하이닉스, 中과 ‘초격차’ 3D D램 2029년 출격 추진…HBM3 대역폭 115배’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "이코노미트리뷴",
-    "url": "https://www.economytribune.co.kr/news/articleView.html?idxno=3903990",
+    "title": "삼성전자·SK하이닉스, HBM 이어 낸드도 웃는다…기업용 SSD 4분기 가격 23~28% 급등 전망",
+    "summary": "중앙이코노미뉴스 보도에 따르면, ‘삼성전자·SK하이닉스, HBM 이어 낸드도 웃는다…기업용 SSD 4분기 가격 23~28% 급등 전망’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "중앙이코노미뉴스",
+    "url": "https://www.joongangenews.com/news/articleView.html?idxno=550504",
     "date": "Thu, 24 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "반도체 & 첨단제조",
-    "title": "삼성전자·SK하이닉스, 반도체 수요 증가 기대감에 동반 상승 - 머니투데이",
-    "summary": "머니투데이 원문에 따르면, 삼성전자 (285,500원 ▲9,000 +3.25%) 와 SK하이닉스 (1,862,000원 ▲22,000 +1.2%) 가 DRAM(D램) 등 메모리 반도체 수요 증가 기대감에 상승하고 있다.",
-    "source": "머니투데이",
-    "url": "https://www.mt.co.kr/stock/2026/09/23/2026092309085264312",
-    "date": "Wed, 23 Se",
-    "status": "CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "코스피 쉬자 美 반도체 1.2%↓…월요일 ‘3일치 변수’ 한꺼번에 온다",
-    "summary": "녹색경제신문 보도에 따르면, ‘코스피 쉬자 美 반도체 1.2%↓…월요일 ‘3일치 변수’ 한꺼번에 온다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "title": "SK하이닉스 “대규모 부지 확보”·삼성 “투자 속도전”…호남권 반도체 클러스터 구체화",
+    "summary": "원문 매체 보도에 따르면, ‘SK하이닉스 “대규모 부지 확보”·삼성 “투자 속도전”…호남권 반도체 클러스터 구체화’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "sisaworld.kr",
+    "url": "https://www.sisaworld.kr/news/articleView.html?idxno=25493",
+    "date": "Fri, 25 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "美증시 급락 딛고 보합…10년물 5.2%·SOX 약세, 월요일 반도체 시험대",
+    "summary": "녹색경제신문 보도에 따르면, ‘美증시 급락 딛고 보합…10년물 5.2%·SOX 약세, 월요일 반도체 시험대’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "녹색경제신문",
-    "url": "https://www.greened.kr/news/articleView.html?idxno=350803",
-    "date": "Thu, 24 Se",
+    "url": "https://www.greened.kr/news/articleView.html?idxno=350816",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "반도체 & 첨단제조",
-    "title": "[증시 프리즘] 반도체 투톱으로 쏠린 외국인 표심…SK하이닉스·삼성전자 수급 극명한 갈림길",
-    "summary": "원문 매체 보도에 따르면, ‘반도체 투톱으로 쏠린 외국인 표심…SK하이닉스·삼성전자 수급 극명한 갈림길’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "thefairnews.co.kr",
-    "url": "https://www.thefairnews.co.kr/news/articleView.html?idxno=88959",
+    "title": "[4만달러 눈 앞] ② 신발·가발 팔던 최빈국에서 대체불가 반도체·문화 강국으로",
+    "summary": "연합뉴스 한민족센터 보도에 따르면, ‘② 신발·가발 팔던 최빈국에서 대체불가 반도체·문화 강국으로’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "연합뉴스 한민족센터",
+    "url": "https://www.koreancenter.or.kr/news/articleView.html?idxno=1415832",
     "date": "Thu, 24 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "프리마켓서 삼성전자 28만선 탈환…간밤 美반도체 강세 훈풍 [마켓시그널]",
+    "summary": "서울경제 보도에 따르면, ‘프리마켓서 삼성전자 28만선 탈환…간밤 美반도체 강세 훈풍 [마켓시그널]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "서울경제",
+    "url": "https://www.sedaily.com/article/20094296",
+    "date": "Tue, 22 Se",
     "status": "CONFIRMED",
+    "freshness_note": "최근 7일 보완"
+  },
+  {
+    "section": "반도체 & 첨단제조",
+    "title": "美 트럼프 “반도체 미국서 만들어라”…정작 HBM은 삼성전자·SK하이닉스 아시아 공장 의존",
+    "summary": "중앙이코노미뉴스 보도에 따르면, ‘美 트럼프 “반도체 미국서 만들어라”…정작 HBM은 삼성전자·SK하이닉스 아시아 공장 의존’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "중앙이코노미뉴스",
+    "url": "https://www.joongangenews.com/news/articleView.html?idxno=550562",
+    "date": "Fri, 25 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "바이오 & 헬스케어",
+    "title": "‘3전4기’ 진양곤 HLB그룹 의장, 세 번 고배 끝에 美 FDA 신약 품다[화제의 바이오人]",
+    "summary": "팜이데일리 보도에 따르면, ‘3전4기’ 진양곤 HLB그룹 의장, 세 번 고배 끝에 美 FDA 신약 품다",
+    "source": "팜이데일리",
+    "url": "https://pharm.edaily.co.kr/news/read?newsId=01561286645584056",
+    "date": "Fri, 25 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "바이오 & 헬스케어",
+    "title": "K-바이오, 유럽서 '항암 신약' 성과 뽐낸다",
+    "summary": "MTN 머니투데이방송 보도에 따르면, ‘K-바이오, 유럽서 '항암 신약' 성과 뽐낸다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "MTN 머니투데이방송",
+    "url": "https://news.mtn.co.kr/news-detail/2026092311250569387",
+    "date": "Fri, 25 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
@@ -107,27 +127,17 @@
     "url": "https://www.bloter.net/news/articleView.html?idxno=674426",
     "date": "Thu, 24 Se",
     "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "오성일 제약바이오산업과장 'AI시대 K-바이오 신약 개발 혁신' 기조발표",
-    "summary": "뉴스1 보도에 따르면, ‘오성일 제약바이오산업과장 'AI시대 K-바이오 신약 개발 혁신' 기조발표’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스1",
-    "url": "https://www.news1.kr/photos/8120014",
-    "date": "Tue, 22 Se",
-    "status": "CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "바이오 & 헬스케어",
-    "title": "“연매출 6조 신약 원개발사 한올바이오파마 … '로열티 대박' 기대감도 크다\"",
-    "summary": "한국경제 보도에 따르면, ‘“연매출 6조 신약 원개발사 한올바이오파마 … '로열티 대박' 기대감도 크다\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "한국경제",
-    "url": "https://www.hankyung.com/article/202609229773i",
-    "date": "Tue, 22 Se",
+    "title": "[중국 바이오의 부상 ㊥] 임상 7개월 빠르고 비용 최대 절반⋯글로벌 신약 공급처 된 이유",
+    "summary": "코메디닷컴 보도에 따르면, ‘임상 7개월 빠르고 비용 최대 절반⋯글로벌 신약 공급처 된 이유’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "코메디닷컴",
+    "url": "https://kormedi.com/2872674/",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -136,8 +146,18 @@
     "source": "한국경제",
     "url": "https://www.hankyung.com/article/202609233063i",
     "date": "Wed, 23 Se",
-    "status": "CONFIRMED",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "바이오 & 헬스케어",
+    "title": "HLB, 담관암 경구용 항암제 신약 '리픽투' 미 FDA 허가, 담관암 2차 치료제로 승인",
+    "summary": "한국의약통신 보도에 따르면, ‘HLB, 담관암 경구용 항암제 신약 '리픽투' 미 FDA 허가, 담관암 2차 치료제로 승인’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "한국의약통신",
+    "url": "https://www.kmpnews.co.kr/news/articleView.html?idxno=73327",
+    "date": "Fri, 25 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "NEW SINCE LAST BRIEFING"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -147,36 +167,6 @@
     "url": "https://www.kmpnews.co.kr/news/articleView.html?idxno=73323",
     "date": "Thu, 24 Se",
     "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "신약·의료기기 개발 시행착오 줄인다…식약처, 상담사례 공유",
-    "summary": "뉴스1 보도에 따르면, ‘신약·의료기기 개발 시행착오 줄인다…식약처, 상담사례 공유’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스1",
-    "url": "https://www.news1.kr/bio/pharmaceutical-bio/6300044",
-    "date": "Wed, 23 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "의약품 등급 필름 시장 2035년 전망: 바이오의약품 호황이 이끄는 연평균 6~8% 성장 - 뉴스 및 통계",
-    "summary": "IndexBox 원문에 따르면, 글로벌 의약품 등급 필름 시장은 2026~2035년 전망 기간 동안 연평균 6~8%의 성장률을 기록하며 지속적인 확장 국면에 들어서고 있습니다.",
-    "source": "IndexBox",
-    "url": "https://www.indexbox.io/ko/blog/pharmaceutical-grade-films-market-forecast-to-2035-biologics-manufacturing-demand-drives-6-8-cagr/",
-    "date": "Wed, 23 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "바이오 & 헬스케어",
-    "title": "\"번 돈은 다시 투자한다\" SK바이오팜 신약에 베팅",
-    "summary": "매일경제 보도에 따르면, ‘\"번 돈은 다시 투자한다\" SK바이오팜 신약에 베팅’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "매일경제",
-    "url": "https://www.mk.co.kr/news/it/12159606",
-    "date": "Tue, 22 Se",
-    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
@@ -184,10 +174,10 @@
     "title": "[K바이오 신약대전] '아로나민' 일동제약, ETC로 재도약…신약개발 强드라이브",
     "summary": "더구루 보도에 따르면, ‘'아로나민' 일동제약, ETC로 재도약…신약개발 强드라이브’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "더구루",
-    "url": "https://theguru.co.kr/news/article.html?no=107308",
+    "url": "https://www.theguru.co.kr/news/article.html?no=107308",
     "date": "Thu, 24 Se",
     "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "바이오 & 헬스케어",
@@ -197,85 +187,55 @@
     "url": "https://kormedi.com/2872610/",
     "date": "Thu, 24 Se",
     "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "바이오 & 헬스케어",
+    "title": "[신약의 새 공식①] 탈모 치료, DHT 억제 대신 '모낭 깨운다'",
+    "summary": "데일리한국 보도에 따르면, ‘탈모 치료, DHT 억제 대신 '모낭 깨운다'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "데일리한국",
+    "url": "https://daily.hankooki.com/news/articleView.html?idxno=1408416",
+    "date": "Thu, 24 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "가을 고급 전기차 시장, 화제의 대결은 ‘ES 대 ES’?",
+    "summary": "조선일보 보도에 따르면, ‘가을 고급 전기차 시장, 화제의 대결은 ‘ES 대 ES’?’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "조선일보",
+    "url": "https://www.chosun.com/economy/auto/2026/09/25/GMFGYH4DCFGG3CWAZ6VYLJ77KA/",
+    "date": "Fri, 25 Se",
+    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "“전력망을 버리자 172GW가 보였다”… SMR, 수소와 손잡고 美 원전시장 뒤집는다",
+    "summary": "원문 매체 보도에 따르면, ‘“전력망을 버리자 172GW가 보였다”… SMR, 수소와 손잡고 美 원전시장 뒤집는다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "ainews1.co.kr",
+    "url": "https://www.ainews1.co.kr/news/articleView.html?idxno=36965",
+    "date": "Thu, 24 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
   },
   {
     "section": "에너지 & 모빌리티",
     "title": "무늬는 미국 EV 브랜드인데 …'중국산 테슬라' 韓시장 대공습 [전기차 五國志②]",
     "summary": "뉴시스 보도에 따르면, ‘무늬는 미국 EV 브랜드인데 …'중국산 테슬라' 韓시장 대공습 [전기차 五國志②]’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
     "source": "뉴시스",
-    "url": "https://mobile.newsis.com/view_amp.html?ar_id=NISX20260922_0003800061",
+    "url": "https://www.newsis.com/view/NISX20260922_0003800061",
     "date": "Thu, 24 Se",
     "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "전력수요 급증 전망에 '원전 역할' 묻는다…3개월 공론 진행(종합)",
-    "summary": "매일경제 마켓 보도에 따르면, ‘전력수요 급증 전망에 '원전 역할' 묻는다…3개월 공론 진행(종합)’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "매일경제 마켓",
-    "url": "https://stock.mk.co.kr/news/view/1163704",
-    "date": "Tue, 22 Se",
-    "status": "PARTIALLY CONFIRMED",
     "freshness_note": "최근 3일 보완"
   },
   {
     "section": "에너지 & 모빌리티",
-    "title": "HD현대重 에너지 투자 확대…울산에 1조 투입 SMR 공장 건립",
-    "summary": "매일경제 보도에 따르면, ‘HD현대重 에너지 투자 확대…울산에 1조 투입 SMR 공장 건립’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "매일경제",
-    "url": "https://www.mk.co.kr/news/society/12159710",
-    "date": "Tue, 22 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "日, 2차 걸쳐 가스발전-SMR 등 6개사업 美투자 발표",
-    "summary": "동아일보 보도에 따르면, ‘日, 2차 걸쳐 가스발전-SMR 등 6개사업 美투자 발표’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "동아일보",
-    "url": "https://www.donga.com/news/Economy/article/all/20260923/134723499/2",
-    "date": "Tue, 22 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "정부, '원전 역할' 3개월 공론화…시민참여단 숙의 토론",
-    "summary": "뉴시스 보도에 따르면, ‘정부, '원전 역할' 3개월 공론화…시민참여단 숙의 토론’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴시스",
-    "url": "https://www.newsis.com/view/NISX20260922_0003799424",
-    "date": "Tue, 22 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "최근 3일 보완"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "미국 전기차 99.9%가 테슬라…알고 보니 '메이드 인 차이나'",
-    "summary": "콜뉴스24 보도에 따르면, ‘미국 전기차 99.9%가 테슬라…알고 보니 '메이드 인 차이나'’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "콜뉴스24",
-    "url": "https://www.callnews.co.kr/news/articleView.html?idxno=54442",
-    "date": "Thu, 24 Se",
-    "status": "CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "미얀마 뉴스 - 미얀마 원자력 추진체계 수립…SMR 기반 전력생산 계획 공식화 - AD Shofar",
-    "summary": "원문 매체 보도에 따르면, ‘미얀마 뉴스 - 미얀마 원자력 추진체계 수립…SMR 기반 전력생산 계획 공식화 - AD Shofar’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "news.myantrade.com",
-    "url": "https://news.myantrade.com/archives/50202?amp=1",
-    "date": "Thu, 24 Se",
-    "status": "PARTIALLY CONFIRMED",
-    "freshness_note": "NEW SINCE LAST BRIEFING"
-  },
-  {
-    "section": "에너지 & 모빌리티",
-    "title": "美 X에너지 10억弗 베팅…‘서류상 원전’ 벗고 첫 완공 입증해야 산다",
-    "summary": "에너지안전신문 보도에 따르면, ‘美 X에너지 10억弗 베팅…‘서류상 원전’ 벗고 첫 완공 입증해야 산다’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "에너지안전신문",
-    "url": "https://www.esnews.kr/news/articleView.html?idxno=6449",
-    "date": "Thu, 24 Se",
+    "title": "그리드 규모 고정형 배터리 저장용 인버터 시장 2035년 전망: 재생에너지 연계가 성장 견인 - 뉴스 및 통계",
+    "summary": "IndexBox 원문에 따르면, 그리드 규모 고정형 배터리 저장용 인버터 시장의 기준 시나리오는 2026~2035년 연평균 12~18%의 두 자릿수 성장이 이어질 것으로 본다.",
+    "source": "IndexBox",
+    "url": "https://www.indexbox.io/ko/blog/grid-scale-stationary-battery-storage-inverters-market-forecast-to-2035-renewable-integration-to-drive-12-18-cagr/",
+    "date": "Fri, 25 Se",
     "status": "PARTIALLY CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   },
@@ -291,12 +251,52 @@
   },
   {
     "section": "에너지 & 모빌리티",
-    "title": "[직장 돋보기 분석] 한국남동발전, 평균연봉 9960만원... 400MW 태양광 발전과 그린수소가 새로운 성장 동력",
-    "summary": "뉴스투데이 보도에 따르면, ‘한국남동발전, 평균연봉 9960만원... 400MW 태양광 발전과 그린수소가 새로운 성장 동력’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
-    "source": "뉴스투데이",
-    "url": "https://www.news2day.co.kr/article/20260911500220",
-    "date": "Thu, 24 Se",
+    "title": "홍지선 국토부 장관 \"주거안정에 정책역량 집중…자율주행·UAM 등 미래모빌리티 선도\"",
+    "summary": "지디넷코리아 보도에 따르면, ‘홍지선 국토부 장관 \"주거안정에 정책역량 집중…자율주행·UAM 등 미래모빌리티 선도\"’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "지디넷코리아",
+    "url": "https://zdnet.co.kr/view/?no=20260923120531",
+    "date": "Wed, 23 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "추석 전기차 충전비 할인·환급…사업자별 혜택 보니",
+    "summary": "블로터 보도에 따르면, ‘추석 전기차 충전비 할인·환급…사업자별 혜택 보니’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "블로터",
+    "url": "https://www.bloter.net/news/articleView.html?idxno=674315",
+    "date": "Wed, 23 Se",
     "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "삼성물산·GE버노바·히타치·SGE, 유럽 SMR 'BWRX-300' 건설 가속화 업무협약 체결",
+    "summary": "원문 매체 보도에 따르면, ‘삼성물산·GE버노바·히타치·SGE, 유럽 SMR 'BWRX-300' 건설 가속화 업무협약 체결’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "2news.co.kr",
+    "url": "https://www.2news.co.kr/news/articleView.html?idxno=26333",
+    "date": "Wed, 23 Se",
+    "status": "CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "닥락: 탄랍솔라(Tan Lap Solar)가 타이호아 1 태양광 발전소에 9770억 VND를 투자합니다.",
+    "summary": "Vietnam.vn 원문에 따르면, 닥락성은 탄랍솔라 주식회사(Tan Lap Solar Joint Stock Company)의 타이호아 1 태양광 발전소 투자 계획을 승인했다.",
+    "source": "Vietnam.vn",
+    "url": "https://www.vietnam.vn/ko/dak-lak-solar-tan-lap-rot-977-ty-dong-dau-tu-nha-may-dien-mat-troi-tay-hoa-1",
+    "date": "Wed, 23 Se",
+    "status": "PARTIALLY CONFIRMED",
+    "freshness_note": "최근 3일 보완"
+  },
+  {
+    "section": "에너지 & 모빌리티",
+    "title": "\"전기료 폭등에 굴복한 탈원전\"…이탈리아, 35년 만에 'SMR'로 원전 부활",
+    "summary": "에너지안전신문 보도에 따르면, ‘\"전기료 폭등에 굴복한 탈원전\"…이탈리아, 35년 만에 'SMR'로 원전 부활’라는 내용이 전해졌습니다. 세부 사실관계는 원문과 추가 근거에서 확인해야 합니다.",
+    "source": "에너지안전신문",
+    "url": "https://www.esnews.kr/news/articleView.html?idxno=6459",
+    "date": "Fri, 25 Se",
+    "status": "CONFIRMED",
     "freshness_note": "NEW SINCE LAST BRIEFING"
   }
 ]
